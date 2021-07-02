@@ -61,7 +61,7 @@ Here are some of the projects known to use DataFusion:
 - [Tensorbase](https://github.com/tensorbase/tensorbase)
 - [Squirtle](https://github.com/DSLAM-UMD/Squirtle)
 
-(if you know of another project, please submit a PR to add a link!)
+(if you know of another project, please submit a PR to add a link!)...
 
 ## Example Usage
 
