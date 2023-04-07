@@ -127,10 +127,9 @@ impl<'a> Parser<'a> {
         let data_type = self.parse_next_type()?;
         // ensure that there is no trailing content
         if self.tokenizer.next().is_some() {
-            Err(make_error(
-                self.val,
-                &format!("checking trailing content after parsing '{data_type}'"),
-            ))
+            Err(self.make_error(&format!(
+                "checking trailing content after parsing '{data_type}'"
+            )))
         } else {
             Ok(data_type)
         }
@@ -149,10 +148,10 @@ impl<'a> Parser<'a> {
             Token::Decimal128 => self.parse_decimal_128(),
             Token::Decimal256 => self.parse_decimal_256(),
             Token::Dictionary => self.parse_dictionary(),
-            tok => Err(make_error(
-                self.val,
-                &format!("finding next type, got unexpected '{tok}'"),
-            )),
+            tok => {
+                Err(self
+                    .make_error(&format!("finding next type, got unexpected '{tok}'")))
+            }
         }
     }
 
@@ -160,10 +159,10 @@ impl<'a> Parser<'a> {
     fn parse_time_unit(&mut self, context: &str) -> Result<TimeUnit> {
         match self.next_token()? {
             Token::TimeUnit(time_unit) => Ok(time_unit),
-            tok => Err(make_error(
-                self.val,
-                &format!("finding TimeUnit for {context}, got {tok}"),
-            )),
+            tok => {
+                Err(self
+                    .make_error(&format!("finding TimeUnit for {context}, got {tok}")))
+            }
         }
     }
 
@@ -171,10 +170,9 @@ impl<'a> Parser<'a> {
     fn parse_i64(&mut self, context: &str) -> Result<i64> {
         match self.next_token()? {
             Token::Integer(v) => Ok(v),
-            tok => Err(make_error(
-                self.val,
-                &format!("finding i64 for {context}, got '{tok}'"),
-            )),
+            tok => {
+                Err(self.make_error(&format!("finding i64 for {context}, got '{tok}'")))
+            }
         }
     }
 
@@ -182,10 +180,7 @@ impl<'a> Parser<'a> {
     fn parse_i32(&mut self, context: &str) -> Result<i32> {
         let length = self.parse_i64(context)?;
         length.try_into().map_err(|e| {
-            make_error(
-                self.val,
-                &format!("converting {length} into i32 for {context}: {e}"),
-            )
+            self.make_error(&format!("converting {length} into i32 for {context}: {e}"))
         })
     }
 
@@ -193,10 +188,7 @@ impl<'a> Parser<'a> {
     fn parse_i8(&mut self, context: &str) -> Result<i8> {
         let length = self.parse_i64(context)?;
         length.try_into().map_err(|e| {
-            make_error(
-                self.val,
-                &format!("converting {length} into i8 for {context}: {e}"),
-            )
+            self.make_error(&format!("converting {length} into i8 for {context}: {e}"))
         })
     }
 
@@ -204,10 +196,7 @@ impl<'a> Parser<'a> {
     fn parse_u8(&mut self, context: &str) -> Result<u8> {
         let length = self.parse_i64(context)?;
         length.try_into().map_err(|e| {
-            make_error(
-                self.val,
-                &format!("converting {length} into u8 for {context}: {e}"),
-            )
+            self.make_error(&format!("converting {length} into u8 for {context}: {e}"))
         })
     }
 
@@ -216,9 +205,31 @@ impl<'a> Parser<'a> {
         self.expect_token(Token::LParen)?;
         let time_unit = self.parse_time_unit("Timestamp")?;
         self.expect_token(Token::Comma)?;
-        // TODO Support timezones other than None
-        self.expect_token(Token::None)?;
-        let timezone = None;
+        let next_token = self.next_token()?;
+
+        // Parse TZ part of
+        //  Timestamp(<unit>, None)
+        //  Timestamp(<unit>, Some(<TZ>))
+        let timezone = match next_token {
+            Token::None => None,
+            Token::Some => {
+                self.expect_token(Token::LParen)?;
+                let timezone = match self.next_token()? {
+                    Token::DoubleQuotedString(tz) => tz,
+                    actual => {
+                        return Err(self.make_error(&format!(
+                            "Expected double quoted string, got '{actual}'"
+                        )))
+                    }
+                };
+                self.expect_token(Token::RParen)?;
+                Some(timezone)
+            }
+            actual => {
+                return Err(self
+                    .make_error(&format!("Expected 'Some' or 'None', got '{actual}'")))
+            }
+        };
 
         self.expect_token(Token::RParen)?;
         Ok(DataType::Timestamp(time_unit, timezone))
@@ -254,10 +265,9 @@ impl<'a> Parser<'a> {
         let interval_unit = match self.next_token()? {
             Token::IntervalUnit(interval_unit) => interval_unit,
             tok => {
-                return Err(make_error(
-                    self.val,
-                    &format!("finding IntervalUnit for Interval, got {tok}"),
-                ))
+                return Err(self.make_error(&format!(
+                    "finding IntervalUnit for Interval, got {tok}"
+                )))
             }
         };
         self.expect_token(Token::RParen)?;
@@ -308,7 +318,7 @@ impl<'a> Parser<'a> {
     /// return the next token, or an error if there are none left
     fn next_token(&mut self) -> Result<Token> {
         match self.tokenizer.next() {
-            None => Err(make_error(self.val, "finding next token")),
+            None => Err(self.make_error("finding next token")),
             Some(token) => token,
         }
     }
@@ -321,6 +331,10 @@ impl<'a> Parser<'a> {
         } else {
             Err(make_error_expected(self.val, &tok, &next_token))
         }
+    }
+
+    fn make_error(&self, msg: &str) -> DataFusionError {
+        make_error(self.val, msg)
     }
 }
 
@@ -443,6 +457,12 @@ impl<'a> Tokenizer<'a> {
             "MonthDayNano" => Token::IntervalUnit(IntervalUnit::MonthDayNano),
 
             "None" => Token::None,
+            "Some" => Token::Some,
+
+            // handle "foo"
+            s if is_double_quoted_str(s) => {
+                Token::DoubleQuotedString(s[1..s.len() - 1].into())
+            }
 
             _ => {
                 return Err(make_error(
@@ -453,6 +473,10 @@ impl<'a> Tokenizer<'a> {
         };
         Ok(token)
     }
+}
+
+fn is_double_quoted_str(s: &str) -> bool {
+    s.starts_with('"') && s.ends_with('"') && s.len() >= 2 && s.matches('"').count() == 2
 }
 
 impl<'a> Iterator for Tokenizer<'a> {
@@ -505,7 +529,10 @@ enum Token {
     RParen,
     Comma,
     None,
+    Some,
     Integer(i64),
+    /// "foo"
+    DoubleQuotedString(String),
 }
 
 impl Display for Token {
@@ -523,11 +550,13 @@ impl Display for Token {
             Token::RParen => write!(f, ")"),
             Token::Comma => write!(f, ","),
             Token::None => write!(f, "None"),
+            Token::Some => write!(f, "Some"),
             Token::FixedSizeBinary => write!(f, "FixedSizeBinary"),
             Token::Decimal128 => write!(f, "Decimal128"),
             Token::Decimal256 => write!(f, "Decimal256"),
             Token::Dictionary => write!(f, "Dictionary"),
             Token::Integer(v) => write!(f, "Integer({v})"),
+            Token::DoubleQuotedString(v) => write!(f, "DoubleQuotedString({v})"),
         }
     }
 }
@@ -580,8 +609,14 @@ mod test {
             DataType::Timestamp(TimeUnit::Millisecond, None),
             DataType::Timestamp(TimeUnit::Microsecond, None),
             DataType::Timestamp(TimeUnit::Nanosecond, None),
-            // TODO support timezones
-            //DataType::Timestamp(TimeUnit::Nanosecond, Some("UTC".into())),
+            DataType::Timestamp(TimeUnit::Second, Some("UTC".into())),
+            DataType::Timestamp(TimeUnit::Millisecond, Some("UTC".into())),
+            DataType::Timestamp(TimeUnit::Microsecond, Some("UTC".into())),
+            DataType::Timestamp(TimeUnit::Nanosecond, Some("UTC".into())),
+            DataType::Timestamp(TimeUnit::Nanosecond, Some("+08:00".into())),
+            // Timezone will handle any string, even if it is not a valid timezone per arrow
+            DataType::Timestamp(TimeUnit::Nanosecond, Some("UNKNOWN".into())),
+            DataType::Timestamp(TimeUnit::Nanosecond, Some("".into())),
             DataType::Date32,
             DataType::Date64,
             DataType::Time32(TimeUnit::Second),
@@ -673,10 +708,18 @@ mod test {
             ("", "Error finding next token"),
             ("null", "Unsupported type 'null'"),
             ("Nu", "Unsupported type 'Nu'"),
-            // TODO support timezones
+            // no closing ')'
             (
-                r#"Timestamp(Nanosecond, Some("UTC"))"#,
-                "Error unrecognized word: Some",
+                r#"Timestamp(Nanosecond, Some("UTC")"#,
+                "Error finding next token",
+            ),
+            (
+                r#"Timestamp(Nanosecond, Some("UTC))"#,
+                r#"Error unrecognized word: "UTC"#,
+            ),
+            (
+                r#"Timestamp(Nanosecond, Some("UTC""))"#,
+                r#"Error unrecognized word: "UTC"""#,
             ),
             ("Timestamp(Nanosecond, ", "Error finding next token"),
             (

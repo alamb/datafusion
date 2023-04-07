@@ -231,20 +231,22 @@ create table foo as select
   arrow_cast(to_timestamp('2020-01-02 01:01:11.1234567890Z'), 'Timestamp(Second, None)') as col_ts_s,
   arrow_cast(to_timestamp('2020-01-02 01:01:11.1234567890Z'), 'Timestamp(Millisecond, None)') as col_ts_ms,
   arrow_cast(to_timestamp('2020-01-02 01:01:11.1234567890Z'), 'Timestamp(Microsecond, None)') as col_ts_us,
-  arrow_cast(to_timestamp('2020-01-02 01:01:11.1234567890Z'), 'Timestamp(Nanosecond, None)') as col_ts_ns
+  arrow_cast(to_timestamp('2020-01-02 01:01:11.1234567890Z'), 'Timestamp(Nanosecond, None)') as col_ts_ns,
+  arrow_cast(to_timestamp('2020-01-02 01:01:11.1234567890Z'), 'Timestamp(Nanosecond, Some("UTC"))') as col_ts_ns_utc
 ;
 
 ## Ensure each column in the table has the expected type
 
-query TTTT
+query TTTTT
 SELECT
   arrow_typeof(col_ts_s),
   arrow_typeof(col_ts_ms),
   arrow_typeof(col_ts_us),
-  arrow_typeof(col_ts_ns)
+  arrow_typeof(col_ts_ns),
+  arrow_typeof(col_ts_ns_utc)
   FROM foo;
 ----
-Timestamp(Second, None) Timestamp(Millisecond, None) Timestamp(Microsecond, None) Timestamp(Nanosecond, None)
+Timestamp(Second, None) Timestamp(Millisecond, None) Timestamp(Microsecond, None) Timestamp(Nanosecond, None) Timestamp(Nanosecond, Some("UTC"))
 
 
 statement ok
