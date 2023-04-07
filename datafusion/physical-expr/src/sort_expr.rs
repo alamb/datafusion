@@ -22,6 +22,7 @@ use arrow::compute::kernels::sort::{SortColumn, SortOptions};
 use arrow::record_batch::RecordBatch;
 use datafusion_common::{DataFusionError, Result};
 use datafusion_expr::ColumnarValue;
+use std::borrow::Borrow;
 use std::sync::Arc;
 
 /// Represents Sort operation for a column in a RecordBatch
@@ -192,12 +193,12 @@ impl PhysicalSortRequirement {
     ///
     /// This method is designed for
     /// use implementing [`ExecutionPlan::required_input_ordering`].
-    pub fn from_sort_exprs<'a>(
-        ordering: impl IntoIterator<Item = &'a PhysicalSortExpr>,
+    pub fn from_sort_exprs<T: Borrow<PhysicalSortExpr>>(
+        ordering: impl IntoIterator<Item = T>,
     ) -> Vec<PhysicalSortRequirement> {
         ordering
             .into_iter()
-            .map(PhysicalSortRequirement::from)
+            .map(|e| PhysicalSortRequirement::from(e.borrow()))
             .collect()
     }
 
@@ -207,12 +208,12 @@ impl PhysicalSortRequirement {
     /// This function converts `PhysicalSortRequirement` to `PhysicalSortExpr`
     /// for each entry in the input. If required ordering is None for an entry
     /// default ordering `ASC, NULLS LAST` if given (see [`into_sort_expr`])
-    pub fn to_sort_exprs(
-        requirements: impl IntoIterator<Item = PhysicalSortRequirement>,
+    pub fn to_sort_exprs<T: Borrow<PhysicalSortRequirement>>(
+        requirements: impl IntoIterator<Item = T>,
     ) -> Vec<PhysicalSortExpr> {
         requirements
             .into_iter()
-            .map(PhysicalSortExpr::from)
+            .map(|e| PhysicalSortExpr::from(e.borrow()))
             .collect()
     }
 
