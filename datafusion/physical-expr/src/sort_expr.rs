@@ -190,7 +190,7 @@ impl PhysicalSortRequirement {
     /// Returns [`PhysicalSortRequirement`] that requires the exact
     /// sort of the [`PhysicalSortExpr`]s in `ordering`
     ///
-    /// This method is designed for
+    /// This method takes `&'a PhysicalSortExpr` to make it easy to
     /// use implementing [`ExecutionPlan::required_input_ordering`].
     pub fn from_sort_exprs<T>(
         ordering: impl IntoIterator<Item = T>,
@@ -200,7 +200,7 @@ impl PhysicalSortRequirement {
     {
         ordering
             .into_iter()
-            .map(|e| PhysicalSortRequirement::from(e))
+            .map(PhysicalSortRequirement::from)
             .collect()
     }
 
@@ -218,7 +218,7 @@ impl PhysicalSortRequirement {
     {
         requirements
             .into_iter()
-            .map(|e| PhysicalSortExpr::from(e))
+            .map(PhysicalSortExpr::from)
             .collect()
     }
 
