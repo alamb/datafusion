@@ -222,8 +222,7 @@ run_tpch_mem() {
     echo "RESULTS_FILE: ${RESULTS_FILE}"
     echo "Running tpch_mem benchmark..."
     # -m means in memory
-    #TEMP only use query 1
-    $CARGO_COMMAND --bin tpch -- benchmark datafusion  --iterations 5 --path "${DATA_DIR}" -m --format parquet -o ${RESULTS_FILE}
+    $CARGO_COMMAND --bin tpch -- benchmark datafusion --iterations 5 --path "${DATA_DIR}" -m --format parquet -o ${RESULTS_FILE}
 }
 
 
