@@ -19,9 +19,19 @@
 
 # DataFusion Benchmarks
 
-This crate contains benchmarks based on popular public data sets and open source benchmark suites, making it easy to
-run real-world benchmarks to help with performance and scalability testing and for comparing performance with other Arrow
-implementations as well as other query engines.
+This crate contains benchmarks based on popular public data sets and
+open source benchmark suites, making it easy to run more realistic
+benchmarks to help with performance and scalability testing of DataFusion.
+
+
+# Benchmarks with other engines
+
+DataFusion is also included in the benchmark setups for several
+popular benchmarks that compare performance with other engines
+
+* [ClickBench]: <https://github.com/ClickHouse/ClickBench/tree/main/datafusion>
+* H2o.ai `db-benchmark`: [db-benchmark] has scripts for running DataFusion with the H20 benchmark
+
 
 ## Benchmark derived from TPC-H
 
