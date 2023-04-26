@@ -34,7 +34,7 @@ DATA_DIR=${DATA_DIR:-$SCRIPT_DIR/data}
 BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
 BRANCH_NAME=${BRANCH_NAME//\//_} # mind blowing syntax to replace / with _
 RESULTS_DIR=${RESULTS_DIR:-"$SCRIPT_DIR/results/$BRANCH_NAME"}
-CARGO_COMMAND=$CARGO_COMMAND:"cargo run --release"}
+CARGO_COMMAND=$CARGO_COMMAND:-"cargo run --release"}
 #CARGO_COMMAND=${CARGO_COMMAND:-"cargo run --profile release-nonlto"}  # TEMP: for faster iterations
 
 usage() {
