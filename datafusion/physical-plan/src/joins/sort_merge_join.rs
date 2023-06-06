@@ -38,17 +38,17 @@ use arrow::record_batch::RecordBatch;
 use datafusion_physical_expr::PhysicalSortRequirement;
 use futures::{Stream, StreamExt};
 
-use crate::error::DataFusionError;
-use crate::error::Result;
-use crate::logical_expr::JoinType;
-use crate::physical_plan::expressions::Column;
-use crate::physical_plan::expressions::PhysicalSortExpr;
-use crate::physical_plan::joins::utils::{
+use datafusion_common::DataFusionError;
+use datafusion_common::Result;
+use datafusion_expr::JoinType;
+use crate::expressions::Column;
+use crate::expressions::PhysicalSortExpr;
+use crate::joins::utils::{
     build_join_schema, check_join_is_valid, combine_join_equivalence_properties,
     estimate_join_statistics, partitioned_join_output_partitioning, JoinOn,
 };
-use crate::physical_plan::metrics::{ExecutionPlanMetricsSet, MetricBuilder, MetricsSet};
-use crate::physical_plan::{
+use crate::metrics::{ExecutionPlanMetricsSet, MetricBuilder, MetricsSet};
+use crate::{
     metrics, DisplayFormatType, Distribution, EquivalenceProperties, ExecutionPlan,
     Partitioning, PhysicalExpr, RecordBatchStream, SendableRecordBatchStream, Statistics,
 };
@@ -1397,11 +1397,11 @@ mod tests {
     use crate::common::assert_contains;
     use crate::error::Result;
     use crate::logical_expr::JoinType;
-    use crate::physical_plan::expressions::Column;
-    use crate::physical_plan::joins::utils::JoinOn;
-    use crate::physical_plan::joins::SortMergeJoinExec;
-    use crate::physical_plan::memory::MemoryExec;
-    use crate::physical_plan::{common, ExecutionPlan};
+    use crate::expressions::Column;
+    use crate::joins::utils::JoinOn;
+    use crate::joins::SortMergeJoinExec;
+    use crate::memory::MemoryExec;
+    use crate::{common, ExecutionPlan};
     use crate::prelude::{SessionConfig, SessionContext};
     use crate::test::{build_table_i32, columns};
     use crate::{assert_batches_eq, assert_batches_sorted_eq};

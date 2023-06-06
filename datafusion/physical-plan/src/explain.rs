@@ -20,16 +20,14 @@
 use std::any::Any;
 use std::sync::Arc;
 
-use crate::{
-    error::{DataFusionError, Result},
-    logical_expr::StringifiedPlan,
-    physical_plan::{DisplayFormatType, ExecutionPlan, Partitioning, Statistics},
-};
+use datafusion_common::{DataFusionError, Result};
+use datafusion_common::display::StringifiedPlan;
+use crate::{DisplayFormatType, ExecutionPlan, Partitioning, Statistics};
 use arrow::{array::StringBuilder, datatypes::SchemaRef, record_batch::RecordBatch};
 use log::trace;
 
 use super::{expressions::PhysicalSortExpr, SendableRecordBatchStream};
-use crate::physical_plan::stream::RecordBatchStreamAdapter;
+use crate::stream::RecordBatchStreamAdapter;
 use datafusion_execution::TaskContext;
 
 /// Explain execution plan operator. This operator contains the string

@@ -20,8 +20,8 @@
 use std::any::Any;
 use std::sync::Arc;
 
-use crate::error::{DataFusionError, Result};
-use crate::physical_plan::{
+use datafusion_common::{DataFusionError, Result};
+use crate::{
     memory::MemoryStream, DisplayFormatType, ExecutionPlan, Partitioning,
 };
 use arrow::array::{ArrayRef, NullArray};
@@ -171,7 +171,7 @@ impl ExecutionPlan for EmptyExec {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::physical_plan::with_new_children_if_necessary;
+    use crate::with_new_children_if_necessary;
     use crate::prelude::SessionContext;
     use crate::{physical_plan::common, test_util};
 

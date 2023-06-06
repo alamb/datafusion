@@ -18,7 +18,7 @@
 //! This file contains various utility functions that are common to both
 //! batch and streaming aggregation code.
 
-use crate::physical_plan::aggregates::AccumulatorItem;
+use crate::aggregates::AccumulatorItem;
 use arrow::compute;
 use arrow::compute::filter;
 use arrow::row::OwnedRow;

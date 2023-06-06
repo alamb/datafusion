@@ -33,7 +33,7 @@ use hashbrown::raw::RawTable;
 use smallvec::SmallVec;
 
 use crate::common::Result;
-use crate::physical_plan::joins::utils::{JoinFilter, JoinSide};
+use crate::joins::utils::{JoinFilter, JoinSide};
 
 // Maps a `u64` hash value based on the build side ["on" values] to a list of indices with this key's value.
 //
@@ -280,7 +280,7 @@ impl SortedFilterExpr {
 #[cfg(test)]
 pub mod tests {
     use super::*;
-    use crate::physical_plan::{
+    use crate::{
         expressions::Column,
         expressions::PhysicalSortExpr,
         joins::utils::{ColumnIndex, JoinFilter, JoinSide},

@@ -21,7 +21,7 @@ use super::expressions::PhysicalSortExpr;
 use super::{
     DisplayFormatType, ExecutionPlan, Partitioning, SendableRecordBatchStream, Statistics,
 };
-use crate::error::Result;
+use datafusion_common::Result;
 use arrow::datatypes::SchemaRef;
 use arrow::record_batch::RecordBatch;
 use arrow_array::{ArrayRef, UInt64Array};
@@ -34,8 +34,8 @@ use std::any::Any;
 use std::fmt::{Debug, Display};
 use std::sync::Arc;
 
-use crate::physical_plan::stream::RecordBatchStreamAdapter;
-use crate::physical_plan::Distribution;
+use crate::stream::RecordBatchStreamAdapter;
+use crate::Distribution;
 use datafusion_common::DataFusionError;
 use datafusion_execution::TaskContext;
 

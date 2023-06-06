@@ -17,12 +17,12 @@
 
 //! Aggregates functionalities
 
-use crate::physical_plan::aggregates::{
+use crate::aggregates::{
     bounded_aggregate_stream::BoundedAggregateStream, no_grouping::AggregateStream,
     row_hash::GroupedHashAggregateStream,
 };
-use crate::physical_plan::metrics::{ExecutionPlanMetricsSet, MetricsSet};
-use crate::physical_plan::{
+use crate::metrics::{ExecutionPlanMetricsSet, MetricsSet};
+use crate::{
     DisplayFormatType, Distribution, EquivalenceProperties, ExecutionPlan, Partitioning,
     SendableRecordBatchStream, Statistics,
 };
@@ -1183,11 +1183,11 @@ mod tests {
     use super::*;
     use crate::execution::context::SessionConfig;
     use crate::from_slice::FromSlice;
-    use crate::physical_plan::aggregates::{
+    use crate::aggregates::{
         get_finest_requirement, get_working_mode, AggregateExec, AggregateMode,
         PhysicalGroupBy,
     };
-    use crate::physical_plan::expressions::{col, Avg};
+    use crate::expressions::{col, Avg};
     use crate::test::exec::{assert_strong_count_converges_to_zero, BlockingExec};
     use crate::test::{assert_is_pending, csv_exec_sorted};
     use crate::{assert_batches_sorted_eq, physical_plan::common};
@@ -1210,11 +1210,11 @@ mod tests {
     use std::task::{Context, Poll};
 
     use super::StreamType;
-    use crate::physical_plan::aggregates::GroupByOrderMode::{
+    use crate::aggregates::GroupByOrderMode::{
         FullyOrdered, PartiallyOrdered,
     };
-    use crate::physical_plan::coalesce_partitions::CoalescePartitionsExec;
-    use crate::physical_plan::{
+    use crate::coalesce_partitions::CoalescePartitionsExec;
+    use crate::{
         ExecutionPlan, Partitioning, RecordBatchStream, SendableRecordBatchStream,
         Statistics,
     };
@@ -1788,7 +1788,7 @@ mod tests {
             schema,
         )?);
 
-        let fut = crate::physical_plan::collect(aggregate_exec, task_ctx);
+        let fut = crate::collect(aggregate_exec, task_ctx);
         let mut fut = fut.boxed();
 
         assert_is_pending(&mut fut);
@@ -1828,7 +1828,7 @@ mod tests {
             schema,
         )?);
 
-        let fut = crate::physical_plan::collect(aggregate_exec, task_ctx);
+        let fut = crate::collect(aggregate_exec, task_ctx);
         let mut fut = fut.boxed();
 
         assert_is_pending(&mut fut);

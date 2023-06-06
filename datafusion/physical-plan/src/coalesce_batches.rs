@@ -23,8 +23,8 @@ use std::pin::Pin;
 use std::sync::Arc;
 use std::task::{Context, Poll};
 
-use crate::error::Result;
-use crate::physical_plan::{
+use datafusion_common::Result;
+use crate::{
     DisplayFormatType, EquivalenceProperties, ExecutionPlan, Partitioning,
     RecordBatchStream, SendableRecordBatchStream,
 };
@@ -294,8 +294,8 @@ mod tests {
     use super::*;
     use crate::config::ConfigOptions;
     use crate::datasource::MemTable;
-    use crate::physical_plan::filter::FilterExec;
-    use crate::physical_plan::{memory::MemoryExec, repartition::RepartitionExec};
+    use crate::filter::FilterExec;
+    use crate::{memory::MemoryExec, repartition::RepartitionExec};
     use crate::prelude::SessionContext;
     use crate::test::create_vec_batches;
     use arrow::datatypes::{DataType, Field, Schema};

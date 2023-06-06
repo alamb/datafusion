@@ -27,8 +27,8 @@ use super::expressions::PhysicalSortExpr;
 use super::metrics::{BaselineMetrics, ExecutionPlanMetricsSet, MetricsSet};
 use super::stream::{ObservedStream, RecordBatchReceiverStream};
 use super::Statistics;
-use crate::error::{DataFusionError, Result};
-use crate::physical_plan::{
+use datafusion_common::{DataFusionError, Result};
+use crate::{
     DisplayFormatType, EquivalenceProperties, ExecutionPlan, Partitioning,
 };
 
@@ -174,7 +174,7 @@ mod tests {
     use futures::FutureExt;
 
     use super::*;
-    use crate::physical_plan::{collect, common};
+    use crate::{collect, common};
     use crate::prelude::SessionContext;
     use crate::test::exec::{
         assert_strong_count_converges_to_zero, BlockingExec, PanicExec,

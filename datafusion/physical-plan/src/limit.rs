@@ -25,8 +25,8 @@ use std::pin::Pin;
 use std::sync::Arc;
 use std::task::{Context, Poll};
 
-use crate::error::{DataFusionError, Result};
-use crate::physical_plan::{
+use datafusion_common::{DataFusionError, Result};
+use crate::{
     DisplayFormatType, Distribution, EquivalenceProperties, ExecutionPlan, Partitioning,
 };
 use arrow::array::ArrayRef;
@@ -518,8 +518,8 @@ mod tests {
     use common::collect;
 
     use super::*;
-    use crate::physical_plan::coalesce_partitions::CoalescePartitionsExec;
-    use crate::physical_plan::common;
+    use crate::coalesce_partitions::CoalescePartitionsExec;
+    use crate::common;
     use crate::prelude::SessionContext;
     use crate::test;
 

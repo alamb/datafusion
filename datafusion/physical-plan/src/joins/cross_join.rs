@@ -25,14 +25,14 @@ use std::{any::Any, sync::Arc, task::Poll};
 use arrow::datatypes::{Fields, Schema, SchemaRef};
 use arrow::record_batch::RecordBatch;
 
-use crate::physical_plan::metrics::{ExecutionPlanMetricsSet, MetricsSet};
-use crate::physical_plan::{
+use crate::metrics::{ExecutionPlanMetricsSet, MetricsSet};
+use crate::{
     coalesce_batches::concat_batches, coalesce_partitions::CoalescePartitionsExec,
     ColumnStatistics, DisplayFormatType, Distribution, EquivalenceProperties,
     ExecutionPlan, Partitioning, PhysicalSortExpr, RecordBatchStream,
     SendableRecordBatchStream, Statistics,
 };
-use crate::{error::Result, scalar::ScalarValue};
+use datafusion_common::{Result, ScalarValue};
 use async_trait::async_trait;
 use datafusion_common::DataFusionError;
 use datafusion_execution::memory_pool::{MemoryConsumer, MemoryReservation};
@@ -457,7 +457,7 @@ mod tests {
     use super::*;
     use crate::assert_batches_sorted_eq;
     use crate::common::assert_contains;
-    use crate::physical_plan::common;
+    use crate::common;
     use crate::prelude::{SessionConfig, SessionContext};
     use crate::test::{build_table_scan_i32, columns};
     use datafusion_execution::runtime_env::{RuntimeConfig, RuntimeEnv};

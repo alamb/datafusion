@@ -53,16 +53,17 @@ use std::{any::Any, usize, vec};
 use datafusion_common::cast::{as_dictionary_array, as_string_array};
 use datafusion_execution::memory_pool::MemoryReservation;
 
-use crate::arrow::array::BooleanBufferBuilder;
-use crate::arrow::datatypes::TimeUnit;
-use crate::error::{DataFusionError, Result};
-use crate::execution::{context::TaskContext, memory_pool::MemoryConsumer};
-use crate::logical_expr::JoinType;
-use crate::physical_plan::joins::utils::{
+use arrow::array::BooleanBufferBuilder;
+use arrow::datatypes::TimeUnit;
+use datafusion_common::{DataFusionError, Result};
+use datafusion_execution::TaskContext;
+use datafusion_execution::memory_pool::MemoryConsumer;
+use datafusion_expr::JoinType;
+use crate::joins::utils::{
     adjust_indices_by_join_type, apply_join_filter_to_indices, build_batch_from_indices,
     get_final_indices_from_bit_map, need_produce_result_in_final, JoinSide,
 };
-use crate::physical_plan::{
+use crate::{
     coalesce_batches::concat_batches,
     coalesce_partitions::CoalescePartitionsExec,
     expressions::Column,
@@ -83,7 +84,7 @@ use super::{
     utils::{OnceAsync, OnceFut},
     PartitionMode,
 };
-use crate::physical_plan::joins::hash_join_utils::JoinHashMap;
+use crate::joins::hash_join_utils::JoinHashMap;
 
 type JoinLeftData = (JoinHashMap, RecordBatch, MemoryReservation);
 
@@ -2983,7 +2984,7 @@ mod tests {
             let stream = join.execute(0, task_ctx).unwrap();
 
             // Expect that an error is returned
-            let result_string = crate::physical_plan::common::collect(stream)
+            let result_string = crate::common::collect(stream)
                 .await
                 .unwrap_err()
                 .to_string();

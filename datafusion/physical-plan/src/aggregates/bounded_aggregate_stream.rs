@@ -31,18 +31,18 @@ use futures::stream::{Stream, StreamExt};
 use hashbrown::raw::RawTable;
 use itertools::izip;
 
-use crate::physical_plan::aggregates::{
+use crate::aggregates::{
     evaluate_group_by, evaluate_many, evaluate_optional, group_schema, AggregateMode,
     AggregationOrdering, GroupByOrderMode, PhysicalGroupBy, RowAccumulatorItem,
 };
-use crate::physical_plan::metrics::{BaselineMetrics, RecordOutput};
-use crate::physical_plan::{aggregates, AggregateExpr, PhysicalExpr};
-use crate::physical_plan::{RecordBatchStream, SendableRecordBatchStream};
+use crate::metrics::{BaselineMetrics, RecordOutput};
+use crate::{aggregates, AggregateExpr, PhysicalExpr};
+use crate::{RecordBatchStream, SendableRecordBatchStream};
 use datafusion_execution::memory_pool::proxy::{RawTableAllocExt, VecAllocExt};
 use datafusion_execution::memory_pool::{MemoryConsumer, MemoryReservation};
 use datafusion_execution::TaskContext;
 
-use crate::physical_plan::aggregates::utils::{
+use crate::aggregates::utils::{
     aggr_state_schema, col_to_scalar, get_at_indices, get_optional_filters,
     read_as_batch, slice_and_maybe_filter, ExecutionState, GroupState,
 };

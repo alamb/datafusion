@@ -20,12 +20,10 @@
 use std::sync::Arc;
 use std::{any::Any, time::Instant};
 
+use datafusion_common::{DataFusionError, Result};
 use crate::{
-    error::{DataFusionError, Result},
-    physical_plan::{
-        display::DisplayableExecutionPlan, DisplayFormatType, ExecutionPlan,
-        Partitioning, Statistics,
-    },
+    display::DisplayableExecutionPlan, DisplayFormatType, ExecutionPlan,
+    Partitioning, Statistics,
 };
 use arrow::{array::StringBuilder, datatypes::SchemaRef, record_batch::RecordBatch};
 use futures::StreamExt;

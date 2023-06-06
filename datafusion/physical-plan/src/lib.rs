@@ -22,9 +22,9 @@ use self::metrics::MetricsSet;
 use self::{
     coalesce_partitions::CoalescePartitionsExec, display::DisplayableExecutionPlan,
 };
-pub use crate::common::{ColumnStatistics, Statistics};
-use crate::error::Result;
-use crate::physical_plan::expressions::PhysicalSortExpr;
+pub use datafusion_common::{ColumnStatistics, Statistics};
+use datafusion_common::Result;
+use crate::expressions::PhysicalSortExpr;
 
 use arrow::datatypes::SchemaRef;
 use arrow::record_batch::RecordBatch;
@@ -699,9 +699,9 @@ pub mod unnest;
 pub mod values;
 pub mod windows;
 
-use crate::physical_plan::common::AbortOnDropSingle;
-use crate::physical_plan::repartition::RepartitionExec;
-use crate::physical_plan::sorts::sort_preserving_merge::SortPreservingMergeExec;
+use crate::common::AbortOnDropSingle;
+use crate::repartition::RepartitionExec;
+use crate::sorts::sort_preserving_merge::SortPreservingMergeExec;
 use datafusion_execution::TaskContext;
 pub use datafusion_physical_expr::{
     expressions, functions, hash_utils, type_coercion, udf,
@@ -713,9 +713,9 @@ mod tests {
     use arrow::datatypes::DataType;
     use arrow::datatypes::Schema;
 
-    use crate::physical_plan::Distribution;
-    use crate::physical_plan::Partitioning;
-    use crate::physical_plan::PhysicalExpr;
+    use crate::Distribution;
+    use crate::Partitioning;
+    use crate::PhysicalExpr;
     use datafusion_physical_expr::expressions::Column;
 
     use std::sync::Arc;

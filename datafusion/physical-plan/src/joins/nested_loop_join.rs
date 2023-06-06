@@ -19,7 +19,7 @@
 //! The nested loop join can execute in parallel by partitions and it is
 //! determined by the [`JoinType`].
 
-use crate::physical_plan::joins::utils::{
+use crate::joins::utils::{
     adjust_right_output_partitioning, append_right_indices, apply_join_filter_to_indices,
     build_batch_from_indices, build_join_schema, check_join_is_valid,
     combine_join_equivalence_properties, estimate_join_statistics, get_anti_indices,
@@ -27,8 +27,8 @@ use crate::physical_plan::joins::utils::{
     get_semi_u64_indices, BuildProbeJoinMetrics, ColumnIndex, JoinFilter, JoinSide,
     OnceAsync, OnceFut,
 };
-use crate::physical_plan::metrics::{ExecutionPlanMetricsSet, MetricsSet};
-use crate::physical_plan::{
+use crate::metrics::{ExecutionPlanMetricsSet, MetricsSet};
+use crate::{
     DisplayFormatType, Distribution, ExecutionPlan, Partitioning, RecordBatchStream,
     SendableRecordBatchStream,
 };
@@ -48,8 +48,8 @@ use std::fmt::Formatter;
 use std::sync::Arc;
 use std::task::Poll;
 
-use crate::error::Result;
-use crate::physical_plan::coalesce_batches::concat_batches;
+use datafusion_common::Result;
+use crate::coalesce_batches::concat_batches;
 use datafusion_execution::memory_pool::MemoryConsumer;
 use datafusion_execution::TaskContext;
 
@@ -743,7 +743,7 @@ mod tests {
     use datafusion_expr::Operator;
 
     use super::*;
-    use crate::physical_plan::joins::utils::JoinSide;
+    use crate::joins::utils::JoinSide;
     use crate::prelude::SessionContext;
     use datafusion_common::ScalarValue;
     use datafusion_physical_expr::expressions::Literal;

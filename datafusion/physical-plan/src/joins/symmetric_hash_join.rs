@@ -50,12 +50,12 @@ use datafusion_common::{utils::bisect, ScalarValue};
 use datafusion_execution::memory_pool::MemoryConsumer;
 use datafusion_physical_expr::intervals::{ExprIntervalGraph, Interval, IntervalBound};
 
-use crate::error::{DataFusionError, Result};
-use crate::logical_expr::JoinType;
-use crate::physical_plan::common::SharedMemoryReservation;
-use crate::physical_plan::joins::hash_join_utils::convert_sort_expr_with_filter_schema;
-use crate::physical_plan::joins::hash_join_utils::JoinHashMap;
-use crate::physical_plan::{
+use datafusion_common::{DataFusionError, Result};
+use datafusion_expr::JoinType;
+use crate::common::SharedMemoryReservation;
+use crate::joins::hash_join_utils::convert_sort_expr_with_filter_schema;
+use crate::joins::hash_join_utils::JoinHashMap;
+use crate::{
     expressions::Column,
     expressions::PhysicalSortExpr,
     joins::{
@@ -1562,10 +1562,10 @@ mod tests {
     };
     use datafusion_physical_expr::PhysicalExpr;
 
-    use crate::physical_plan::joins::{
+    use crate::joins::{
         hash_join_utils::tests::complicated_filter, HashJoinExec, PartitionMode,
     };
-    use crate::physical_plan::{
+    use crate::{
         common, displayable, memory::MemoryExec, repartition::RepartitionExec,
     };
     use crate::prelude::{CsvReadOptions, SessionConfig, SessionContext};
