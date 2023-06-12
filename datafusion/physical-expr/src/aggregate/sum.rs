@@ -131,9 +131,9 @@ impl AggregateExpr for Sum {
         is_row_accumulator_support_dtype(&self.data_type)
     }
 
-    fn supports_bounded_execution(&self) -> bool {
-        true
-    }
+    // fn supports_bounded_execution(&self) -> bool {
+    //     true
+    // }
 
     fn create_row_accumulator(
         &self,
@@ -359,6 +359,10 @@ impl Accumulator for SumAccumulator {
         } else {
             Ok(self.sum.clone())
         }
+    }
+
+    fn supports_bounded_execution(&self) -> bool {
+        true
     }
 
     fn size(&self) -> usize {

@@ -28,7 +28,7 @@ use arrow::{
 
 use super::{expressions::format_state_name, Accumulator, AggregateExpr};
 use crate::physical_plan::PhysicalExpr;
-use datafusion_common::Result;
+use datafusion_common::{DataFusionError, Result};
 pub use datafusion_expr::AggregateUDF;
 
 use datafusion_physical_expr::aggregate::utils::down_cast_any_ref;
@@ -104,6 +104,18 @@ impl AggregateExpr for AggregateFunctionExpr {
 
     fn create_accumulator(&self) -> Result<Box<dyn Accumulator>> {
         (self.fun.accumulator)(&self.data_type)
+    }
+
+    fn create_sliding_accumulator(&self) -> Result<Box<dyn Accumulator>> {
+        let acc = (self.fun.accumulator)(&self.data_type)?;
+        if acc.supports_bounded_execution() {
+            Ok(acc)
+        } else {
+            Err(DataFusionError::Execution(format!(
+                "Accumulator: {:?} doesn't support bounded execution",
+                self.fun.name
+            )))
+        }
     }
 
     fn name(&self) -> &str {

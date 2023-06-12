@@ -139,8 +139,9 @@ impl WindowExpr for SlidingAggregateWindowExpr {
     }
 
     fn uses_bounded_memory(&self) -> bool {
-        self.aggregate.supports_bounded_execution()
-            && !self.window_frame.end_bound.is_unbounded()
+        let supports_bounded_execution =
+            self.aggregate.create_sliding_accumulator().is_ok();
+        supports_bounded_execution && !self.window_frame.end_bound.is_unbounded()
     }
 }
 

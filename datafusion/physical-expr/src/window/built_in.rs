@@ -36,6 +36,7 @@ use arrow::datatypes::Field;
 use arrow::record_batch::RecordBatch;
 use datafusion_common::utils::evaluate_partition_ranges;
 use datafusion_common::{Result, ScalarValue};
+use datafusion_expr::partition_evaluator::PartitionEvaluator;
 use datafusion_expr::window_frame_state::WindowFrameContext;
 use datafusion_expr::WindowFrame;
 
@@ -99,7 +100,7 @@ impl WindowExpr for BuiltInWindowExpr {
     fn evaluate(&self, batch: &RecordBatch) -> Result<ArrayRef> {
         let evaluator = self.expr.create_evaluator()?;
         let num_rows = batch.num_rows();
-        if self.expr.uses_window_frame() {
+        if evaluator.uses_window_frame() {
             let sort_options: Vec<SortOptions> =
                 self.order_by.iter().map(|o| o.options).collect();
             let mut row_wise_results = vec![];
@@ -174,7 +175,7 @@ impl WindowExpr for BuiltInWindowExpr {
             };
             let mut row_wise_results: Vec<ScalarValue> = vec![];
             for idx in state.last_calculated_index..num_rows {
-                let frame_range = if self.expr.uses_window_frame() {
+                let frame_range = if evaluator.uses_window_frame() {
                     state
                         .window_frame_ctx
                         .get_or_insert_with(|| {
@@ -248,8 +249,9 @@ impl WindowExpr for BuiltInWindowExpr {
     }
 
     fn uses_bounded_memory(&self) -> bool {
-        self.expr.supports_bounded_execution()
-            && (!self.expr.uses_window_frame()
+        let evaluator = self.expr.create_evaluator().unwrap();
+        evaluator.supports_bounded_execution()
+            && (!evaluator.uses_window_frame()
                 || !self.window_frame.end_bound.is_unbounded())
     }
 }

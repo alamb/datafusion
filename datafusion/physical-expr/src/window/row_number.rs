@@ -65,9 +65,9 @@ impl BuiltInWindowFunctionExpr for RowNumber {
         Ok(Box::<NumRowsEvaluator>::default())
     }
 
-    fn supports_bounded_execution(&self) -> bool {
-        true
-    }
+    // fn supports_bounded_execution(&self) -> bool {
+    //     true
+    // }
 }
 
 #[derive(Default, Debug)]
@@ -99,6 +99,10 @@ impl PartitionEvaluator for NumRowsEvaluator {
         Ok(Arc::new(UInt64Array::from_iter_values(
             1..(num_rows as u64) + 1,
         )))
+    }
+
+    fn supports_bounded_execution(&self) -> bool {
+        true
     }
 }
 

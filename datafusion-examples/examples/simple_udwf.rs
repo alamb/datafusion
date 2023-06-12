@@ -21,12 +21,13 @@ use arrow::{
     array::{AsArray, Float64Array},
     datatypes::Float64Type,
 };
+use arrow::array::Array;
 use arrow_schema::DataType;
 use datafusion::datasource::file_format::options::CsvReadOptions;
 
 use datafusion::error::Result;
 use datafusion::prelude::*;
-use datafusion_common::DataFusionError;
+use datafusion_common::{DataFusionError, ScalarValue};
 use datafusion_expr::{
     partition_evaluator::PartitionEvaluator, Signature, Volatility, WindowUDF,
 };
@@ -198,12 +199,18 @@ impl PartitionEvaluator for MyPartitionEvaluator {
 
     fn evaluate_inside_range(
         &self,
-        _values: &[arrow::array::ArrayRef],
-        _range: &std::ops::Range<usize>,
+        values: &[arrow::array::ArrayRef],
+        range: &std::ops::Range<usize>,
     ) -> Result<datafusion_common::ScalarValue> {
-        Err(DataFusionError::NotImplemented(
-            "evaluate_inside_range is not implemented by default".into(),
-        ))
+        let first = ScalarValue::try_from_array(&values[0], range.start)?;
+        // Err(DataFusionError::NotImplemented(
+        //     "evaluate_inside_range is not implemented by default".into(),
+        // ))
+        Ok(first)
+    }
+
+    fn uses_window_frame(&self) -> bool {
+        false
     }
 }
 

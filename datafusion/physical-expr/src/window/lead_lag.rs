@@ -110,9 +110,9 @@ impl BuiltInWindowFunctionExpr for WindowShift {
         }))
     }
 
-    fn supports_bounded_execution(&self) -> bool {
-        true
-    }
+    // fn supports_bounded_execution(&self) -> bool {
+    //     true
+    // }
 
     fn reverse_expr(&self) -> Option<Arc<dyn BuiltInWindowFunctionExpr>> {
         Some(Arc::new(Self {
@@ -230,6 +230,10 @@ impl PartitionEvaluator for WindowShiftEvaluator {
         // LEAD, LAG window functions take single column, values will have size 1
         let value = &values[0];
         shift_with_default_value(value, self.shift_offset, self.default_value.as_ref())
+    }
+
+    fn supports_bounded_execution(&self) -> bool {
+        true
     }
 }
 

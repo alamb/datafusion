@@ -81,6 +81,12 @@ pub trait Accumulator: Send + Sync + Debug {
     /// Returns the final aggregate value based on its current state.
     fn evaluate(&self) -> Result<ScalarValue>;
 
+    /// Specifies whether this aggregate function can run using bounded memory.
+    /// Any accumulator returning "true" needs to implement `retract_batch`.
+    fn supports_bounded_execution(&self) -> bool {
+        false
+    }
+
     /// Allocated size required for this accumulator, in bytes, including `Self`.
     /// Allocated means that for internal containers such as `Vec`, the `capacity` should be used
     /// not the `len`
