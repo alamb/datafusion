@@ -17,11 +17,11 @@
 
 use std::sync::Arc;
 
+use arrow::array::Array;
 use arrow::{
     array::{AsArray, Float64Array},
     datatypes::Float64Type,
 };
-use arrow::array::Array;
 use arrow_schema::DataType;
 use datafusion::datasource::file_format::options::CsvReadOptions;
 
@@ -54,6 +54,9 @@ async fn main() -> Result<()> {
     // register the window function with DataFusion so wecan call it
     ctx.register_udwf(my_average());
 
+    // register the window function with DataFusion so wecan call it
+    ctx.register_udwf(my_first_value());
+
     // Use SQL to run the new window function
     let df = ctx.sql("SELECT * from cars").await?;
     // print the results
@@ -68,6 +71,7 @@ async fn main() -> Result<()> {
                       speed, \
                       lag(speed, 1) OVER (PARTITION BY car ORDER BY time),\
                       my_average(speed) OVER (PARTITION BY car ORDER BY time),\
+                      my_first_value(speed) OVER (PARTITION BY car ORDER BY time),\
                       time \
                       from cars",
         )
@@ -199,19 +203,58 @@ impl PartitionEvaluator for MyPartitionEvaluator {
 
     fn evaluate_inside_range(
         &self,
-        values: &[arrow::array::ArrayRef],
-        range: &std::ops::Range<usize>,
+        _values: &[arrow::array::ArrayRef],
+        _range: &std::ops::Range<usize>,
     ) -> Result<datafusion_common::ScalarValue> {
-        let first = ScalarValue::try_from_array(&values[0], range.start)?;
-        // Err(DataFusionError::NotImplemented(
-        //     "evaluate_inside_range is not implemented by default".into(),
-        // ))
-        Ok(first)
+        Err(DataFusionError::NotImplemented(
+            "evaluate_inside_range is not implemented by default".into(),
+        ))
     }
+}
 
-    fn uses_window_frame(&self) -> bool {
-        false
+fn my_first_value() -> WindowUDF {
+    WindowUDF {
+        name: String::from("my_first_value"),
+        // it will take 2 arguments -- the column and the window size
+        signature: Signature::exact(vec![DataType::Int32], Volatility::Immutable),
+        return_type: Arc::new(return_type),
+        partition_evaluator: Arc::new(make_partition_evaluator_first_value),
+    }
+}
+
+/// Create a partition evaluator for this argument
+fn make_partition_evaluator_first_value() -> Result<Box<dyn PartitionEvaluator>> {
+    Ok(Box::new(MyFirstValue::new()))
+}
+
+#[derive(Clone, Debug)]
+struct MyFirstValue {}
+
+impl MyFirstValue {
+    fn new() -> Self {
+        Self {}
     }
 }
 
 // TODO show how to use other evaluate methods
+/// These different evaluation methods are called depending on the various settings of WindowUDF
+impl PartitionEvaluator for MyFirstValue {
+    fn get_range(&self, _idx: usize, _n_rows: usize) -> Result<std::ops::Range<usize>> {
+        Err(DataFusionError::NotImplemented(
+            "get_range is not implemented for this window function".to_string(),
+        ))
+    }
+
+    fn evaluate_inside_range(
+        &self,
+        values: &[arrow::array::ArrayRef],
+        range: &std::ops::Range<usize>,
+    ) -> Result<datafusion_common::ScalarValue> {
+        let first = ScalarValue::try_from_array(&values[0], range.start)?;
+        Ok(first)
+    }
+
+    fn uses_window_frame(&self) -> bool {
+        true
+    }
+}
