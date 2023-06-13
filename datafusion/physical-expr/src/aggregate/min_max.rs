@@ -125,10 +125,6 @@ impl AggregateExpr for Max {
         is_row_accumulator_support_dtype(&self.data_type)
     }
 
-    // fn supports_bounded_execution(&self) -> bool {
-    //     true
-    // }
-
     fn create_row_accumulator(
         &self,
         start_index: usize,
@@ -828,10 +824,6 @@ impl AggregateExpr for Min {
     fn row_accumulator_supported(&self) -> bool {
         is_row_accumulator_support_dtype(&self.data_type)
     }
-
-    // fn supports_bounded_execution(&self) -> bool {
-    //     true
-    // }
 
     fn create_row_accumulator(
         &self,
