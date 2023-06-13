@@ -17,7 +17,7 @@
 
 use std::sync::Arc;
 
-use arrow::array::Array;
+use arrow::array::{Array, ArrayRef, UInt64Array};
 use arrow::{
     array::{AsArray, Float64Array},
     datatypes::Float64Type,
@@ -53,9 +53,8 @@ async fn main() -> Result<()> {
 
     // register the window function with DataFusion so wecan call it
     ctx.register_udwf(my_average());
-
-    // register the window function with DataFusion so wecan call it
     ctx.register_udwf(my_first_value());
+    ctx.register_udwf(my_odd_row_number());
 
     // Use SQL to run the new window function
     let df = ctx.sql("SELECT * from cars").await?;
@@ -72,6 +71,21 @@ async fn main() -> Result<()> {
                       lag(speed, 1) OVER (PARTITION BY car ORDER BY time),\
                       my_average(speed) OVER (PARTITION BY car ORDER BY time),\
                       my_first_value(speed) OVER (PARTITION BY car ORDER BY time),\
+                      my_odd_row_number(speed) OVER (PARTITION BY car ORDER BY time), \
+                      time \
+                      from cars",
+        )
+        .await?;
+    // print the results
+    df.show().await?;
+
+    // When all of the window functions support bounded, BoundedWindowAggExec will be used
+    // In this case evaluate_stateful method will be called
+    let df = ctx
+        .sql(
+            "SELECT car, \
+                      speed, \
+                      my_odd_row_number(speed) OVER (PARTITION BY car ORDER BY time), \
                       time \
                       from cars",
         )
@@ -227,6 +241,21 @@ fn make_partition_evaluator_first_value() -> Result<Box<dyn PartitionEvaluator>>
     Ok(Box::new(MyFirstValue::new()))
 }
 
+fn my_odd_row_number() -> WindowUDF {
+    WindowUDF {
+        name: String::from("my_odd_row_number"),
+        // it will take 2 arguments -- the column and the window size
+        signature: Signature::exact(vec![DataType::Int32], Volatility::Immutable),
+        return_type: Arc::new(|_| Ok(Arc::new(DataType::UInt64))),
+        partition_evaluator: Arc::new(make_partition_evaluator_odd_row_number),
+    }
+}
+
+/// Create a partition evaluator for this argument
+fn make_partition_evaluator_odd_row_number() -> Result<Box<dyn PartitionEvaluator>> {
+    Ok(Box::new(OddRowNumber::new()))
+}
+
 #[derive(Clone, Debug)]
 struct MyFirstValue {}
 
@@ -255,6 +284,40 @@ impl PartitionEvaluator for MyFirstValue {
     }
 
     fn uses_window_frame(&self) -> bool {
+        true
+    }
+}
+
+#[derive(Clone, Debug)]
+struct OddRowNumber {
+    row_idx: usize
+}
+
+impl OddRowNumber {
+    fn new() -> Self {
+        Self {row_idx: 1}
+    }
+}
+
+// TODO show how to use other evaluate methods
+/// These different evaluation methods are called depending on the various settings of WindowUDF
+impl PartitionEvaluator for OddRowNumber {
+    fn get_range(&self, idx: usize, _n_rows: usize) -> Result<std::ops::Range<usize>> {
+        Ok(std::ops::Range{start: idx, end: idx+1})
+    }
+
+    fn evaluate(&self, _values: &[ArrayRef], num_rows: usize) -> Result<ArrayRef> {
+        Ok(Arc::new(UInt64Array::from_iter_values(
+            (0..(num_rows as u64)).into_iter().map(|val| val*2+1),
+        )))
+    }
+
+    fn evaluate_stateful(&mut self, _values: &[ArrayRef]) -> Result<ScalarValue> {
+        self.row_idx += 2;
+        Ok(ScalarValue::UInt64(Some(self.row_idx  as u64)))
+    }
+
+    fn supports_bounded_execution(&self) -> bool {
         true
     }
 }
