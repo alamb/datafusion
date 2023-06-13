@@ -15,6 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
+use std::ops::Range;
 use std::sync::Arc;
 
 use arrow::array::{Array, ArrayRef, UInt64Array};
@@ -29,7 +30,8 @@ use datafusion::error::Result;
 use datafusion::prelude::*;
 use datafusion_common::{DataFusionError, ScalarValue};
 use datafusion_expr::{
-    partition_evaluator::PartitionEvaluator, Signature, Volatility, WindowUDF,
+    partition_evaluator::PartitionEvaluator, Accumulator, Signature, Volatility,
+    WindowUDF,
 };
 
 // create local execution context with `cars.csv` registered as a table named `cars`
@@ -152,8 +154,8 @@ impl MyPartitionEvaluator {
 /// These different evaluation methods are called depending on the various settings of WindowUDF
 impl PartitionEvaluator for MyPartitionEvaluator {
     /// This function is given the values of each partition
-    fn evaluate(
-        &self,
+    fn evaluate_all(
+        &mut self,
         values: &[arrow::array::ArrayRef],
         _num_rows: usize,
     ) -> Result<arrow::array::ArrayRef> {
@@ -190,12 +192,13 @@ impl PartitionEvaluator for MyPartitionEvaluator {
         Ok(Arc::new(new_values))
     }
 
-    fn evaluate_stateful(
+    fn evaluate(
         &mut self,
         _values: &[arrow::array::ArrayRef],
+        _range: &std::ops::Range<usize>,
     ) -> Result<datafusion_common::ScalarValue> {
         Err(DataFusionError::NotImplemented(
-            "evaluate_stateful is not implemented by default".into(),
+            "evaluate is not implemented by default".into(),
         ))
     }
 
@@ -209,15 +212,6 @@ impl PartitionEvaluator for MyPartitionEvaluator {
         ))
     }
 
-    fn evaluate_inside_range(
-        &self,
-        _values: &[arrow::array::ArrayRef],
-        _range: &std::ops::Range<usize>,
-    ) -> Result<datafusion_common::ScalarValue> {
-        Err(DataFusionError::NotImplemented(
-            "evaluate_inside_range is not implemented by default".into(),
-        ))
-    }
 }
 
 fn my_first_value() -> WindowUDF {
@@ -262,11 +256,11 @@ impl MyFirstValue {
 // TODO show how to use other evaluate methods
 /// These different evaluation methods are called depending on the various settings of WindowUDF
 impl PartitionEvaluator for MyFirstValue {
-    fn evaluate_inside_range(
-        &self,
+    fn evaluate(
+        &mut self,
         values: &[arrow::array::ArrayRef],
         range: &std::ops::Range<usize>,
-    ) -> Result<datafusion_common::ScalarValue> {
+    ) -> Result<ScalarValue> {
         let first = ScalarValue::try_from_array(&values[0], range.start)?;
         Ok(first)
     }
@@ -290,15 +284,10 @@ impl OddRowNumber {
 // TODO show how to use other evaluate methods
 /// These different evaluation methods are called depending on the various settings of WindowUDF
 impl PartitionEvaluator for OddRowNumber {
-    fn evaluate(&self, _values: &[ArrayRef], num_rows: usize) -> Result<ArrayRef> {
-        Ok(Arc::new(UInt64Array::from_iter_values(
-            (0..(num_rows as u64)).into_iter().map(|val| val * 2 + 1),
-        )))
-    }
-
-    fn evaluate_stateful(&mut self, _values: &[ArrayRef]) -> Result<ScalarValue> {
+    fn evaluate(&mut self, _values: &[ArrayRef], _range: &Range<usize>,) -> Result<ScalarValue> {
+        let res = Ok(ScalarValue::UInt64(Some(self.row_idx as u64)));
         self.row_idx += 2;
-        Ok(ScalarValue::UInt64(Some(self.row_idx as u64)))
+        res
     }
 
     fn supports_bounded_execution(&self) -> bool {
