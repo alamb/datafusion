@@ -147,10 +147,20 @@ pub trait PartitionEvaluator: Debug + Send {
     ///
     /// `idx`: is the index of last row for which result is calculated.
     /// `n_rows`: is the number of rows of the input record batch (Used during bounds check)
-    fn get_range(&self, _idx: usize, _n_rows: usize) -> Result<Range<usize>> {
-        Err(DataFusionError::NotImplemented(
-            "get_range is not implemented for this window function".to_string(),
-        ))
+    /// If `uses_window_frame` flag is `false`. This method is used to calculate required range for the window function
+    /// Generally there is no required range, hence by default this returns smallest range(current row). e.g seeing current row
+    /// is enough to calculate window result (such as row_number, rank, etc)
+    fn get_range(&self, idx: usize, _n_rows: usize) -> Result<Range<usize>> {
+        if self.uses_window_frame() {
+            Err(DataFusionError::Execution(
+                "Range should be calculated from window frame".to_string(),
+            ))
+        } else {
+            Ok(Range {
+                start: idx,
+                end: idx + 1,
+            })
+        }
     }
 
     /// Called for window functions that *do not use* values from the

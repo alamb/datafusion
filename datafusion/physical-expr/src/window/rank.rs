@@ -115,12 +115,6 @@ pub(crate) struct RankEvaluator {
 }
 
 impl PartitionEvaluator for RankEvaluator {
-    fn get_range(&self, idx: usize, _n_rows: usize) -> Result<Range<usize>> {
-        let start = idx;
-        let end = idx + 1;
-        Ok(Range { start, end })
-    }
-
     fn state(
         &self,
     ) -> Result<Option<Box<(dyn PartitionState + 'static)>>, DataFusionError> {

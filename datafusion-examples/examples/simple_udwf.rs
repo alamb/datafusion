@@ -151,12 +151,6 @@ impl MyPartitionEvaluator {
 
 /// These different evaluation methods are called depending on the various settings of WindowUDF
 impl PartitionEvaluator for MyPartitionEvaluator {
-    fn get_range(&self, _idx: usize, _n_rows: usize) -> Result<std::ops::Range<usize>> {
-        Err(DataFusionError::NotImplemented(
-            "get_range is not implemented for this window function".to_string(),
-        ))
-    }
-
     /// This function is given the values of each partition
     fn evaluate(
         &self,
@@ -268,12 +262,6 @@ impl MyFirstValue {
 // TODO show how to use other evaluate methods
 /// These different evaluation methods are called depending on the various settings of WindowUDF
 impl PartitionEvaluator for MyFirstValue {
-    fn get_range(&self, _idx: usize, _n_rows: usize) -> Result<std::ops::Range<usize>> {
-        Err(DataFusionError::NotImplemented(
-            "get_range is not implemented for this window function".to_string(),
-        ))
-    }
-
     fn evaluate_inside_range(
         &self,
         values: &[arrow::array::ArrayRef],
@@ -302,13 +290,6 @@ impl OddRowNumber {
 // TODO show how to use other evaluate methods
 /// These different evaluation methods are called depending on the various settings of WindowUDF
 impl PartitionEvaluator for OddRowNumber {
-    fn get_range(&self, idx: usize, _n_rows: usize) -> Result<std::ops::Range<usize>> {
-        Ok(std::ops::Range {
-            start: idx,
-            end: idx + 1,
-        })
-    }
-
     fn evaluate(&self, _values: &[ArrayRef], num_rows: usize) -> Result<ArrayRef> {
         Ok(Arc::new(UInt64Array::from_iter_values(
             (0..(num_rows as u64)).into_iter().map(|val| val * 2 + 1),
