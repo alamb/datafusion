@@ -64,10 +64,6 @@ impl BuiltInWindowFunctionExpr for RowNumber {
     fn create_evaluator(&self) -> Result<Box<dyn PartitionEvaluator>> {
         Ok(Box::<NumRowsEvaluator>::default())
     }
-
-    // fn supports_bounded_execution(&self) -> bool {
-    //     true
-    // }
 }
 
 #[derive(Default, Debug)]

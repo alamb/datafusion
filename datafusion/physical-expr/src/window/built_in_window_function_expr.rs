@@ -76,21 +76,4 @@ pub trait BuiltInWindowFunctionExpr: Send + Sync + std::fmt::Debug {
     fn reverse_expr(&self) -> Option<Arc<dyn BuiltInWindowFunctionExpr>> {
         None
     }
-
-    // /// Can the window function be incrementally computed using
-    // /// bounded memory?
-    // ///
-    // /// If this function returns true, [`Self::create_evaluator`] must
-    // /// implement [`PartitionEvaluator::evaluate_stateful`]
-    // fn supports_bounded_execution(&self) -> bool {
-    //     false
-    // }
-
-    // /// Does the window function use the values from its window frame?
-    // ///
-    // /// If this function returns true, [`Self::create_evaluator`] must
-    // /// implement [`PartitionEvaluator::evaluate_inside_range`]
-    // fn uses_window_frame(&self) -> bool {
-    //     false
-    // }
 }

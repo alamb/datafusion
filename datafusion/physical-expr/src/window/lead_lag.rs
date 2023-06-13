@@ -110,10 +110,6 @@ impl BuiltInWindowFunctionExpr for WindowShift {
         }))
     }
 
-    // fn supports_bounded_execution(&self) -> bool {
-    //     true
-    // }
-
     fn reverse_expr(&self) -> Option<Arc<dyn BuiltInWindowFunctionExpr>> {
         Some(Arc::new(Self {
             name: self.name.clone(),
