@@ -22,8 +22,8 @@
 use crate::config::ConfigOptions;
 use crate::error::Result;
 use crate::physical_optimizer::PhysicalOptimizerRule;
-use crate::joins::SymmetricHashJoinExec;
-use crate::{with_new_children_if_necessary, ExecutionPlan};
+use datafusion_physical_plan::joins::SymmetricHashJoinExec;
+use datafusion_physical_plan::{with_new_children_if_necessary, ExecutionPlan};
 use datafusion_common::config::OptimizerOptions;
 use datafusion_common::tree_node::{Transformed, TreeNode, VisitRecursion};
 use datafusion_common::DataFusionError;

@@ -29,12 +29,12 @@ use arrow::{
 };
 
 use crate::config::{ConfigEntry, ConfigOptions};
-use crate::datasource::streaming::{PartitionStream, StreamingTable};
+use crate::datasource::streaming::{StreamingTable};
 use crate::datasource::TableProvider;
 use crate::execution::context::TaskContext;
 use crate::logical_expr::TableType;
-use crate::stream::RecordBatchStreamAdapter;
-use crate::SendableRecordBatchStream;
+use datafusion_physical_plan::{stream::RecordBatchStreamAdapter, streaming::PartitionStream};
+use datafusion_physical_plan::SendableRecordBatchStream;
 
 use super::{schema::SchemaProvider, CatalogList};
 

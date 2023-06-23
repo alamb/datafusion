@@ -27,8 +27,8 @@ use crate::datasource::{TableProvider, TableType};
 use crate::error::Result;
 use crate::execution::context::SessionState;
 use crate::logical_expr::Expr;
-use crate::project_schema;
-use crate::{empty::EmptyExec, ExecutionPlan};
+use datafusion_physical_plan::project_schema;
+use datafusion_physical_plan::{empty::EmptyExec, ExecutionPlan};
 
 /// An empty plan that is useful for testing and generating plans
 /// without mapping them to actual data.

@@ -23,8 +23,8 @@ use super::optimizer::PhysicalOptimizerRule;
 use crate::config::ConfigOptions;
 use crate::datasource::physical_plan::ParquetExec;
 use crate::error::Result;
-use crate::Partitioning::*;
-use crate::{
+use datafusion_physical_plan::Partitioning::*;
+use datafusion_physical_plan::{
     repartition::RepartitionExec, with_new_children_if_necessary, ExecutionPlan,
 };
 

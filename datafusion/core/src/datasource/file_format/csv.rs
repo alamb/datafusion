@@ -50,9 +50,9 @@ use crate::datasource::physical_plan::{
 };
 use crate::error::Result;
 use crate::execution::context::SessionState;
-use crate::insert::{DataSink, InsertExec};
-use crate::{DisplayAs, DisplayFormatType, Statistics};
-use crate::{ExecutionPlan, SendableRecordBatchStream};
+use datafusion_physical_plan::insert::{DataSink, InsertExec};
+use datafusion_physical_plan::{DisplayAs, DisplayFormatType, Statistics};
+use datafusion_physical_plan::{ExecutionPlan, SendableRecordBatchStream};
 
 /// The default file extension of csv files
 pub const DEFAULT_CSV_EXTENSION: &str = ".csv";

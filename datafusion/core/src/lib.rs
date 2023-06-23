@@ -424,11 +424,16 @@ pub mod datasource;
 pub mod error;
 pub mod execution;
 pub mod physical_optimizer;
-pub mod physical_plan;
+
 pub mod physical_planner;
 pub mod prelude;
 pub mod scalar;
 pub mod variable;
+
+// Reexport subcrates
+mod physical_plan {
+    pub use datafusion_physical_plan::*;
+}
 
 // re-export dependencies from arrow-rs to minimise version maintenance for crate users
 pub use arrow;

@@ -32,7 +32,7 @@ use crate::error::Result;
 use crate::execution::context::{SessionState, TaskContext};
 use crate::execution::options::ReadOptions;
 use crate::logical_expr::{LogicalPlanBuilder, UNNAMED_TABLE};
-use crate::{
+use datafusion_physical_plan::{
     DisplayFormatType, ExecutionPlan, Partitioning, RecordBatchStream,
     SendableRecordBatchStream,
 };

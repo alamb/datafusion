@@ -50,7 +50,7 @@ use datafusion_physical_expr::{
 #[derive(Debug)]
 pub struct ProjectionExec {
     /// The projection expressions stored as tuples of (expression, output column name)
-    pub(crate) expr: Vec<(Arc<dyn PhysicalExpr>, String)>,
+    pub expr: Vec<(Arc<dyn PhysicalExpr>, String)>,
     /// The schema once the projection has been applied to the input
     schema: SchemaRef,
     /// The input plan

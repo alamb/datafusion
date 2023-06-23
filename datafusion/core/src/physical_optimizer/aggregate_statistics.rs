@@ -22,13 +22,13 @@ use crate::config::ConfigOptions;
 use datafusion_common::tree_node::TreeNode;
 use datafusion_expr::utils::COUNT_STAR_EXPANSION;
 
-use crate::aggregates::{AggregateExec, AggregateMode};
-use crate::empty::EmptyExec;
-use crate::projection::ProjectionExec;
-use crate::{
+use datafusion_physical_plan::aggregates::{AggregateExec, AggregateMode};
+use datafusion_physical_plan::empty::EmptyExec;
+use datafusion_physical_plan::projection::ProjectionExec;
+use datafusion_physical_plan::{
     expressions, AggregateExpr, ColumnStatistics, ExecutionPlan, Statistics,
 };
-use crate::scalar::ScalarValue;
+use datafusion_common::ScalarValue;
 
 use super::optimizer::PhysicalOptimizerRule;
 use crate::error::Result;

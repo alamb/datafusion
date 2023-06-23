@@ -211,7 +211,7 @@ impl From<StreamType> for SendableRecordBatchStream {
 
 /// This object encapsulates ordering-related information on GROUP BY columns.
 #[derive(Debug, Clone)]
-pub(crate) struct AggregationOrdering {
+pub struct AggregationOrdering {
     /// Specifies whether the GROUP BY columns are partially or fully ordered.
     mode: GroupByOrderMode,
     /// Stores indices such that when we iterate with these indices, GROUP BY
@@ -222,35 +222,38 @@ pub(crate) struct AggregationOrdering {
 }
 
 /// Hash aggregate execution plan
+// TODO: make these fields non pub and add reasonable ways to create / update them
 #[derive(Debug)]
 pub struct AggregateExec {
     /// Aggregation mode (full, partial)
-    pub(crate) mode: AggregateMode,
+    pub mode: AggregateMode,
     /// Group by expressions
-    pub(crate) group_by: PhysicalGroupBy,
+    pub group_by: PhysicalGroupBy,
     /// Aggregate expressions
-    pub(crate) aggr_expr: Vec<Arc<dyn AggregateExpr>>,
+    pub aggr_expr: Vec<Arc<dyn AggregateExpr>>,
     /// FILTER (WHERE clause) expression for each aggregate expression
-    pub(crate) filter_expr: Vec<Option<Arc<dyn PhysicalExpr>>>,
+    pub filter_expr: Vec<Option<Arc<dyn PhysicalExpr>>>,
     /// (ORDER BY clause) expression for each aggregate expression
-    pub(crate) order_by_expr: Vec<Option<LexOrdering>>,
+    pub order_by_expr: Vec<Option<LexOrdering>>,
     /// Input plan, could be a partial aggregate or the input to the aggregate
-    pub(crate) input: Arc<dyn ExecutionPlan>,
+    pub input: Arc<dyn ExecutionPlan>,
     /// Schema after the aggregate is applied
-    schema: SchemaRef,
+    pub schema: SchemaRef,
     /// Input schema before any aggregation is applied. For partial aggregate this will be the
     /// same as input.schema() but for the final aggregate it will be the same as the input
     /// to the partial aggregate
-    pub(crate) input_schema: SchemaRef,
+    pub input_schema: SchemaRef,
     /// The columns map used to normalize out expressions like Partitioning and PhysicalSortExpr
     /// The key is the column from the input schema and the values are the columns from the output schema
-    columns_map: HashMap<Column, Vec<Column>>,
+    pub columns_map: HashMap<Column, Vec<Column>>,
     /// Execution Metrics
-    metrics: ExecutionPlanMetricsSet,
+    pub metrics: ExecutionPlanMetricsSet,
     /// Stores mode and output ordering information for the `AggregateExec`.
-    aggregation_ordering: Option<AggregationOrdering>,
-    required_input_ordering: Option<LexOrderingReq>,
+    pub aggregation_ordering: Option<AggregationOrdering>,
+    pub required_input_ordering: Option<LexOrderingReq>,
 }
+
+
 
 /// Calculates the working mode for `GROUP BY` queries.
 /// - If no GROUP BY expression has an ordering, returns `None`.
@@ -716,6 +719,10 @@ impl AggregateExec {
                 GroupedHashAggregateStream::new(self, context, partition)?,
             ))
         }
+    }
+
+    pub fn group_by(&self) -> &PhysicalGroupBy {
+        &self.group_by
     }
 }
 
@@ -1216,11 +1223,11 @@ mod tests {
         get_finest_requirement, get_working_mode, AggregateExec, AggregateMode,
         PhysicalGroupBy,
     };
-    use crate::execution::context::SessionConfig;
+    use datafusion::execution::context::SessionConfig;
     use crate::expressions::{col, Avg};
-    use crate::test::exec::{assert_strong_count_converges_to_zero, BlockingExec};
-    use crate::test::{assert_is_pending, csv_exec_sorted};
-    use crate::{assert_batches_sorted_eq, physical_plan::common};
+    use datafusion::test::exec::{assert_strong_count_converges_to_zero, BlockingExec};
+    use datafusion::test::{assert_is_pending, csv_exec_sorted};
+    use datafusion::{assert_batches_sorted_eq, physical_plan::common};
     use arrow::array::{Float64Array, UInt32Array};
     use arrow::compute::{concat_batches, SortOptions};
     use arrow::datatypes::{DataType, Field, Schema, SchemaRef};
@@ -1242,7 +1249,7 @@ mod tests {
     use super::StreamType;
     use crate::aggregates::GroupByOrderMode::{FullyOrdered, PartiallyOrdered};
     use crate::coalesce_partitions::CoalescePartitionsExec;
-    use crate::prelude::SessionContext;
+    use datafusion::prelude::SessionContext;
     use crate::{
         ExecutionPlan, Partitioning, RecordBatchStream, SendableRecordBatchStream,
         Statistics,

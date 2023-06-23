@@ -20,8 +20,8 @@ use crate::datasource::physical_plan::{
     FileMeta, FileOpenFuture, FileOpener, FileScanConfig,
 };
 use crate::error::Result;
-use crate::metrics::{ExecutionPlanMetricsSet, MetricsSet};
-use crate::{
+use datafusion_physical_plan::metrics::{ExecutionPlanMetricsSet, MetricsSet};
+use datafusion_physical_plan::{
     ordering_equivalence_properties_helper, DisplayAs, DisplayFormatType, ExecutionPlan,
     Partitioning, SendableRecordBatchStream,
 };

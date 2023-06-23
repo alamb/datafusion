@@ -227,7 +227,7 @@ mod tests {
     use arrow::datatypes::{DataType, Field, Schema};
     use futures::FutureExt;
 
-    use crate::prelude::SessionContext;
+    use datafusion::SessionContext;
     use crate::{
         physical_plan::collect,
         test::{

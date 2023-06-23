@@ -51,9 +51,9 @@ type JoinLeftData = (RecordBatch, MemoryReservation);
 #[derive(Debug)]
 pub struct CrossJoinExec {
     /// left (build) side which gets loaded in memory
-    pub(crate) left: Arc<dyn ExecutionPlan>,
+    pub left: Arc<dyn ExecutionPlan>,
     /// right (probe) side which are combined with left side
-    pub(crate) right: Arc<dyn ExecutionPlan>,
+    pub right: Arc<dyn ExecutionPlan>,
     /// The schema once the join is applied
     schema: SchemaRef,
     /// Build-side data

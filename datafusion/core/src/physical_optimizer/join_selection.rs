@@ -22,16 +22,16 @@ use arrow::datatypes::Schema;
 
 use crate::config::ConfigOptions;
 use crate::logical_expr::JoinType;
-use crate::expressions::Column;
-use crate::joins::{
+use datafusion_physical_plan::expressions::Column;
+use datafusion_physical_plan::joins::{
     utils::{ColumnIndex, JoinFilter, JoinSide},
     CrossJoinExec, HashJoinExec, PartitionMode,
 };
-use crate::projection::ProjectionExec;
-use crate::{ExecutionPlan, PhysicalExpr};
+use datafusion_physical_plan::projection::ProjectionExec;
+use datafusion_physical_plan::{ExecutionPlan, PhysicalExpr};
 
 use super::optimizer::PhysicalOptimizerRule;
-use crate::error::Result;
+use datafusion_common::Result;
 use datafusion_common::tree_node::{Transformed, TreeNode};
 
 /// For hash join with the partition mode [PartitionMode::Auto], JoinSelection rule will make

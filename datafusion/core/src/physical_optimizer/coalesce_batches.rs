@@ -28,6 +28,7 @@ use crate::{
     },
 };
 use datafusion_common::tree_node::{Transformed, TreeNode};
+use datafusion_physical_plan::ExecutionPlan;
 use std::sync::Arc;
 
 /// Optimizer rule that introduces CoalesceBatchesExec to avoid overhead with small batches that
@@ -44,9 +45,9 @@ impl CoalesceBatches {
 impl PhysicalOptimizerRule for CoalesceBatches {
     fn optimize(
         &self,
-        plan: Arc<dyn crate::ExecutionPlan>,
+        plan: Arc<dyn ExecutionPlan>,
         config: &ConfigOptions,
-    ) -> Result<Arc<dyn crate::ExecutionPlan>> {
+    ) -> Result<Arc<dyn ExecutionPlan>> {
         if !config.execution.coalesce_batches {
             return Ok(plan);
         }

@@ -16,10 +16,10 @@
 // under the License.
 
 //! Execution plan for reading line-delimited Avro files
-use crate::error::Result;
-use crate::expressions::PhysicalSortExpr;
-use crate::metrics::{ExecutionPlanMetricsSet, MetricsSet};
-use crate::{
+use datafusion_common::{Result, DataFusionError};
+use datafusion_physical_expr::PhysicalSortExpr;
+use datafusion_physical_plan::metrics::{ExecutionPlanMetricsSet, MetricsSet};
+use datafusion_physical_plan::{
     ordering_equivalence_properties_helper, DisplayAs, DisplayFormatType, ExecutionPlan,
     Partitioning, SendableRecordBatchStream, Statistics,
 };
@@ -112,7 +112,7 @@ impl ExecutionPlan for AvroExec {
         _partition: usize,
         _context: Arc<TaskContext>,
     ) -> Result<SendableRecordBatchStream> {
-        Err(crate::error::DataFusionError::NotImplemented(
+        Err(DataFusionError::NotImplemented(
             "Cannot execute avro plan without avro feature enabled".to_string(),
         ))
     }

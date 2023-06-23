@@ -22,10 +22,10 @@ use crate::datasource::physical_plan::file_stream::{
 };
 use crate::datasource::physical_plan::FileMeta;
 use crate::error::{DataFusionError, Result};
-use crate::common::AbortOnDropSingle;
-use crate::expressions::PhysicalSortExpr;
-use crate::metrics::{ExecutionPlanMetricsSet, MetricsSet};
-use crate::{
+use datafusion_physical_plan::common::AbortOnDropSingle;
+use datafusion_physical_expr::PhysicalSortExpr;
+use datafusion_physical_plan::metrics::{ExecutionPlanMetricsSet, MetricsSet};
+use datafusion_physical_plan::{
     ordering_equivalence_properties_helper, DisplayAs, DisplayFormatType, ExecutionPlan,
     Partitioning, SendableRecordBatchStream, Statistics,
 };

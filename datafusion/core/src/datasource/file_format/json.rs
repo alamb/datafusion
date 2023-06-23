@@ -39,8 +39,8 @@ use crate::datasource::file_format::DEFAULT_SCHEMA_INFER_MAX_RECORD;
 use crate::datasource::physical_plan::NdJsonExec;
 use crate::error::Result;
 use crate::execution::context::SessionState;
-use crate::ExecutionPlan;
-use crate::Statistics;
+use datafusion_physical_plan::ExecutionPlan;
+use datafusion_physical_plan::Statistics;
 
 /// The default file extension of json files
 pub const DEFAULT_JSON_EXTENSION: &str = ".json";
@@ -158,7 +158,7 @@ mod tests {
     use object_store::local::LocalFileSystem;
 
     use super::*;
-    use crate::collect;
+    use datafusion_physical_plan::collect;
     use crate::prelude::{SessionConfig, SessionContext};
     use crate::test::object_store::local_unpartitioned_file;
 

@@ -21,18 +21,18 @@
 use crate::config::ConfigOptions;
 use crate::error::Result;
 use crate::physical_optimizer::PhysicalOptimizerRule;
-use crate::aggregates::{AggregateExec, AggregateMode, PhysicalGroupBy};
-use crate::coalesce_partitions::CoalescePartitionsExec;
-use crate::joins::{
+use datafusion_physical_plan::aggregates::{AggregateExec, AggregateMode, PhysicalGroupBy};
+use datafusion_physical_plan::coalesce_partitions::CoalescePartitionsExec;
+use datafusion_physical_plan::joins::{
     CrossJoinExec, HashJoinExec, PartitionMode, SortMergeJoinExec,
 };
-use crate::projection::ProjectionExec;
-use crate::repartition::RepartitionExec;
-use crate::sorts::sort::SortOptions;
-use crate::union::{can_interleave, InterleaveExec, UnionExec};
-use crate::windows::WindowAggExec;
-use crate::Partitioning;
-use crate::{with_new_children_if_necessary, Distribution, ExecutionPlan};
+use datafusion_physical_plan::projection::ProjectionExec;
+use datafusion_physical_plan::repartition::RepartitionExec;
+use datafusion_physical_plan::sorts::sort::SortOptions;
+use datafusion_physical_plan::union::{can_interleave, InterleaveExec, UnionExec};
+use datafusion_physical_plan::windows::WindowAggExec;
+use datafusion_physical_plan::Partitioning;
+use datafusion_physical_plan::{with_new_children_if_necessary, Distribution, ExecutionPlan};
 use datafusion_common::tree_node::{Transformed, TreeNode, VisitRecursion};
 use datafusion_expr::logical_plan::JoinType;
 use datafusion_physical_expr::equivalence::EquivalenceProperties;
@@ -249,7 +249,7 @@ fn adjust_input_keys_ordering(
         )?)
     } else if let Some(aggregate_exec) = plan_any.downcast_ref::<AggregateExec>() {
         if !parent_required.is_empty() {
-            match aggregate_exec.mode {
+            match aggregate_exec.mode() {
                 AggregateMode::FinalPartitioned => Some(reorder_aggregate_keys(
                     requirements.plan.clone(),
                     &parent_required,
@@ -358,7 +358,7 @@ fn reorder_aggregate_keys(
     agg_exec: &AggregateExec,
 ) -> Result<PlanWithKeyRequirements> {
     let out_put_columns = agg_exec
-        .group_by
+        .group_by()
         .expr()
         .iter()
         .enumerate()
@@ -371,7 +371,7 @@ fn reorder_aggregate_keys(
         .collect::<Vec<_>>();
 
     if parent_required.len() != out_put_exprs.len()
-        || !agg_exec.group_by.null_expr().is_empty()
+        || !agg_exec.group_by().null_expr().is_empty()
         || expr_list_eq_strict_order(&out_put_exprs, parent_required)
     {
         Ok(PlanWithKeyRequirements::new(agg_plan))
@@ -390,7 +390,7 @@ fn reorder_aggregate_keys(
                     input_schema,
                     ..
                 }) =
-                    agg_exec.input.as_any().downcast_ref::<AggregateExec>()
+                    agg_exec.input().as_any().downcast_ref::<AggregateExec>()
                 {
                     if matches!(mode, AggregateMode::Partial) {
                         let mut new_group_exprs = vec![];
@@ -435,11 +435,11 @@ fn reorder_aggregate_keys(
                     let new_final_agg = Arc::new(AggregateExec::try_new(
                         AggregateMode::FinalPartitioned,
                         new_group_by,
-                        agg_exec.aggr_expr.to_vec(),
-                        agg_exec.filter_expr.to_vec(),
-                        agg_exec.order_by_expr.to_vec(),
+                        agg_exec.aggr_expr().to_vec(),
+                        agg_exec.filter_expr().to_vec(),
+                        agg_exec.order_by_expr().to_vec(),
                         partial_agg,
-                        agg_exec.input_schema.clone(),
+                        agg_exec.input_schema().clone(),
                     )?);
 
                     // Need to create a new projection to change the expr ordering back
@@ -530,8 +530,8 @@ fn shift_right_required(
 /// In that case, the datasources/tables might be pre-partitioned and we can't adjust the key ordering of the datasources
 /// and then can't apply the Top-Down reordering process.
 fn reorder_join_keys_to_inputs(
-    plan: Arc<dyn crate::ExecutionPlan>,
-) -> Result<Arc<dyn crate::ExecutionPlan>> {
+    plan: Arc<dyn ExecutionPlan>,
+) -> Result<Arc<dyn ExecutionPlan>> {
     let plan_any = plan.as_any();
     if let Some(HashJoinExec {
         left,

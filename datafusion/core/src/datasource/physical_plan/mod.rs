@@ -48,7 +48,7 @@ use crate::datasource::{
     listing::{FileRange, PartitionedFile},
     object_store::ObjectStoreUrl,
 };
-use crate::ExecutionPlan;
+use datafusion_physical_plan::ExecutionPlan;
 use crate::{
     datasource::file_format::FileWriterMode,
     physical_plan::{DisplayAs, DisplayFormatType},

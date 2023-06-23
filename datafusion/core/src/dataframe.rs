@@ -48,9 +48,9 @@ use crate::logical_expr::{
     col, utils::find_window_exprs, Expr, JoinType, LogicalPlan, LogicalPlanBuilder,
     Partitioning, TableType,
 };
-use crate::SendableRecordBatchStream;
-use crate::{collect, collect_partitioned};
-use crate::{execute_stream, execute_stream_partitioned, ExecutionPlan};
+use datafusion_physical_plan::SendableRecordBatchStream;
+use datafusion_physical_plan::{collect, collect_partitioned};
+use datafusion_physical_plan::{execute_stream, execute_stream_partitioned, ExecutionPlan};
 use crate::prelude::SessionContext;
 
 /// DataFrame represents a logical set of rows with the same named columns.

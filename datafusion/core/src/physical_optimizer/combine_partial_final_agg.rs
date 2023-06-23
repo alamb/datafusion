@@ -19,8 +19,8 @@
 //! and try to combine them if necessary
 use crate::error::Result;
 use crate::physical_optimizer::PhysicalOptimizerRule;
-use crate::aggregates::{AggregateExec, AggregateMode, PhysicalGroupBy};
-use crate::ExecutionPlan;
+use datafusion_physical_plan::aggregates::{AggregateExec, AggregateMode, PhysicalGroupBy};
+use datafusion_physical_plan::ExecutionPlan;
 use datafusion_common::config::ConfigOptions;
 use std::sync::Arc;
 
@@ -211,9 +211,9 @@ mod tests {
     use crate::aggregates::{
         AggregateExec, AggregateMode, PhysicalGroupBy,
     };
-    use crate::expressions::lit;
-    use crate::repartition::RepartitionExec;
-    use crate::{displayable, Partitioning, Statistics};
+    use datafusion_physical_plan::expressions::lit;
+    use datafusion_physical_plan::repartition::RepartitionExec;
+    use datafusion_physical_plan::{displayable, Partitioning, Statistics};
 
     /// Runs the CombinePartialFinalAggregate optimizer and asserts the plan against the expected
     macro_rules! assert_optimized {

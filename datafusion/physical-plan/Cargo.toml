@@ -36,8 +36,8 @@ path = "src/lib.rs"
 ahash = { version = "0.8", default-features = false, features = ["runtime-rng"] }
 arrow = { workspace = true }
 arrow-array = { workspace = true }
-arrow-buffer = { workspace = true }
 arrow-schema = { workspace = true }
+async-trait = "0.1.41"
 blake2 = { version = "^0.10.2", optional = true }
 blake3 = { version = "1.0", optional = true }
 chrono = { version = "0.4.23", default-features = false }
@@ -47,27 +47,22 @@ datafusion-expr = { path = "../expr", version = "26.0.0" }
 datafusion-row = { path = "../row", version = "26.0.0" }
 datafusion-physical-expr = { path = "../physical-expr", version = "26.0.0", default-features = false }
 futures = "0.3"
-half = { version = "2.1", default-features = false }
 hashbrown = { version = "0.14", features = ["raw"] }
 indexmap = "1.9.2"
 itertools = { version = "0.11", features = ["use_std"] }
-lazy_static = { version = "^1.4.0" }
-libc = "0.2.140"
 log = "^0.4"
 md-5 = { version = "^0.10.0", optional = true }
-paste = "^1.0"
-petgraph = "0.6.2"
+pin-project-lite = "^0.2.7"
 parking_lot = "0.12"
-rand = "0.8"
 regex = { version = "1.8", optional = true }
 sha2 = { version = "^0.10.1", optional = true }
 smallvec = { version = "1.6", features = ["union"] }
+tempfile = "3"
 tokio = { version = "1.0", features = ["macros", "rt", "rt-multi-thread", "sync", "fs", "parking_lot"] }
-tokio-util = { version = "0.7.4", features = ["io"] }
-unicode-segmentation = { version = "^1.7.1", optional = true }
-uuid = { version = "^1.2", features = ["v4"] }
 
 [dev-dependencies]
 criterion = "0.5"
 rand = "0.8"
 rstest = "0.17.0"
+# TODO remove this dependency by moving tests as needed
+datafusion = {path = "../core"}

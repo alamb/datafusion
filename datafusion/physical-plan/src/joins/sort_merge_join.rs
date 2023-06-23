@@ -62,13 +62,13 @@ use datafusion_common::tree_node::{Transformed, TreeNode};
 #[derive(Debug)]
 pub struct SortMergeJoinExec {
     /// Left sorted joining execution plan
-    pub(crate) left: Arc<dyn ExecutionPlan>,
+    pub left: Arc<dyn ExecutionPlan>,
     /// Right sorting joining execution plan
-    pub(crate) right: Arc<dyn ExecutionPlan>,
+    pub right: Arc<dyn ExecutionPlan>,
     /// Set of common columns used to join on
-    pub(crate) on: JoinOn,
+    pub on: JoinOn,
     /// How the join is performed
-    pub(crate) join_type: JoinType,
+    pub join_type: JoinType,
     /// The schema once the join is applied
     schema: SchemaRef,
     /// Execution metrics
@@ -80,9 +80,9 @@ pub struct SortMergeJoinExec {
     /// The output ordering
     output_ordering: Option<Vec<PhysicalSortExpr>>,
     /// Sort options of join columns used in sorting left and right execution plans
-    pub(crate) sort_options: Vec<SortOptions>,
+    pub sort_options: Vec<SortOptions>,
     /// If null_equals_null is true, null == null else null != null
-    pub(crate) null_equals_null: bool,
+    pub null_equals_null: bool,
 }
 
 impl SortMergeJoinExec {
@@ -197,6 +197,18 @@ impl SortMergeJoinExec {
     /// Set of common columns used to join on
     pub fn on(&self) -> &[(Column, Column)] {
         &self.on
+    }
+
+    pub fn left(&self) -> &dyn ExecutionPlan {
+        self.left.as_ref()
+    }
+
+    pub fn right(&self) -> &dyn ExecutionPlan {
+        self.right.as_ref()
+    }
+
+    pub fn join_type(&self) -> JoinType {
+        self.join_type
     }
 }
 

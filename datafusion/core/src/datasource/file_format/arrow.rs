@@ -23,7 +23,7 @@ use crate::datasource::file_format::FileFormat;
 use crate::datasource::physical_plan::{ArrowExec, FileScanConfig};
 use crate::error::Result;
 use crate::execution::context::SessionState;
-use crate::ExecutionPlan;
+use datafusion_physical_plan::ExecutionPlan;
 use arrow::ipc::reader::FileReader;
 use arrow_schema::{Schema, SchemaRef};
 use async_trait::async_trait;

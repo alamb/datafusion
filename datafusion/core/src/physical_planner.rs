@@ -29,36 +29,34 @@ use crate::logical_expr::{
     Repartition, Union, UserDefinedLogicalNode,
 };
 use datafusion_common::display::ToStringifiedPlan;
+use datafusion_common::{DataFusionError, Result};
 
 use crate::logical_expr::{Limit, Values};
 use crate::physical_expr::create_physical_expr;
 use crate::physical_optimizer::optimizer::PhysicalOptimizerRule;
-use crate::aggregates::{AggregateExec, AggregateMode, PhysicalGroupBy};
-use crate::analyze::AnalyzeExec;
-use crate::explain::ExplainExec;
-use crate::expressions::{Column, PhysicalSortExpr};
-use crate::filter::FilterExec;
-use crate::joins::HashJoinExec;
-use crate::joins::SortMergeJoinExec;
-use crate::joins::{CrossJoinExec, NestedLoopJoinExec};
-use crate::limit::{GlobalLimitExec, LocalLimitExec};
-use crate::projection::ProjectionExec;
-use crate::repartition::RepartitionExec;
-use crate::sorts::sort::SortExec;
-use crate::unnest::UnnestExec;
-use crate::windows::{
+use datafusion_physical_plan::aggregates::{AggregateExec, AggregateMode, PhysicalGroupBy};
+use datafusion_physical_plan::analyze::AnalyzeExec;
+use datafusion_physical_plan::explain::ExplainExec;
+use datafusion_physical_plan::expressions::{Column, PhysicalSortExpr};
+use datafusion_physical_plan::filter::FilterExec;
+use datafusion_physical_plan::joins::HashJoinExec;
+use datafusion_physical_plan::joins::SortMergeJoinExec;
+use datafusion_physical_plan::joins::{CrossJoinExec, NestedLoopJoinExec};
+use datafusion_physical_plan::limit::{GlobalLimitExec, LocalLimitExec};
+use datafusion_physical_plan::projection::ProjectionExec;
+use datafusion_physical_plan::repartition::RepartitionExec;
+use datafusion_physical_plan::sorts::sort::SortExec;
+use datafusion_physical_plan::unnest::UnnestExec;
+use datafusion_physical_plan::windows::{
     BoundedWindowAggExec, PartitionSearchMode, WindowAggExec,
 };
-use crate::{
+use datafusion_physical_plan::{
     aggregates, empty::EmptyExec, joins::PartitionMode, udaf, union::UnionExec,
     values::ValuesExec, windows,
 };
-use crate::{joins::utils as join_utils, Partitioning};
-use crate::{AggregateExpr, ExecutionPlan, PhysicalExpr, WindowExpr};
-use crate::{
-    error::{DataFusionError, Result},
-    physical_plan::displayable,
-};
+use datafusion_physical_plan::{joins::utils as join_utils, Partitioning};
+use datafusion_physical_plan::{AggregateExpr, ExecutionPlan, PhysicalExpr, WindowExpr};
+use datafusion_physical_plan::displayable;
 use arrow::compute::SortOptions;
 use arrow::datatypes::{Schema, SchemaRef};
 use async_trait::async_trait;

@@ -32,7 +32,7 @@ use parquet::arrow::ProjectionMask;
 use parquet::file::metadata::ParquetMetaData;
 use std::sync::Arc;
 
-use crate::metrics;
+use datafusion_physical_plan::metrics;
 
 use super::ParquetFileMetrics;
 

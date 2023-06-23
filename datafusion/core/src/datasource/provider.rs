@@ -29,7 +29,7 @@ use crate::arrow::datatypes::SchemaRef;
 use crate::error::Result;
 use crate::execution::context::SessionState;
 use crate::logical_expr::Expr;
-use crate::ExecutionPlan;
+use datafusion_physical_plan::ExecutionPlan;
 
 /// Source table
 #[async_trait]

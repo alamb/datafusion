@@ -33,12 +33,12 @@ use crate::datasource::{TableProvider, TableType};
 use crate::error::{DataFusionError, Result};
 use crate::execution::context::SessionState;
 use crate::logical_expr::Expr;
-use crate::common::AbortOnDropSingle;
-use crate::insert::{DataSink, InsertExec};
-use crate::memory::MemoryExec;
-use crate::{common, SendableRecordBatchStream};
-use crate::{repartition::RepartitionExec, Partitioning};
-use crate::{DisplayAs, DisplayFormatType, ExecutionPlan};
+use datafusion_physical_plan::common::AbortOnDropSingle;
+use datafusion_physical_plan::insert::{DataSink, InsertExec};
+use datafusion_physical_plan::memory::MemoryExec;
+use datafusion_physical_plan::{common, SendableRecordBatchStream};
+use datafusion_physical_plan::{repartition::RepartitionExec, Partitioning};
+use datafusion_physical_plan::{DisplayAs, DisplayFormatType, ExecutionPlan};
 
 /// Type alias for partition data
 pub type PartitionData = Arc<RwLock<Vec<RecordBatch>>>;
