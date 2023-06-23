@@ -23,8 +23,8 @@ use super::optimizer::PhysicalOptimizerRule;
 use crate::config::ConfigOptions;
 use crate::datasource::physical_plan::ParquetExec;
 use crate::error::Result;
-use crate::physical_plan::Partitioning::*;
-use crate::physical_plan::{
+use crate::Partitioning::*;
+use crate::{
     repartition::RepartitionExec, with_new_children_if_necessary, ExecutionPlan,
 };
 
@@ -328,17 +328,17 @@ mod tests {
     use crate::datasource::physical_plan::{FileScanConfig, ParquetExec};
     use crate::physical_optimizer::dist_enforcement::EnforceDistribution;
     use crate::physical_optimizer::sort_enforcement::EnforceSorting;
-    use crate::physical_plan::aggregates::{
+    use crate::aggregates::{
         AggregateExec, AggregateMode, PhysicalGroupBy,
     };
-    use crate::physical_plan::expressions::{col, PhysicalSortExpr};
-    use crate::physical_plan::filter::FilterExec;
-    use crate::physical_plan::limit::{GlobalLimitExec, LocalLimitExec};
-    use crate::physical_plan::projection::ProjectionExec;
-    use crate::physical_plan::sorts::sort::SortExec;
-    use crate::physical_plan::sorts::sort_preserving_merge::SortPreservingMergeExec;
-    use crate::physical_plan::union::UnionExec;
-    use crate::physical_plan::{displayable, DisplayFormatType, Statistics};
+    use crate::expressions::{col, PhysicalSortExpr};
+    use crate::filter::FilterExec;
+    use crate::limit::{GlobalLimitExec, LocalLimitExec};
+    use crate::projection::ProjectionExec;
+    use crate::sorts::sort::SortExec;
+    use crate::sorts::sort_preserving_merge::SortPreservingMergeExec;
+    use crate::union::UnionExec;
+    use crate::{displayable, DisplayFormatType, Statistics};
     use datafusion_physical_expr::PhysicalSortRequirement;
 
     fn schema() -> SchemaRef {
@@ -1145,7 +1145,7 @@ mod tests {
             self.input.schema()
         }
 
-        fn output_partitioning(&self) -> crate::physical_plan::Partitioning {
+        fn output_partitioning(&self) -> crate::Partitioning {
             self.input.output_partitioning()
         }
 
@@ -1177,7 +1177,7 @@ mod tests {
             &self,
             _partition: usize,
             _context: Arc<crate::execution::context::TaskContext>,
-        ) -> Result<crate::physical_plan::SendableRecordBatchStream> {
+        ) -> Result<crate::SendableRecordBatchStream> {
             unreachable!();
         }
 

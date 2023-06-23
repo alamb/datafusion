@@ -15,13 +15,13 @@
 // specific language governing permissions and limitations
 // under the License.
 use crate::physical_optimizer::utils::{add_sort_above, is_limit, is_union, is_window};
-use crate::physical_plan::filter::FilterExec;
-use crate::physical_plan::joins::utils::JoinSide;
-use crate::physical_plan::joins::SortMergeJoinExec;
-use crate::physical_plan::projection::ProjectionExec;
-use crate::physical_plan::repartition::RepartitionExec;
-use crate::physical_plan::sorts::sort::SortExec;
-use crate::physical_plan::{with_new_children_if_necessary, ExecutionPlan};
+use crate::filter::FilterExec;
+use crate::joins::utils::JoinSide;
+use crate::joins::SortMergeJoinExec;
+use crate::projection::ProjectionExec;
+use crate::repartition::RepartitionExec;
+use crate::sorts::sort::SortExec;
+use crate::{with_new_children_if_necessary, ExecutionPlan};
 use datafusion_common::tree_node::{Transformed, TreeNode, VisitRecursion};
 use datafusion_common::{DataFusionError, Result};
 use datafusion_expr::JoinType;

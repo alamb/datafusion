@@ -48,9 +48,9 @@ use crate::logical_expr::{
     col, utils::find_window_exprs, Expr, JoinType, LogicalPlan, LogicalPlanBuilder,
     Partitioning, TableType,
 };
-use crate::physical_plan::SendableRecordBatchStream;
-use crate::physical_plan::{collect, collect_partitioned};
-use crate::physical_plan::{execute_stream, execute_stream_partitioned, ExecutionPlan};
+use crate::SendableRecordBatchStream;
+use crate::{collect, collect_partitioned};
+use crate::{execute_stream, execute_stream_partitioned, ExecutionPlan};
 use crate::prelude::SessionContext;
 
 /// DataFrame represents a logical set of rows with the same named columns.
@@ -1149,9 +1149,9 @@ mod tests {
 
     use crate::execution::context::SessionConfig;
     use crate::execution::options::{CsvReadOptions, ParquetReadOptions};
-    use crate::physical_plan::ColumnarValue;
-    use crate::physical_plan::Partitioning;
-    use crate::physical_plan::PhysicalExpr;
+    use crate::ColumnarValue;
+    use crate::Partitioning;
+    use crate::PhysicalExpr;
     use crate::test_util;
     use crate::test_util::parquet_test_data;
     use crate::{assert_batches_sorted_eq, execution::context::SessionContext};

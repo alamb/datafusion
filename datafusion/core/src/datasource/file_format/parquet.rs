@@ -46,8 +46,8 @@ use crate::datasource::physical_plan::{ParquetExec, SchemaAdapter};
 use crate::datasource::{create_max_min_accs, get_col_stats};
 use crate::error::Result;
 use crate::execution::context::SessionState;
-use crate::physical_plan::expressions::{MaxAccumulator, MinAccumulator};
-use crate::physical_plan::{Accumulator, ExecutionPlan, Statistics};
+use crate::expressions::{MaxAccumulator, MinAccumulator};
+use crate::{Accumulator, ExecutionPlan, Statistics};
 
 /// The default file extension of parquet files
 pub const DEFAULT_PARQUET_EXTENSION: &str = ".parquet";
@@ -616,7 +616,7 @@ pub(crate) mod test_util {
 #[cfg(test)]
 mod tests {
     use super::super::test_util::scan_format;
-    use crate::physical_plan::collect;
+    use crate::collect;
     use std::fmt::{Display, Formatter};
     use std::sync::atomic::{AtomicUsize, Ordering};
 
@@ -624,7 +624,7 @@ mod tests {
 
     use crate::datasource::file_format::parquet::test_util::store_parquet;
     use crate::datasource::physical_plan::get_scan_files;
-    use crate::physical_plan::metrics::MetricValue;
+    use crate::metrics::MetricValue;
     use crate::prelude::{SessionConfig, SessionContext};
     use arrow::array::{Array, ArrayRef, StringArray};
     use arrow::record_batch::RecordBatch;

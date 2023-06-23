@@ -43,13 +43,13 @@ use crate::physical_optimizer::utils::{
     merge_and_order_indices, set_difference,
 };
 use crate::physical_optimizer::PhysicalOptimizerRule;
-use crate::physical_plan::coalesce_partitions::CoalescePartitionsExec;
-use crate::physical_plan::sorts::sort::SortExec;
-use crate::physical_plan::sorts::sort_preserving_merge::SortPreservingMergeExec;
-use crate::physical_plan::windows::{
+use crate::coalesce_partitions::CoalescePartitionsExec;
+use crate::sorts::sort::SortExec;
+use crate::sorts::sort_preserving_merge::SortPreservingMergeExec;
+use crate::windows::{
     BoundedWindowAggExec, PartitionSearchMode, WindowAggExec,
 };
-use crate::physical_plan::{with_new_children_if_necessary, Distribution, ExecutionPlan};
+use crate::{with_new_children_if_necessary, Distribution, ExecutionPlan};
 use arrow::datatypes::SchemaRef;
 use datafusion_common::tree_node::{Transformed, TreeNode, VisitRecursion};
 use datafusion_common::utils::{get_at_indices, longest_consecutive_prefix};
@@ -969,22 +969,22 @@ mod tests {
     use crate::datasource::object_store::ObjectStoreUrl;
     use crate::datasource::physical_plan::{FileScanConfig, ParquetExec};
     use crate::physical_optimizer::dist_enforcement::EnforceDistribution;
-    use crate::physical_plan::aggregates::PhysicalGroupBy;
-    use crate::physical_plan::aggregates::{AggregateExec, AggregateMode};
-    use crate::physical_plan::coalesce_batches::CoalesceBatchesExec;
-    use crate::physical_plan::filter::FilterExec;
-    use crate::physical_plan::joins::utils::JoinOn;
-    use crate::physical_plan::joins::SortMergeJoinExec;
-    use crate::physical_plan::limit::{GlobalLimitExec, LocalLimitExec};
-    use crate::physical_plan::memory::MemoryExec;
-    use crate::physical_plan::repartition::RepartitionExec;
-    use crate::physical_plan::sorts::sort_preserving_merge::SortPreservingMergeExec;
-    use crate::physical_plan::union::UnionExec;
-    use crate::physical_plan::windows::create_window_expr;
-    use crate::physical_plan::windows::PartitionSearchMode::{
+    use crate::aggregates::PhysicalGroupBy;
+    use crate::aggregates::{AggregateExec, AggregateMode};
+    use crate::coalesce_batches::CoalesceBatchesExec;
+    use crate::filter::FilterExec;
+    use crate::joins::utils::JoinOn;
+    use crate::joins::SortMergeJoinExec;
+    use crate::limit::{GlobalLimitExec, LocalLimitExec};
+    use crate::memory::MemoryExec;
+    use crate::repartition::RepartitionExec;
+    use crate::sorts::sort_preserving_merge::SortPreservingMergeExec;
+    use crate::union::UnionExec;
+    use crate::windows::create_window_expr;
+    use crate::windows::PartitionSearchMode::{
         Linear, PartiallySorted, Sorted,
     };
-    use crate::physical_plan::{displayable, Partitioning};
+    use crate::{displayable, Partitioning};
     use crate::prelude::SessionContext;
     use crate::test::csv_exec_sorted;
     use arrow::compute::SortOptions;

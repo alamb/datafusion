@@ -44,9 +44,9 @@ impl CoalesceBatches {
 impl PhysicalOptimizerRule for CoalesceBatches {
     fn optimize(
         &self,
-        plan: Arc<dyn crate::physical_plan::ExecutionPlan>,
+        plan: Arc<dyn crate::ExecutionPlan>,
         config: &ConfigOptions,
-    ) -> Result<Arc<dyn crate::physical_plan::ExecutionPlan>> {
+    ) -> Result<Arc<dyn crate::ExecutionPlan>> {
         if !config.execution.coalesce_batches {
             return Ok(plan);
         }

@@ -29,8 +29,8 @@ use log::debug;
 
 use crate::datasource::TableProvider;
 use crate::execution::context::{SessionState, TaskContext};
-use crate::physical_plan::streaming::StreamingTableExec;
-use crate::physical_plan::{ExecutionPlan, SendableRecordBatchStream};
+use crate::streaming::StreamingTableExec;
+use crate::{ExecutionPlan, SendableRecordBatchStream};
 
 /// A partition that can be converted into a [`SendableRecordBatchStream`]
 pub trait PartitionStream: Send + Sync {

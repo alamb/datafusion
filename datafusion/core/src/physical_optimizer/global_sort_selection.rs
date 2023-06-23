@@ -22,9 +22,9 @@ use std::sync::Arc;
 use crate::config::ConfigOptions;
 use crate::error::Result;
 use crate::physical_optimizer::PhysicalOptimizerRule;
-use crate::physical_plan::sorts::sort::SortExec;
-use crate::physical_plan::sorts::sort_preserving_merge::SortPreservingMergeExec;
-use crate::physical_plan::ExecutionPlan;
+use crate::sorts::sort::SortExec;
+use crate::sorts::sort_preserving_merge::SortPreservingMergeExec;
+use crate::ExecutionPlan;
 use datafusion_common::tree_node::{Transformed, TreeNode};
 
 /// Currently for a sort operator, if

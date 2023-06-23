@@ -33,8 +33,8 @@ use crate::datasource::streaming::{PartitionStream, StreamingTable};
 use crate::datasource::TableProvider;
 use crate::execution::context::TaskContext;
 use crate::logical_expr::TableType;
-use crate::physical_plan::stream::RecordBatchStreamAdapter;
-use crate::physical_plan::SendableRecordBatchStream;
+use crate::stream::RecordBatchStreamAdapter;
+use crate::SendableRecordBatchStream;
 
 use super::{schema::SchemaProvider, CatalogList};
 

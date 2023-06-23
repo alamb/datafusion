@@ -33,28 +33,28 @@ use datafusion_common::display::ToStringifiedPlan;
 use crate::logical_expr::{Limit, Values};
 use crate::physical_expr::create_physical_expr;
 use crate::physical_optimizer::optimizer::PhysicalOptimizerRule;
-use crate::physical_plan::aggregates::{AggregateExec, AggregateMode, PhysicalGroupBy};
-use crate::physical_plan::analyze::AnalyzeExec;
-use crate::physical_plan::explain::ExplainExec;
-use crate::physical_plan::expressions::{Column, PhysicalSortExpr};
-use crate::physical_plan::filter::FilterExec;
-use crate::physical_plan::joins::HashJoinExec;
-use crate::physical_plan::joins::SortMergeJoinExec;
-use crate::physical_plan::joins::{CrossJoinExec, NestedLoopJoinExec};
-use crate::physical_plan::limit::{GlobalLimitExec, LocalLimitExec};
-use crate::physical_plan::projection::ProjectionExec;
-use crate::physical_plan::repartition::RepartitionExec;
-use crate::physical_plan::sorts::sort::SortExec;
-use crate::physical_plan::unnest::UnnestExec;
-use crate::physical_plan::windows::{
+use crate::aggregates::{AggregateExec, AggregateMode, PhysicalGroupBy};
+use crate::analyze::AnalyzeExec;
+use crate::explain::ExplainExec;
+use crate::expressions::{Column, PhysicalSortExpr};
+use crate::filter::FilterExec;
+use crate::joins::HashJoinExec;
+use crate::joins::SortMergeJoinExec;
+use crate::joins::{CrossJoinExec, NestedLoopJoinExec};
+use crate::limit::{GlobalLimitExec, LocalLimitExec};
+use crate::projection::ProjectionExec;
+use crate::repartition::RepartitionExec;
+use crate::sorts::sort::SortExec;
+use crate::unnest::UnnestExec;
+use crate::windows::{
     BoundedWindowAggExec, PartitionSearchMode, WindowAggExec,
 };
-use crate::physical_plan::{
+use crate::{
     aggregates, empty::EmptyExec, joins::PartitionMode, udaf, union::UnionExec,
     values::ValuesExec, windows,
 };
-use crate::physical_plan::{joins::utils as join_utils, Partitioning};
-use crate::physical_plan::{AggregateExpr, ExecutionPlan, PhysicalExpr, WindowExpr};
+use crate::{joins::utils as join_utils, Partitioning};
+use crate::{AggregateExpr, ExecutionPlan, PhysicalExpr, WindowExpr};
 use crate::{
     error::{DataFusionError, Result},
     physical_plan::displayable,
@@ -1934,8 +1934,8 @@ mod tests {
     use super::*;
     use crate::datasource::file_format::options::CsvReadOptions;
     use crate::datasource::MemTable;
-    use crate::physical_plan::SendableRecordBatchStream;
-    use crate::physical_plan::{
+    use crate::SendableRecordBatchStream;
+    use crate::{
         expressions, DisplayFormatType, Partitioning, Statistics,
     };
     use crate::physical_planner::PhysicalPlanner;

@@ -303,9 +303,9 @@
 //! join), and how data flows during execution (e.g. partitioning and
 //! sortedness).
 //!
-//! [`PhysicalExpr`]: crate::physical_plan::PhysicalExpr
-//! [`AggregateExpr`]: crate::physical_plan::AggregateExpr
-//! [`WindowExpr`]: crate::physical_plan::WindowExpr
+//! [`PhysicalExpr`]: crate::PhysicalExpr
+//! [`AggregateExpr`]: crate::AggregateExpr
+//! [`WindowExpr`]: crate::WindowExpr
 //!
 //! ## Execution
 //!
@@ -339,7 +339,7 @@
 //! constant values ([`ScalarValue`]) or Arrow Arrays ([`ArrayRef`]).
 //!
 //! [`execute`]: physical_plan::ExecutionPlan::execute
-//! [`SendableRecordBatchStream`]: crate::physical_plan::SendableRecordBatchStream
+//! [`SendableRecordBatchStream`]: crate::SendableRecordBatchStream
 //! [`ColumnarValue`]: datafusion_expr::ColumnarValue
 //! [`ScalarValue`]: crate::scalar::ScalarValue
 //! [`ArrayRef`]: arrow::array::ArrayRef

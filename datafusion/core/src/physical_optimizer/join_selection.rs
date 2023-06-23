@@ -22,13 +22,13 @@ use arrow::datatypes::Schema;
 
 use crate::config::ConfigOptions;
 use crate::logical_expr::JoinType;
-use crate::physical_plan::expressions::Column;
-use crate::physical_plan::joins::{
+use crate::expressions::Column;
+use crate::joins::{
     utils::{ColumnIndex, JoinFilter, JoinSide},
     CrossJoinExec, HashJoinExec, PartitionMode,
 };
-use crate::physical_plan::projection::ProjectionExec;
-use crate::physical_plan::{ExecutionPlan, PhysicalExpr};
+use crate::projection::ProjectionExec;
+use crate::{ExecutionPlan, PhysicalExpr};
 
 use super::optimizer::PhysicalOptimizerRule;
 use crate::error::Result;

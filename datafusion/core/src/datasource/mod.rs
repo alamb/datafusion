@@ -46,8 +46,8 @@ pub use self::view::ViewTable;
 use crate::arrow::datatypes::{Schema, SchemaRef};
 use crate::error::Result;
 pub use crate::logical_expr::TableType;
-use crate::physical_plan::expressions::{MaxAccumulator, MinAccumulator};
-use crate::physical_plan::{Accumulator, ColumnStatistics, Statistics};
+use crate::expressions::{MaxAccumulator, MinAccumulator};
+use crate::{Accumulator, ColumnStatistics, Statistics};
 use futures::StreamExt;
 
 /// Get all files as well as the file level summary statistics (no statistic for partition columns).

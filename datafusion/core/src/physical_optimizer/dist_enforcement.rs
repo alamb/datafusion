@@ -21,18 +21,18 @@
 use crate::config::ConfigOptions;
 use crate::error::Result;
 use crate::physical_optimizer::PhysicalOptimizerRule;
-use crate::physical_plan::aggregates::{AggregateExec, AggregateMode, PhysicalGroupBy};
-use crate::physical_plan::coalesce_partitions::CoalescePartitionsExec;
-use crate::physical_plan::joins::{
+use crate::aggregates::{AggregateExec, AggregateMode, PhysicalGroupBy};
+use crate::coalesce_partitions::CoalescePartitionsExec;
+use crate::joins::{
     CrossJoinExec, HashJoinExec, PartitionMode, SortMergeJoinExec,
 };
-use crate::physical_plan::projection::ProjectionExec;
-use crate::physical_plan::repartition::RepartitionExec;
-use crate::physical_plan::sorts::sort::SortOptions;
-use crate::physical_plan::union::{can_interleave, InterleaveExec, UnionExec};
-use crate::physical_plan::windows::WindowAggExec;
-use crate::physical_plan::Partitioning;
-use crate::physical_plan::{with_new_children_if_necessary, Distribution, ExecutionPlan};
+use crate::projection::ProjectionExec;
+use crate::repartition::RepartitionExec;
+use crate::sorts::sort::SortOptions;
+use crate::union::{can_interleave, InterleaveExec, UnionExec};
+use crate::windows::WindowAggExec;
+use crate::Partitioning;
+use crate::{with_new_children_if_necessary, Distribution, ExecutionPlan};
 use datafusion_common::tree_node::{Transformed, TreeNode, VisitRecursion};
 use datafusion_expr::logical_plan::JoinType;
 use datafusion_physical_expr::equivalence::EquivalenceProperties;
@@ -530,8 +530,8 @@ fn shift_right_required(
 /// In that case, the datasources/tables might be pre-partitioned and we can't adjust the key ordering of the datasources
 /// and then can't apply the Top-Down reordering process.
 fn reorder_join_keys_to_inputs(
-    plan: Arc<dyn crate::physical_plan::ExecutionPlan>,
-) -> Result<Arc<dyn crate::physical_plan::ExecutionPlan>> {
+    plan: Arc<dyn crate::ExecutionPlan>,
+) -> Result<Arc<dyn crate::ExecutionPlan>> {
     let plan_any = plan.as_any();
     if let Some(HashJoinExec {
         left,
@@ -961,9 +961,9 @@ impl TreeNode for PlanWithKeyRequirements {
 
 #[cfg(test)]
 mod tests {
-    use crate::physical_plan::coalesce_batches::CoalesceBatchesExec;
-    use crate::physical_plan::filter::FilterExec;
-    use crate::physical_plan::sorts::sort_preserving_merge::SortPreservingMergeExec;
+    use crate::coalesce_batches::CoalesceBatchesExec;
+    use crate::filter::FilterExec;
+    use crate::sorts::sort_preserving_merge::SortPreservingMergeExec;
     use arrow::compute::SortOptions;
     use arrow::datatypes::{DataType, Field, Schema, SchemaRef};
     use datafusion_expr::logical_plan::JoinType;
@@ -979,15 +979,15 @@ mod tests {
     use crate::datasource::object_store::ObjectStoreUrl;
     use crate::datasource::physical_plan::{FileScanConfig, ParquetExec};
     use crate::physical_optimizer::sort_enforcement::EnforceSorting;
-    use crate::physical_plan::aggregates::{
+    use crate::aggregates::{
         AggregateExec, AggregateMode, PhysicalGroupBy,
     };
-    use crate::physical_plan::expressions::col;
-    use crate::physical_plan::joins::{
+    use crate::expressions::col;
+    use crate::joins::{
         utils::JoinOn, HashJoinExec, PartitionMode, SortMergeJoinExec,
     };
-    use crate::physical_plan::projection::ProjectionExec;
-    use crate::physical_plan::{displayable, Statistics};
+    use crate::projection::ProjectionExec;
+    use crate::{displayable, Statistics};
 
     fn schema() -> SchemaRef {
         Arc::new(Schema::new(vec![

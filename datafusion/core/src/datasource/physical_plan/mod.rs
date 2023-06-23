@@ -48,7 +48,7 @@ use crate::datasource::{
     listing::{FileRange, PartitionedFile},
     object_store::ObjectStoreUrl,
 };
-use crate::physical_plan::ExecutionPlan;
+use crate::ExecutionPlan;
 use crate::{
     datasource::file_format::FileWriterMode,
     physical_plan::{DisplayAs, DisplayFormatType},
@@ -930,7 +930,7 @@ mod tests {
     };
     use chrono::Utc;
 
-    use crate::physical_plan::{DefaultDisplay, VerboseDisplay};
+    use crate::{DefaultDisplay, VerboseDisplay};
     use crate::{
         test::{build_table_i32, columns},
         test_util::aggr_test_schema,

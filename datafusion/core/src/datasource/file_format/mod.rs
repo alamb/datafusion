@@ -39,7 +39,7 @@ use crate::arrow::datatypes::SchemaRef;
 use crate::datasource::physical_plan::{FileScanConfig, FileSinkConfig};
 use crate::error::Result;
 use crate::execution::context::SessionState;
-use crate::physical_plan::{ExecutionPlan, Statistics};
+use crate::{ExecutionPlan, Statistics};
 
 use arrow_array::RecordBatch;
 use datafusion_common::DataFusionError;

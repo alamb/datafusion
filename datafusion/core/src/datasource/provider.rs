@@ -29,7 +29,7 @@ use crate::arrow::datatypes::SchemaRef;
 use crate::error::Result;
 use crate::execution::context::SessionState;
 use crate::logical_expr::Expr;
-use crate::physical_plan::ExecutionPlan;
+use crate::ExecutionPlan;
 
 /// Source table
 #[async_trait]
@@ -117,7 +117,7 @@ pub trait TableProvider: Sync + Send {
     /// See [`InsertExec`] for the common pattern of inserting a
     /// single stream of `RecordBatch`es.
     ///
-    /// [`InsertExec`]: crate::physical_plan::insert::InsertExec
+    /// [`InsertExec`]: crate::insert::InsertExec
     async fn insert_into(
         &self,
         _state: &SessionState,

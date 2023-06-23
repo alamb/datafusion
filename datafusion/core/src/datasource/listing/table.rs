@@ -900,7 +900,7 @@ mod tests {
     use super::*;
     use crate::datasource::file_format::file_type::GetExt;
     use crate::datasource::{provider_as_source, MemTable};
-    use crate::physical_plan::collect;
+    use crate::collect;
     use crate::prelude::*;
     use crate::{
         assert_batches_eq,
@@ -1027,7 +1027,7 @@ mod tests {
         let options = ListingOptions::new(Arc::new(ParquetFormat::default()));
         let schema = options.infer_schema(&state, &table_path).await.unwrap();
 
-        use crate::physical_plan::expressions::col as physical_col;
+        use crate::expressions::col as physical_col;
         use std::ops::Add;
 
         // (file_sort_order, expected_result)

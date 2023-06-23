@@ -31,8 +31,8 @@ use arrow::{
 };
 use futures::Stream;
 
-use crate::physical_plan::expressions::PhysicalSortExpr;
-use crate::physical_plan::{
+use crate::expressions::PhysicalSortExpr;
+use crate::{
     common, DisplayFormatType, ExecutionPlan, Partitioning, RecordBatchStream,
     SendableRecordBatchStream, Statistics,
 };

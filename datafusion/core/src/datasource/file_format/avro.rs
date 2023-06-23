@@ -31,8 +31,8 @@ use crate::datasource::avro_to_arrow::read_avro_schema_from_reader;
 use crate::datasource::physical_plan::{AvroExec, FileScanConfig};
 use crate::error::Result;
 use crate::execution::context::SessionState;
-use crate::physical_plan::ExecutionPlan;
-use crate::physical_plan::Statistics;
+use crate::ExecutionPlan;
+use crate::Statistics;
 
 /// The default file extension of avro files
 pub const DEFAULT_AVRO_EXTENSION: &str = ".avro";
@@ -94,7 +94,7 @@ impl FileFormat for AvroFormat {
 mod tests {
     use super::*;
     use crate::datasource::file_format::test_util::scan_format;
-    use crate::physical_plan::collect;
+    use crate::collect;
     use crate::prelude::{SessionConfig, SessionContext};
     use arrow::array::{as_string_array, Array};
     use datafusion_common::cast::{

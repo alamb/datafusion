@@ -20,7 +20,7 @@
 //! These rules take advantage of physical plan properties , such as
 //! "Repartition" or "Sortedness"
 //!
-//! [`ExecutionPlan`]: crate::physical_plan::ExecutionPlan
+//! [`ExecutionPlan`]: crate::ExecutionPlan
 pub mod aggregate_statistics;
 pub mod coalesce_batches;
 pub mod combine_partial_final_agg;

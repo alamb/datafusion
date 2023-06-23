@@ -78,9 +78,9 @@ use sqlparser::dialect::dialect_from_str;
 use crate::config::ConfigOptions;
 use crate::datasource::physical_plan::{plan_to_csv, plan_to_json, plan_to_parquet};
 use crate::execution::{runtime_env::RuntimeEnv, FunctionRegistry};
-use crate::physical_plan::udaf::AggregateUDF;
-use crate::physical_plan::udf::ScalarUDF;
-use crate::physical_plan::ExecutionPlan;
+use crate::udaf::AggregateUDF;
+use crate::udf::ScalarUDF;
+use crate::ExecutionPlan;
 use crate::physical_planner::DefaultPhysicalPlanner;
 use crate::physical_planner::PhysicalPlanner;
 use crate::variable::{VarProvider, VarType};
@@ -2091,7 +2091,7 @@ mod tests {
     use crate::execution::context::QueryPlanner;
     use crate::execution::memory_pool::MemoryConsumer;
     use crate::execution::runtime_env::RuntimeConfig;
-    use crate::physical_plan::expressions::AvgAccumulator;
+    use crate::expressions::AvgAccumulator;
     use crate::test;
     use crate::test_util::parquet_test_data;
     use crate::variable::VarType;
@@ -2694,7 +2694,7 @@ mod tests {
             _input_dfschema: &crate::common::DFSchema,
             _input_schema: &Schema,
             _session_state: &SessionState,
-        ) -> Result<Arc<dyn crate::physical_plan::PhysicalExpr>> {
+        ) -> Result<Arc<dyn crate::PhysicalExpr>> {
             unimplemented!()
         }
     }

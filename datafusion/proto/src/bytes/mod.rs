@@ -19,10 +19,8 @@
 use crate::logical_plan::{
     self, AsLogicalPlan, DefaultLogicalExtensionCodec, LogicalExtensionCodec,
 };
-use crate::physical_plan::{
-    AsExecutionPlan, DefaultPhysicalExtensionCodec, PhysicalExtensionCodec,
-};
 use crate::protobuf;
+use crate::{AsExecutionPlan, DefaultPhysicalExtensionCodec, PhysicalExtensionCodec};
 use datafusion::physical_plan::functions::make_scalar_function;
 use datafusion_common::{DataFusionError, Result};
 use datafusion_expr::{

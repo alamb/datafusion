@@ -33,12 +33,12 @@ use crate::datasource::{TableProvider, TableType};
 use crate::error::{DataFusionError, Result};
 use crate::execution::context::SessionState;
 use crate::logical_expr::Expr;
-use crate::physical_plan::common::AbortOnDropSingle;
-use crate::physical_plan::insert::{DataSink, InsertExec};
-use crate::physical_plan::memory::MemoryExec;
-use crate::physical_plan::{common, SendableRecordBatchStream};
-use crate::physical_plan::{repartition::RepartitionExec, Partitioning};
-use crate::physical_plan::{DisplayAs, DisplayFormatType, ExecutionPlan};
+use crate::common::AbortOnDropSingle;
+use crate::insert::{DataSink, InsertExec};
+use crate::memory::MemoryExec;
+use crate::{common, SendableRecordBatchStream};
+use crate::{repartition::RepartitionExec, Partitioning};
+use crate::{DisplayAs, DisplayFormatType, ExecutionPlan};
 
 /// Type alias for partition data
 pub type PartitionData = Arc<RwLock<Vec<RecordBatch>>>;
@@ -264,7 +264,7 @@ impl DataSink for MemSink {
 mod tests {
     use super::*;
     use crate::datasource::provider_as_source;
-    use crate::physical_plan::collect;
+    use crate::collect;
     use crate::prelude::SessionContext;
     use arrow::array::{AsArray, Int32Array};
     use arrow::datatypes::{DataType, Field, Schema, UInt64Type};

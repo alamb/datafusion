@@ -53,7 +53,7 @@ use prost::Message;
 
 use crate::common::proto_error;
 use crate::common::{csv_delimiter_to_string, str_to_byte};
-use crate::physical_plan::from_proto::{
+use crate::from_proto::{
     parse_physical_expr, parse_physical_sort_expr, parse_protobuf_file_scan_config,
 };
 use crate::protobuf::physical_aggregate_expr_node::AggregateFunction;
@@ -1257,7 +1257,7 @@ mod roundtrip_tests {
     use std::sync::Arc;
 
     use super::super::protobuf;
-    use crate::physical_plan::{AsExecutionPlan, DefaultPhysicalExtensionCodec};
+    use crate::{AsExecutionPlan, DefaultPhysicalExtensionCodec};
     use datafusion::arrow::array::ArrayRef;
     use datafusion::arrow::datatypes::IntervalUnit;
     use datafusion::datasource::object_store::ObjectStoreUrl;

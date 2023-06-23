@@ -246,7 +246,7 @@ impl<'a> PruningStatistics for RowGroupPruningStatistics<'a> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::physical_plan::metrics::ExecutionPlanMetricsSet;
+    use crate::metrics::ExecutionPlanMetricsSet;
     use arrow::datatypes::DataType::Decimal128;
     use arrow::datatypes::Schema;
     use arrow::datatypes::{DataType, Field};

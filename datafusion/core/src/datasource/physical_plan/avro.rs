@@ -17,9 +17,9 @@
 
 //! Execution plan for reading line-delimited Avro files
 use crate::error::Result;
-use crate::physical_plan::expressions::PhysicalSortExpr;
-use crate::physical_plan::metrics::{ExecutionPlanMetricsSet, MetricsSet};
-use crate::physical_plan::{
+use crate::expressions::PhysicalSortExpr;
+use crate::metrics::{ExecutionPlanMetricsSet, MetricsSet};
+use crate::{
     ordering_equivalence_properties_helper, DisplayAs, DisplayFormatType, ExecutionPlan,
     Partitioning, SendableRecordBatchStream, Statistics,
 };

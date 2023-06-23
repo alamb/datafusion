@@ -32,10 +32,10 @@ use crate::datasource::physical_plan::{
     FileMeta, FileScanConfig, PartitionColumnProjector,
 };
 use crate::error::Result;
-use crate::physical_plan::metrics::{
+use crate::metrics::{
     BaselineMetrics, Count, ExecutionPlanMetricsSet, MetricBuilder, Time,
 };
-use crate::physical_plan::RecordBatchStream;
+use crate::RecordBatchStream;
 
 use arrow::datatypes::SchemaRef;
 use arrow::error::ArrowError;
@@ -525,7 +525,7 @@ mod tests {
     use crate::datasource::file_format::BatchSerializer;
     use crate::datasource::object_store::ObjectStoreUrl;
     use crate::datasource::physical_plan::FileMeta;
-    use crate::physical_plan::metrics::ExecutionPlanMetricsSet;
+    use crate::metrics::ExecutionPlanMetricsSet;
     use crate::prelude::SessionContext;
     use crate::{
         error::Result,

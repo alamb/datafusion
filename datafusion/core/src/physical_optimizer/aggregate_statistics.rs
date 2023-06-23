@@ -22,10 +22,10 @@ use crate::config::ConfigOptions;
 use datafusion_common::tree_node::TreeNode;
 use datafusion_expr::utils::COUNT_STAR_EXPANSION;
 
-use crate::physical_plan::aggregates::{AggregateExec, AggregateMode};
-use crate::physical_plan::empty::EmptyExec;
-use crate::physical_plan::projection::ProjectionExec;
-use crate::physical_plan::{
+use crate::aggregates::{AggregateExec, AggregateMode};
+use crate::empty::EmptyExec;
+use crate::projection::ProjectionExec;
+use crate::{
     expressions, AggregateExpr, ColumnStatistics, ExecutionPlan, Statistics,
 };
 use crate::scalar::ScalarValue;
@@ -271,12 +271,12 @@ mod tests {
 
     use crate::error::Result;
     use crate::logical_expr::Operator;
-    use crate::physical_plan::aggregates::{AggregateExec, PhysicalGroupBy};
-    use crate::physical_plan::coalesce_partitions::CoalescePartitionsExec;
-    use crate::physical_plan::common;
-    use crate::physical_plan::expressions::Count;
-    use crate::physical_plan::filter::FilterExec;
-    use crate::physical_plan::memory::MemoryExec;
+    use crate::aggregates::{AggregateExec, PhysicalGroupBy};
+    use crate::coalesce_partitions::CoalescePartitionsExec;
+    use crate::common;
+    use crate::expressions::Count;
+    use crate::filter::FilterExec;
+    use crate::memory::MemoryExec;
     use crate::prelude::SessionContext;
 
     /// Mock data using a MemoryExec which has an exact count statistic

@@ -50,9 +50,9 @@ use crate::datasource::physical_plan::{
 };
 use crate::error::Result;
 use crate::execution::context::SessionState;
-use crate::physical_plan::insert::{DataSink, InsertExec};
-use crate::physical_plan::{DisplayAs, DisplayFormatType, Statistics};
-use crate::physical_plan::{ExecutionPlan, SendableRecordBatchStream};
+use crate::insert::{DataSink, InsertExec};
+use crate::{DisplayAs, DisplayFormatType, Statistics};
+use crate::{ExecutionPlan, SendableRecordBatchStream};
 
 /// The default file extension of csv files
 pub const DEFAULT_CSV_EXTENSION: &str = ".csv";
@@ -599,7 +599,7 @@ mod tests {
     use super::*;
     use crate::assert_batches_eq;
     use crate::datasource::file_format::test_util::VariableStream;
-    use crate::physical_plan::collect;
+    use crate::collect;
     use crate::prelude::{CsvReadOptions, SessionConfig, SessionContext};
     use crate::test_util::arrow_test_data;
     use arrow::compute::concat_batches;
