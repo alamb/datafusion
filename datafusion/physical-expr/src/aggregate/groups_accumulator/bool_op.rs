@@ -24,7 +24,7 @@ use datafusion_common::Result;
 
 use crate::GroupsAccumulator;
 
-use super::accumulate::NullState;
+use super::{accumulate::NullState, EmitTo};
 
 /// An accumulator that implements a single operation over a
 /// [`BooleanArray`] where the accumulated state is also boolean (such
@@ -98,15 +98,19 @@ where
         Ok(())
     }
 
-    fn evaluate(&mut self) -> Result<ArrayRef> {
+    fn evaluate(&mut self, emit_to: EmitTo) -> Result<ArrayRef> {
+        if emit_to.is_some() {
+            panic!("emit_to handling not yet implemented");
+        }
+
         let values = self.values.finish();
-        let nulls = self.null_state.build();
+        let nulls = self.null_state.build(emit_to);
         let values = BooleanArray::new(values, Some(nulls));
         Ok(Arc::new(values))
     }
 
-    fn state(&mut self) -> Result<Vec<ArrayRef>> {
-        self.evaluate().map(|arr| vec![arr])
+    fn state(&mut self, emit_to: EmitTo) -> Result<Vec<ArrayRef>> {
+        self.evaluate(emit_to).map(|arr| vec![arr])
     }
 
     fn merge_batch(
