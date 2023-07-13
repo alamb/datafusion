@@ -19,6 +19,7 @@
 
 use std::any::Any;
 use std::convert::TryFrom;
+use std::marker::PhantomData;
 use std::sync::Arc;
 
 use crate::{AggregateExpr, GroupsAccumulator, PhysicalExpr};
@@ -44,7 +45,7 @@ use arrow_array::types::{
     Decimal128Type, Float32Type, Float64Type, Int16Type, Int32Type, Int64Type, Int8Type,
     UInt16Type, UInt32Type, UInt64Type, UInt8Type,
 };
-use arrow_array::{ArrowNumericType, PrimitiveArray};
+use arrow_array::{ArrowNumericType, PrimitiveArray, OffsetSizeTrait, GenericStringArray};
 use datafusion_common::ScalarValue;
 use datafusion_common::{downcast_value, DataFusionError, Result};
 use datafusion_expr::Accumulator;
@@ -1427,6 +1428,144 @@ where
 
     fn size(&self) -> usize {
         self.min_max.capacity() * std::mem::size_of::<T>() + self.null_state.size()
+    }
+}
+
+
+
+
+/// An accumulator to compute the min or max of String
+///
+/// Stores values as `String`.
+///
+/// This could be made faster via <https://github.com/apache/arrow-datafusion/issues/6906>
+#[derive(Debug)]
+struct MinMaxGroupsStringAccumulator<O, const MIN: bool>
+where
+    O: OffsetSizeTrait
+{
+    /// Min/max per group
+    min_max: Vec<String>,
+
+    /// For mins, track if we have seen a string in the group or not
+    seen_value_for_mins: Vec<bool>,
+
+    /// Track nulls in the input / filters
+    null_state: NullState,
+
+    /// need a phantom
+    phantom_data: PhantomData<O>,
+
+}
+
+impl<O, const MIN: bool> MinMaxGroupsStringAccumulator<O, MIN>
+where
+    O: OffsetSizeTrait
+{
+    pub fn new(data_type: &DataType) -> Self {
+        debug!(
+            "MinMaxGroupsStringAccumulator (offset={}, {})",
+            std::any::type_name::<O>(),
+            MIN,
+        );
+
+        Self {
+            min_max: vec![],
+            seen_value_for_mins: vec![],
+            null_state: NullState::new(),
+            phantom_data: Default::default(),
+        }
+    }
+}
+
+impl<O, const MIN: bool> GroupsAccumulator for MinMaxGroupsStringAccumulator<O, MIN>
+where
+    O: OffsetSizeTrait
+{
+    fn update_batch(
+        &mut self,
+        values: &[ArrayRef],
+        group_indices: &[usize],
+        opt_filter: Option<&arrow_array::BooleanArray>,
+        total_num_groups: usize,
+    ) -> Result<()> {
+        assert_eq!(values.len(), 1, "single argument to update_batch");
+        let values = values[0].as_string::<O>();
+
+        self.min_max.resize(
+            total_num_groups,
+            Default::default(),
+        );
+
+        if MIN {
+            self.seen_value_for_mins.resize(total_num_groups, false);
+        }
+
+        // NullState dispatches / handles tracking nulls and groups that saw no values
+        self.null_state.accumulate(
+            group_indices,
+            values,
+            opt_filter,
+            total_num_groups,
+            |group_index, new_value| {
+                let val = &mut self.min_max[group_index];
+                match MIN {
+                    true => {
+                        if self.seen_value_for_mins[group_index] {
+                            if new_value < *val {
+                                *val = new_value;
+                            }
+                        } else {
+                            self.seen_value_for_mins[group_index] = true;
+                            *val = new_value;
+                        }
+                    }
+                    // take advantage of the fact that "" is the min string value) to avoid the check for for max
+                    // "" < str is true for all strings (aka "" is the min string value)
+                    // "" > str is false for all strings
+                    false => {
+                        if new_value > *val {
+                            *val = new_value;
+                        }
+                    }
+                }
+            },
+        );
+
+        Ok(())
+    }
+
+    fn merge_batch(
+        &mut self,
+        values: &[ArrayRef],
+        group_indices: &[usize],
+        opt_filter: Option<&arrow_array::BooleanArray>,
+        total_num_groups: usize,
+    ) -> Result<()> {
+        Self::update_batch(self, values, group_indices, opt_filter, total_num_groups)
+    }
+
+    fn evaluate(&mut self) -> Result<ArrayRef> {
+        let min_max = std::mem::take(&mut self.min_max);
+        let nulls = self.null_state.build();
+
+        let iter = min_max.iter().map(|s| s.as_str());
+        let min_max = GenericStringArray::<O>::from_iter_values(iter)
+            .into_builder()?
+            .with_nulls(nulls)
+            .build();
+
+        Ok(Arc::new(min_max))
+    }
+
+    // return arrays for min/max values
+    fn state(&mut self) -> Result<Vec<ArrayRef>> {
+        Ok(vec![self.evaluate()])
+    }
+
+    fn size(&self) -> usize {
+        // TODO update estimate
+        self.min_max.capacity() * std::mem::size_of::<String>() + self.null_state.size()
     }
 }
 
