@@ -110,7 +110,7 @@ impl GroupOrderingFull {
             State::InProgress { current } => {
                 // shift down by n
                 assert!(*current >= n);
-                *current = *current - n;
+                *current -= n;
                 self.hashes.drain(0..n);
             }
             State::Complete { .. } => panic!("invalid state: complete"),

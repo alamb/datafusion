@@ -69,9 +69,10 @@ pub(crate) struct GroupOrderingPartial {
 }
 
 /// Tracks the state of the the grouping
-#[derive(Debug)]
+#[derive(Debug, Default)]
 enum State {
     /// Taken to potentially be updated.
+    #[default]
     Taken,
 
     /// Have seen no input yet
@@ -90,13 +91,6 @@ enum State {
 
     /// Seen end of input, all groups can be emitted
     Complete,
-}
-
-// Implement default so the state can be temporarily taken via `std::mem::take`
-impl Default for State {
-    fn default() -> Self {
-        State::Taken
-    }
 }
 
 impl GroupOrderingPartial {
@@ -176,9 +170,9 @@ impl GroupOrderingPartial {
             } => {
                 // shift indexes down by n
                 assert!(*current >= n);
-                *current = *current - n;
+                *current -= n;
                 assert!(*current_sort >= n);
-                *current_sort = *current_sort - n;
+                *current_sort -= n;
                 // Note sort_key stays the same, we are just translating group indexes
                 self.hashes.drain(0..n);
             }

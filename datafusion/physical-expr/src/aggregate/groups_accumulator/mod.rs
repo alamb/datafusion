@@ -112,11 +112,11 @@ pub trait GroupsAccumulator: Send {
     /// each group, and `evaluate` will produce that running sum as
     /// its output for all groups, in group_index order
     ///
-    /// If `emit_to`` is [`Emit::All`], the accumulator should return all
+    /// If `emit_to`` is [`EmitTo::All`], the accumulator should return all
     /// groups and release / reset its internal state equivalent to
     /// when it was first created.
     ///
-    /// If `emit_to` is [`Emit::First`], only the first `first` groups
+    /// If `emit_to` is [`EmitTo::First`], only the first `first` groups
     /// should be emitted and the state for those first groups. State
     /// for the remaining groups must be retained for future use. The
     /// group_indices on subsequent calls to `update_batch` or
