@@ -708,7 +708,7 @@ mod test {
             // Validate the final buffer (one value per group)
             let expected_null_buffer = mock.expected_null_buffer(total_num_groups);
 
-            let null_buffer = null_state.build();
+            let null_buffer = null_state.build(EmitTo::All);
 
             assert_eq!(null_buffer, expected_null_buffer);
         }
@@ -825,7 +825,7 @@ mod test {
             // Validate the final buffer (one value per group)
             let expected_null_buffer = mock.expected_null_buffer(total_num_groups);
 
-            let null_buffer = null_state.build();
+            let null_buffer = null_state.build(EmitTo::All);
 
             assert_eq!(null_buffer, expected_null_buffer);
         }
