@@ -450,7 +450,6 @@ impl GroupedHashAggregateStream {
             // Tried to run after error. See comments on GroupOrdering::Taken
             GroupOrdering::Taken => panic!("order state was taken"),
             GroupOrdering::None => {
-                println!("AAL: no ordering mode");
                 self.update_group_state_inner(group_values, allocated, |_, _| {})?;
             }
             // ordering columns are a subset of the groups and we
@@ -458,7 +457,6 @@ impl GroupedHashAggregateStream {
             // columns to determine when the next order by key has
             // been emitted
             GroupOrdering::Partial(group_ordering_partial) => {
-                println!("AAL: partial ordering mode");
                 // compute the sort key values for each group
                 let sort_keys = group_ordering_partial.compute_sort_keys(group_values)?;
 
@@ -475,7 +473,6 @@ impl GroupedHashAggregateStream {
                 )?;
             }
             GroupOrdering::Full(group_ordering_full) => {
-                println!("AAL: fully ordered mode");
                 self.update_group_state_inner(
                     group_values,
                     allocated,
@@ -575,8 +572,6 @@ impl GroupedHashAggregateStream {
     /// If successful, returns the additional amount of memory, in
     /// bytes, that were allocated during this process.
     fn group_aggregate_batch(&mut self, batch: RecordBatch) -> Result<usize> {
-        println!("AAL aggregating batch: \n{batch:#?}");
-
         // Evaluate the grouping expressions
         let group_by_values = evaluate_group_by(&self.group_by, &batch)?;
 

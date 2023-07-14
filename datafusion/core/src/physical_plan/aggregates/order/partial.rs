@@ -179,7 +179,7 @@ impl GroupOrderingPartial {
                 *current = *current - n;
                 assert!(*current_sort >= n);
                 *current_sort = *current_sort - n;
-                // Note sort key stays the same
+                // Note sort_key stays the same, we are just translating group indexes
                 self.hashes.drain(0..n);
             }
             State::Complete { .. } => panic!("invalid state: complete"),
@@ -189,8 +189,6 @@ impl GroupOrderingPartial {
 
     /// Note that the input is complete so any outstanding groups are done as well
     pub fn input_done(&mut self) {
-        println!("AAL2 input done");
-
         self.state = match self.state {
             State::Taken => unreachable!("State previously taken"),
             State::Start => State::Complete,
@@ -201,8 +199,6 @@ impl GroupOrderingPartial {
 
     /// Note that we saw a new distinct group with the specified groups sort key
     pub fn new_group(&mut self, group_index: usize, group_sort_key: Row, hash: u64) {
-        println!("AAL2 new group: group_index: {group_index}");
-
         let old_state = std::mem::take(&mut self.state);
         self.state = match old_state {
             State::Taken => unreachable!("State previously taken"),

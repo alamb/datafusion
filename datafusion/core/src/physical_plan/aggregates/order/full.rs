@@ -105,7 +105,6 @@ impl GroupOrderingFull {
     /// existing indexes down by N and returns a reference to the
     /// updated hashes
     pub fn remove_groups(&mut self, n: usize) -> &[u64] {
-        println!("remove_groups n:{n}, self: {self:?}");
         match &mut self.state {
             State::Start => panic!("invalid state: start"),
             State::InProgress { current } => {
@@ -121,7 +120,6 @@ impl GroupOrderingFull {
 
     /// Note that the input is complete so any outstanding groups are done as well
     pub fn input_done(&mut self) {
-        println!("input done");
         self.state = match self.state {
             State::Start => State::Complete,
             State::InProgress { .. } => State::Complete,
@@ -131,7 +129,6 @@ impl GroupOrderingFull {
 
     /// Note that we saw a new distinct group
     pub fn new_group(&mut self, group_index: usize, hash: u64) {
-        println!("new group: group_index: {group_index}");
         self.state = match self.state {
             State::Start => {
                 assert_eq!(group_index, 0);

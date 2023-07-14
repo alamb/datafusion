@@ -45,12 +45,9 @@ use std::any::Any;
 use std::collections::HashMap;
 use std::sync::Arc;
 
-#[allow(dead_code)] // TODO remove
-mod bounded_aggregate_stream;
 mod no_grouping;
 mod order;
 mod row_hash;
-mod utils;
 
 pub use datafusion_expr::AggregateFunction;
 use datafusion_physical_expr::aggregate::is_order_sensitive;
