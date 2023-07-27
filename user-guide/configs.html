@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Configuration Settings &#8212; Arrow DataFusion  documentation</title>
     
@@ -23,15 +22,15 @@
       
   
     
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/pydata-sphinx-theme.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/theme_overrides.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=362ab14a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/pydata-sphinx-theme.css?v=1140d252" />
+    <link rel="stylesheet" type="text/css" href="../_static/theme_overrides.css?v=51945fb5" />
     
     <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
   
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=ccbe24c1"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Frequently Asked Questions" href="faq.html" />
@@ -68,6 +67,33 @@
     
     <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  Links
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/apache/arrow-datafusion">
+   Github and Issue Tracker
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://crates.io/crates/datafusion">
+   crates.io
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://docs.rs/datafusion/latest/datafusion/">
+   API Docs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/apache/arrow-datafusion/blob/main/CODE_OF_CONDUCT.md">
+   Code of conduct
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   User Guide
  </span>
 </p>
@@ -83,13 +109,8 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="library.html">
-   Using DataFusion as a library
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="cli.html">
-   DataFusion Command-line SQL Utility
+   Command line SQL console
   </a>
  </li>
  <li class="toctree-l1">
@@ -99,7 +120,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="expressions.html">
-   Expressions
+   Expression API
   </a>
  </li>
  <li class="toctree-l1 has-children">
@@ -148,6 +169,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="sql/window_functions.html">
+     Window Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="sql/scalar_functions.html">
      Scalar Functions
     </a>
@@ -169,11 +195,6 @@
    Frequently Asked Questions
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference external" href="https://docs.rs/crate/datafusion/">
-   Rust Crate Documentation
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -189,6 +210,11 @@
  <li class="toctree-l1">
   <a class="reference internal" href="../contributor-guide/communication.html">
    Communication
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../contributor-guide/architecture.html">
+   Architecture
   </a>
  </li>
  <li class="toctree-l1">
@@ -223,21 +249,16 @@
    </li>
   </ul>
  </li>
- <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/apache/arrow-datafusion/issues">
-   Issue tracker
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/apache/arrow-datafusion/blob/main/CODE_OF_CONDUCT.md">
-   Code of conduct
-  </a>
- </li>
 </ul>
 
     
   </div>
+
+  <a class="navbar-brand" href="../index.html">
+    <img src="../_static/images/DataFusion-Logo-Background-White.png" class="logo" alt="logo">
+  </a>
 </nav>
+
               </div>
               <div class="sidebar-end-items">
               </div>
@@ -370,8 +391,8 @@ Environment variables are read during <code class="docutils literal notranslate"
 <td><p>The default time zone Some functions, e.g. <code class="docutils literal notranslate"><span class="pre">EXTRACT(HOUR</span> <span class="pre">from</span> <span class="pre">SOME_TIME)</span></code>, shift the underlying datetime according to this time zone, and then extract the hour</p></td>
 </tr>
 <tr class="row-even"><td><p>datafusion.execution.parquet.enable_page_index</p></td>
-<td><p>false</p></td>
-<td><p>If true, uses parquet data page level metadata (Page Index) statistics to reduce the number of rows decoded.</p></td>
+<td><p>true</p></td>
+<td><p>If true, reads the Parquet data page level metadata (the Page Index), if present, to reduce the I/O and number of rows decoded.</p></td>
 </tr>
 <tr class="row-odd"><td><p>datafusion.execution.parquet.pruning</p></td>
 <td><p>true</p></td>
@@ -393,6 +414,14 @@ Environment variables are read during <code class="docutils literal notranslate"
 <td><p>false</p></td>
 <td><p>If true, filter expressions evaluated during the parquet decoding operation will be reordered heuristically to minimize the cost of evaluation. If false, the filters are applied in the same order as written in the query</p></td>
 </tr>
+<tr class="row-even"><td><p>datafusion.execution.aggregate.scalar_update_factor</p></td>
+<td><p>10</p></td>
+<td><p>Specifies the threshold for using <code class="docutils literal notranslate"><span class="pre">ScalarValue</span></code>s to update accumulators during high-cardinality aggregations for each input batch. The aggregation is considered high-cardinality if the number of affected groups is greater than or equal to <code class="docutils literal notranslate"><span class="pre">batch_size</span> <span class="pre">/</span> <span class="pre">scalar_update_factor</span></code>. In such cases, <code class="docutils literal notranslate"><span class="pre">ScalarValue</span></code>s are utilized for updating accumulators, rather than the default batch-slice approach. This can lead to performance improvements. By adjusting the <code class="docutils literal notranslate"><span class="pre">scalar_update_factor</span></code>, you can balance the trade-off between more efficient accumulator updates and the number of groups affected.</p></td>
+</tr>
+<tr class="row-odd"><td><p>datafusion.execution.planning_concurrency</p></td>
+<td><p>0</p></td>
+<td><p>Fan-out during initial physical planning. This is mostly use to plan <code class="docutils literal notranslate"><span class="pre">UNION</span></code> children in parallel. Defaults to the number of CPU cores on the system</p></td>
+</tr>
 <tr class="row-even"><td><p>datafusion.optimizer.enable_round_robin_repartition</p></td>
 <td><p>true</p></td>
 <td><p>When set to true, the physical plan optimizer will try to add round robin repartitioning to increase parallelism to leverage more CPU cores</p></td>
@@ -413,53 +442,61 @@ Environment variables are read during <code class="docutils literal notranslate"
 <td><p>true</p></td>
 <td><p>Should DataFusion repartition data using the join keys to execute joins in parallel using the provided <code class="docutils literal notranslate"><span class="pre">target_partitions</span></code> level</p></td>
 </tr>
-<tr class="row-odd"><td><p>datafusion.optimizer.repartition_file_scans</p></td>
+<tr class="row-odd"><td><p>datafusion.optimizer.allow_symmetric_joins_without_pruning</p></td>
 <td><p>true</p></td>
-<td><p>When set to true, file groups will be repartitioned to achieve maximum parallelism. Currently supported only for Parquet format in which case multiple row groups from the same file may be read concurrently. If false then each row group is read serially, though different files may be read in parallel.</p></td>
+<td><p>Should DataFusion allow symmetric hash joins for unbounded data sources even when its inputs do not have any ordering or filtering If the flag is not enabled, the SymmetricHashJoin operator will be unable to prune its internal buffers, resulting in certain join types - such as Full, Left, LeftAnti, LeftSemi, Right, RightAnti, and RightSemi - being produced only at the end of the execution. This is not typical in stream processing. Additionally, without proper design for long runner execution, all types of joins may encounter out-of-memory errors.</p></td>
 </tr>
-<tr class="row-even"><td><p>datafusion.optimizer.repartition_windows</p></td>
+<tr class="row-even"><td><p>datafusion.optimizer.repartition_file_scans</p></td>
+<td><p>true</p></td>
+<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, file groups will be repartitioned to achieve maximum parallelism. Currently Parquet and CSV formats are supported. If set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, all files will be repartitioned evenly (i.e., a single large file might be partitioned into smaller chunks) for parallel scanning. If set to <code class="docutils literal notranslate"><span class="pre">false</span></code>, different files will be read in parallel, but repartitioning won’t happen within a single file.</p></td>
+</tr>
+<tr class="row-odd"><td><p>datafusion.optimizer.repartition_windows</p></td>
 <td><p>true</p></td>
 <td><p>Should DataFusion repartition data using the partitions keys to execute window functions in parallel using the provided <code class="docutils literal notranslate"><span class="pre">target_partitions</span></code> level</p></td>
 </tr>
-<tr class="row-odd"><td><p>datafusion.optimizer.repartition_sorts</p></td>
+<tr class="row-even"><td><p>datafusion.optimizer.repartition_sorts</p></td>
 <td><p>true</p></td>
-<td><p>Should DataFusion execute sorts in a per-partition fashion and merge afterwards instead of coalescing first and sorting globally. With this flag is enabled, plans in the form below “SortExec: [a&#64;0 ASC]”, “ CoalescePartitionsExec”, “ RepartitionExec: partitioning=RoundRobinBatch(8), input_partitions=1”, would turn into the plan below which performs better in multithreaded environments “SortPreservingMergeExec: [a&#64;0 ASC]”, “ SortExec: [a&#64;0 ASC]”, “ RepartitionExec: partitioning=RoundRobinBatch(8), input_partitions=1”,</p></td>
+<td><p>Should DataFusion execute sorts in a per-partition fashion and merge afterwards instead of coalescing first and sorting globally. With this flag is enabled, plans in the form below <code class="docutils literal notranslate"><span class="pre">text</span> <span class="pre">&quot;SortExec:</span> <span class="pre">[a&#64;0</span> <span class="pre">ASC]&quot;,</span> <span class="pre">&quot;</span> <span class="pre">CoalescePartitionsExec&quot;,</span> <span class="pre">&quot;</span> <span class="pre">RepartitionExec:</span> <span class="pre">partitioning=RoundRobinBatch(8),</span> <span class="pre">input_partitions=1&quot;,</span> </code> would turn into the plan below which performs better in multithreaded environments <code class="docutils literal notranslate"><span class="pre">text</span> <span class="pre">&quot;SortPreservingMergeExec:</span> <span class="pre">[a&#64;0</span> <span class="pre">ASC]&quot;,</span> <span class="pre">&quot;</span> <span class="pre">SortExec:</span> <span class="pre">[a&#64;0</span> <span class="pre">ASC]&quot;,</span> <span class="pre">&quot;</span> <span class="pre">RepartitionExec:</span> <span class="pre">partitioning=RoundRobinBatch(8),</span> <span class="pre">input_partitions=1&quot;,</span> </code></p></td>
 </tr>
-<tr class="row-even"><td><p>datafusion.optimizer.skip_failed_rules</p></td>
-<td><p>true</p></td>
+<tr class="row-odd"><td><p>datafusion.optimizer.skip_failed_rules</p></td>
+<td><p>false</p></td>
 <td><p>When set to true, the logical plan optimizer will produce warning messages if any optimization rules produce errors and then proceed to the next rule. When set to false, any rules that produce errors will cause the query to fail</p></td>
 </tr>
-<tr class="row-odd"><td><p>datafusion.optimizer.max_passes</p></td>
+<tr class="row-even"><td><p>datafusion.optimizer.max_passes</p></td>
 <td><p>3</p></td>
 <td><p>Number of times that the optimizer will attempt to optimize the plan</p></td>
 </tr>
-<tr class="row-even"><td><p>datafusion.optimizer.top_down_join_key_reordering</p></td>
+<tr class="row-odd"><td><p>datafusion.optimizer.top_down_join_key_reordering</p></td>
 <td><p>true</p></td>
 <td><p>When set to true, the physical plan optimizer will run a top down process to reorder the join keys</p></td>
 </tr>
-<tr class="row-odd"><td><p>datafusion.optimizer.prefer_hash_join</p></td>
+<tr class="row-even"><td><p>datafusion.optimizer.prefer_hash_join</p></td>
 <td><p>true</p></td>
 <td><p>When set to true, the physical plan optimizer will prefer HashJoin over SortMergeJoin. HashJoin can work more efficiently than SortMergeJoin but consumes more memory</p></td>
 </tr>
-<tr class="row-even"><td><p>datafusion.optimizer.hash_join_single_partition_threshold</p></td>
+<tr class="row-odd"><td><p>datafusion.optimizer.hash_join_single_partition_threshold</p></td>
 <td><p>1048576</p></td>
 <td><p>The maximum estimated size in bytes for one input side of a HashJoin will be collected into a single partition</p></td>
 </tr>
-<tr class="row-odd"><td><p>datafusion.explain.logical_plan_only</p></td>
+<tr class="row-even"><td><p>datafusion.explain.logical_plan_only</p></td>
 <td><p>false</p></td>
 <td><p>When set to true, the explain statement will only print logical plans</p></td>
 </tr>
-<tr class="row-even"><td><p>datafusion.explain.physical_plan_only</p></td>
+<tr class="row-odd"><td><p>datafusion.explain.physical_plan_only</p></td>
 <td><p>false</p></td>
 <td><p>When set to true, the explain statement will only print physical plans</p></td>
 </tr>
-<tr class="row-odd"><td><p>datafusion.sql_parser.parse_float_as_decimal</p></td>
+<tr class="row-even"><td><p>datafusion.sql_parser.parse_float_as_decimal</p></td>
 <td><p>false</p></td>
 <td><p>When set to true, SQL parser will parse float as decimal type</p></td>
 </tr>
-<tr class="row-even"><td><p>datafusion.sql_parser.enable_ident_normalization</p></td>
+<tr class="row-odd"><td><p>datafusion.sql_parser.enable_ident_normalization</p></td>
 <td><p>true</p></td>
 <td><p>When set to true, SQL parser will normalize ident (convert ident to lowercase when not quoted)</p></td>
+</tr>
+<tr class="row-even"><td><p>datafusion.sql_parser.dialect</p></td>
+<td><p>generic</p></td>
+<td><p>Configure the SQL dialect used by DataFusion’s parser; supported values include: Generic, MySQL, PostgreSQL, Hive, SQLite, Snowflake, Redshift, MsSQL, ClickHouse, BigQuery, and Ansi.</p></td>
 </tr>
 </tbody>
 </table>
@@ -499,13 +536,13 @@ Environment variables are read during <code class="docutils literal notranslate"
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright 2022, Apache Software Foundation.<br>
+    &copy; Copyright 2023, Apache Software Foundation.<br>
 </p>
     </div>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 6.1.3.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.1.0.<br>
 </p>
     </div>
     

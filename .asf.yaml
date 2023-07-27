@@ -15,9 +15,14 @@
 # specific language governing permissions and limitations
 # under the License.
 
+# This file controls the settings of this repository
+#
+# See more details at
+# https://cwiki.apache.org/confluence/display/INFRA/Git+-+.asf.yaml+features
+
 notifications:
-  commits:      commits@arrow.apache.org
-  issues:       github@arrow.apache.org
+  commits: commits@arrow.apache.org
+  issues: github@arrow.apache.org
   pullrequests: github@arrow.apache.org
   jira_options: link label worklog
 github:
@@ -36,10 +41,14 @@ github:
   enabled_merge_buttons:
     squash: true
     merge: false
-    rebase: false    
+    rebase: false
   features:
-    issues: true        
+    issues: true
+  protected_branches:
+    main: { }
 
+# publishes the content of the `asf-site` branch to
+# https://arrow.apache.org/datafusion/
 publish:
   whoami: asf-site
   subdir: datafusion
