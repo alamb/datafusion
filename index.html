@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -28,9 +28,9 @@
     
     <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
   
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=ccbe24c1"></script>
+    <script src="_static/documentation_options.js?v=8a448e45"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Introduction" href="user-guide/introduction.html" />
@@ -153,6 +153,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="user-guide/sql/dml.html">
+     DML
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="user-guide/sql/explain.html">
      EXPLAIN
     </a>
@@ -197,6 +202,58 @@
  <li class="toctree-l1">
   <a class="reference internal" href="user-guide/faq.html">
    Frequently Asked Questions
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Library User Guide
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="library-user-guide/index.html">
+   Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="library-user-guide/using-the-sql-api.html">
+   Using the SQL API
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="library-user-guide/working-with-exprs.html">
+   Working with Exprs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="library-user-guide/using-the-dataframe-api.html">
+   Using the DataFrame API
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="library-user-guide/building-logical-plans.html">
+   Building Logical Plans
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="library-user-guide/catalogs.html">
+   Catalogs, Schemas, and Tables
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="library-user-guide/adding-udfs.html">
+   Adding User Defined Functions: Scalar/Window/Aggregate
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="library-user-guide/custom-table-providers.html">
+   Custom Table Provider
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="library-user-guide/extending-operators.html">
+   Extending DataFusion’s operators: custom LogicalPlan and Execution Plans
   </a>
  </li>
 </ul>
@@ -307,7 +364,7 @@
                 
   <img alt="DataFusion Logo" src="_images/DataFusion-Logo-Background-White.png" />
 <section id="apache-arrow-datafusion">
-<h1>Apache Arrow DataFusion<a class="headerlink" href="#apache-arrow-datafusion" title="Permalink to this heading">¶</a></h1>
+<h1>Apache Arrow DataFusion<a class="headerlink" href="#apache-arrow-datafusion" title="Link to this heading">¶</a></h1>
 <p>DataFusion is a very fast, extensible query engine for building high-quality data-centric systems in
 <a class="reference external" href="http://rustlang.org">Rust</a>, using the <a class="reference external" href="https://arrow.apache.org">Apache Arrow</a>
 in-memory format.</p>
@@ -338,6 +395,20 @@ community.</p>
 <li class="toctree-l1"><a class="reference internal" href="user-guide/configs.html">Configuration Settings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guide/faq.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user-guide/faq.html#how-does-datafusion-compare-with-xyz">How does DataFusion Compare with <code class="docutils literal notranslate"><span class="pre">XYZ</span></code>?</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound" id="toc-library-user-guide">
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Library User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="library-user-guide/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="library-user-guide/using-the-sql-api.html">Using the SQL API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="library-user-guide/working-with-exprs.html">Working with Exprs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="library-user-guide/using-the-dataframe-api.html">Using the DataFrame API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="library-user-guide/building-logical-plans.html">Building Logical Plans</a></li>
+<li class="toctree-l1"><a class="reference internal" href="library-user-guide/catalogs.html">Catalogs, Schemas, and Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="library-user-guide/adding-udfs.html">Adding User Defined Functions: Scalar/Window/Aggregate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="library-user-guide/custom-table-providers.html">Custom Table Provider</a></li>
+<li class="toctree-l1"><a class="reference internal" href="library-user-guide/extending-operators.html">Extending DataFusion’s operators: custom LogicalPlan and Execution Plans</a></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound" id="toc-contributor-guide">
@@ -388,7 +459,7 @@ community.</p>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.1.2.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.5.<br>
 </p>
     </div>
     

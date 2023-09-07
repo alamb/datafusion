@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -28,12 +28,12 @@
     
     <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
   
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=ccbe24c1"></script>
+    <script src="../../_static/documentation_options.js?v=8a448e45"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="EXPLAIN" href="explain.html" />
+    <link rel="next" title="DML" href="dml.html" />
     <link rel="prev" title="Subqueries" href="subqueries.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en">
@@ -154,6 +154,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="dml.html">
+     DML
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="explain.html">
      EXPLAIN
     </a>
@@ -198,6 +203,58 @@
  <li class="toctree-l1">
   <a class="reference internal" href="../faq.html">
    Frequently Asked Questions
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Library User Guide
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../library-user-guide/index.html">
+   Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../library-user-guide/using-the-sql-api.html">
+   Using the SQL API
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../library-user-guide/working-with-exprs.html">
+   Working with Exprs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../library-user-guide/using-the-dataframe-api.html">
+   Using the DataFrame API
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../library-user-guide/building-logical-plans.html">
+   Building Logical Plans
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../library-user-guide/catalogs.html">
+   Catalogs, Schemas, and Tables
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../library-user-guide/adding-udfs.html">
+   Adding User Defined Functions: Scalar/Window/Aggregate
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../library-user-guide/custom-table-providers.html">
+   Custom Table Provider
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../library-user-guide/extending-operators.html">
+   Extending DataFusion’s operators: custom LogicalPlan and Execution Plans
   </a>
  </li>
 </ul>
@@ -372,9 +429,11 @@
   under the License.
 -->
 <section id="ddl">
-<h1>DDL<a class="headerlink" href="#ddl" title="Permalink to this heading">¶</a></h1>
+<h1>DDL<a class="headerlink" href="#ddl" title="Link to this heading">¶</a></h1>
+<p>DDL stands for “Data Definition Language” and relates to creating and
+modifying catalog objects such as Tables.</p>
 <section id="create-database">
-<h2>CREATE DATABASE<a class="headerlink" href="#create-database" title="Permalink to this heading">¶</a></h2>
+<h2>CREATE DATABASE<a class="headerlink" href="#create-database" title="Link to this heading">¶</a></h2>
 <p>Create catalog with specified name.</p>
 <pre>
 CREATE DATABASE [ IF NOT EXISTS ] <i><b>catalog</i></b>
@@ -385,7 +444,7 @@ CREATE DATABASE [ IF NOT EXISTS ] <i><b>catalog</i></b>
 </div>
 </section>
 <section id="create-schema">
-<h2>CREATE SCHEMA<a class="headerlink" href="#create-schema" title="Permalink to this heading">¶</a></h2>
+<h2>CREATE SCHEMA<a class="headerlink" href="#create-schema" title="Link to this heading">¶</a></h2>
 <p>Create schema under specified catalog, or the default DataFusion catalog if not specified.</p>
 <pre>
 CREATE SCHEMA [ IF NOT EXISTS ] [ <i><b>catalog.</i></b> ] <b><i>schema_name</i></b>
@@ -396,7 +455,7 @@ CREATE SCHEMA [ IF NOT EXISTS ] [ <i><b>catalog.</i></b> ] <b><i>schema_name</i>
 </div>
 </section>
 <section id="create-external-table">
-<h2>CREATE EXTERNAL TABLE<a class="headerlink" href="#create-external-table" title="Permalink to this heading">¶</a></h2>
+<h2>CREATE EXTERNAL TABLE<a class="headerlink" href="#create-external-table" title="Link to this heading">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">EXTERNAL</span> <span class="pre">TABLE</span></code> SQL statement registers a location on a local
 file system or remote object store as a named table which can be queried.</p>
 <p>The supported syntax is:</p>
@@ -422,7 +481,7 @@ file system or remote object store as a named table which can be queried.</p>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">file_type</span></code> is one of <code class="docutils literal notranslate"><span class="pre">CSV</span></code>, <code class="docutils literal notranslate"><span class="pre">PARQUET</span></code>, <code class="docutils literal notranslate"><span class="pre">AVRO</span></code> or <code class="docutils literal notranslate"><span class="pre">JSON</span></code></p>
-<p><code class="docutils literal notranslate"><span class="pre">LOCATION</span> <span class="pre">&lt;literal&gt;</span></code> specfies the location to find the data. It can be
+<p><code class="docutils literal notranslate"><span class="pre">LOCATION</span> <span class="pre">&lt;literal&gt;</span></code> specifies the location to find the data. It can be
 a path to a file or directory of partitioned files locally or on an
 object store.</p>
 <p>Parquet data sources can be registered by executing a <code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">EXTERNAL</span> <span class="pre">TABLE</span></code> SQL statement such as the following. It is not necessary to
@@ -496,12 +555,12 @@ sorting is complex, allowing for greater flexibility.</p>
 </pre></div>
 </div>
 <p>Where <code class="docutils literal notranslate"><span class="pre">WITH</span> <span class="pre">ORDER</span></code> clause specifies the sort order:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span>WITH ORDER (sort_expression1 [ASC | DESC] [NULLS { FIRST | LAST }]
-         [, sort_expression2 [ASC | DESC] [NULLS { FIRST | LAST }] ...])
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">WITH</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="p">(</span><span class="n">sort_expression1</span><span class="w"> </span><span class="p">[</span><span class="k">ASC</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">DESC</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">NULLS</span><span class="w"> </span><span class="err">{</span><span class="w"> </span><span class="k">FIRST</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">LAST</span><span class="w"> </span><span class="err">}</span><span class="p">]</span>
+<span class="w">         </span><span class="p">[,</span><span class="w"> </span><span class="n">sort_expression2</span><span class="w"> </span><span class="p">[</span><span class="k">ASC</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">DESC</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">NULLS</span><span class="w"> </span><span class="err">{</span><span class="w"> </span><span class="k">FIRST</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">LAST</span><span class="w"> </span><span class="err">}</span><span class="p">]</span><span class="w"> </span><span class="p">...])</span>
 </pre></div>
 </div>
 <section id="cautions-when-using-the-with-order-clause">
-<h3>Cautions when using the WITH ORDER Clause<a class="headerlink" href="#cautions-when-using-the-with-order-clause" title="Permalink to this heading">¶</a></h3>
+<h3>Cautions when using the WITH ORDER Clause<a class="headerlink" href="#cautions-when-using-the-with-order-clause" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>It’s important to understand that using the <code class="docutils literal notranslate"><span class="pre">WITH</span> <span class="pre">ORDER</span></code> clause in the <code class="docutils literal notranslate"><span class="pre">CREATE</span> <span class="pre">EXTERNAL</span> <span class="pre">TABLE</span></code> statement only specifies the order in which the data should be read from the external file. If the data in the file is not already sorted according to the specified order, then the results may not be correct.</p></li>
 <li><p>It’s also important to note that the <code class="docutils literal notranslate"><span class="pre">WITH</span> <span class="pre">ORDER</span></code> clause does not affect the ordering of the data in the original external file.</p></li>
@@ -521,7 +580,7 @@ sorting is complex, allowing for greater flexibility.</p>
 </section>
 </section>
 <section id="create-table">
-<h2>CREATE TABLE<a class="headerlink" href="#create-table" title="Permalink to this heading">¶</a></h2>
+<h2>CREATE TABLE<a class="headerlink" href="#create-table" title="Link to this heading">¶</a></h2>
 <p>An in-memory table can be created with a query or values list.</p>
 <pre>
 CREATE [OR REPLACE] TABLE [IF NOT EXISTS] <b><i>table_name</i></b> AS [SELECT | VALUES LIST];
@@ -535,7 +594,7 @@ CREATE [OR REPLACE] TABLE [IF NOT EXISTS] <b><i>table_name</i></b> AS [SELECT | 
 </div>
 </section>
 <section id="drop-table">
-<h2>DROP TABLE<a class="headerlink" href="#drop-table" title="Permalink to this heading">¶</a></h2>
+<h2>DROP TABLE<a class="headerlink" href="#drop-table" title="Link to this heading">¶</a></h2>
 <p>Removes the table from DataFusion’s catalog.</p>
 <pre>
 DROP TABLE [ IF EXISTS ] <b><i>table_name</i></b>;
@@ -548,7 +607,7 @@ DROP TABLE [ IF EXISTS ] <b><i>table_name</i></b>;
 </div>
 </section>
 <section id="create-view">
-<h2>CREATE VIEW<a class="headerlink" href="#create-view" title="Permalink to this heading">¶</a></h2>
+<h2>CREATE VIEW<a class="headerlink" href="#create-view" title="Link to this heading">¶</a></h2>
 <p>View is a virtual table based on the result of a SQL query. It can be created from an existing table or values list.</p>
 <pre>
 CREATE [ OR REPLACE ] VIEW <i><b>view_name</b></i> AS statement;
@@ -578,7 +637,7 @@ CREATE [ OR REPLACE ] VIEW <i><b>view_name</b></i> AS statement;
 </div>
 </section>
 <section id="drop-view">
-<h2>DROP VIEW<a class="headerlink" href="#drop-view" title="Permalink to this heading">¶</a></h2>
+<h2>DROP VIEW<a class="headerlink" href="#drop-view" title="Link to this heading">¶</a></h2>
 <p>Removes the view from DataFusion’s catalog.</p>
 <pre>
 DROP VIEW [ IF EXISTS ] <b><i>view_name</i></b>;
@@ -603,10 +662,10 @@ DROP VIEW [ IF EXISTS ] <b><i>view_name</i></b>;
             <p class="prev-next-title">Subqueries</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="explain.html" title="next page">
+    <a class='right-next' id="next-link" href="dml.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">EXPLAIN</p>
+        <p class="prev-next-title">DML</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
@@ -630,7 +689,7 @@ DROP VIEW [ IF EXISTS ] <b><i>view_name</i></b>;
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.1.2.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.5.<br>
 </p>
     </div>
     
