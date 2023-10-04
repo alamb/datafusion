@@ -23,3 +23,6 @@ mod user_defined_plan;
 
 /// Tests for User Defined Window Functions
 mod user_defined_window_functions;
+
+/// Tests for User Defined TableSources
+mod user_defined_table_source;
