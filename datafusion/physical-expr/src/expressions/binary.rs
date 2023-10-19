@@ -349,7 +349,13 @@ impl PhysicalExpr for BinaryExpr {
             //       upon adding support for additional logical operators, this
             //       method will require modification to support propagating the
             //       changes accordingly.
-            return Ok(vec![]);
+            if matches!(self.op, Operator::And) {
+                return Ok(vec![]);
+            } else if matches!(self.op, Operator::Or) {
+                todo!();
+            } else {
+                unreachable!()
+            }
         } else if self.op.is_comparison_operator() {
             if interval == &Interval::CERTAINLY_FALSE {
                 // TODO: We will handle strictly false clauses by negating
