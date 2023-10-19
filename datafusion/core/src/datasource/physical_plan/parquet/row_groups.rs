@@ -201,7 +201,8 @@ impl BloomFilterPruningPredicate {
 
     /// filter the expr with bloom filter return true if the expr can be pruned
     fn prune(&self, column_sbbf: &HashMap<String, Sbbf>) -> bool {
-        // rewrite any <col = literal> exprs to to `false` if we can provve they are using the bloom filter.
+        // rewrite any <col = literal> exprs to to `false` if we can prove they
+        // are always false using the bloom filter.
         let rewritten = self
             .predicate_expr
             .clone()
@@ -262,59 +263,6 @@ impl BloomFilterPruningPredicate {
 
         is_always_false_interval(interval)
     }
-
-    /*
-            match expr.op() {
-                Operator::And => {
-                    let left = Self::prune_expr_with_bloom_filter(
-                        expr.left().as_any().downcast_ref::<phys_expr::BinaryExpr>(),
-                        column_sbbf,
-                    );
-                    let right = Self::prune_expr_with_bloom_filter(
-                        expr.right()
-                            .as_any()
-                            .downcast_ref::<phys_expr::BinaryExpr>(),
-                        column_sbbf,
-                    );
-                    left || right
-                }
-                Operator::Or => {
-                    let left = Self::prune_expr_with_bloom_filter(
-                        expr.left().as_any().downcast_ref::<phys_expr::BinaryExpr>(),
-                        column_sbbf,
-                    );
-                    let right = Self::prune_expr_with_bloom_filter(
-                        expr.right()
-                            .as_any()
-                            .downcast_ref::<phys_expr::BinaryExpr>(),
-                        column_sbbf,
-                    );
-                    left && right
-                }
-                Operator::Eq => {
-                    if let Some((col, val)) = Self::check_expr_is_col_equal_const(expr) {
-                        if let Some(sbbf) = column_sbbf.get(col.name()) {
-                            match val {
-                                ScalarValue::Utf8(Some(v)) => !sbbf.check(&v.as_str()),
-                                ScalarValue::Boolean(Some(v)) => !sbbf.check(&v),
-                                ScalarValue::Float64(Some(v)) => !sbbf.check(&v),
-                                ScalarValue::Float32(Some(v)) => !sbbf.check(&v),
-                                ScalarValue::Int64(Some(v)) => !sbbf.check(&v),
-                                ScalarValue::Int32(Some(v)) => !sbbf.check(&v),
-                                ScalarValue::Int16(Some(v)) => !sbbf.check(&v),
-                                ScalarValue::Int8(Some(v)) => !sbbf.check(&v),
-                                _ => false,
-                            }
-                        } else {
-                            false
-                        }
-                    } else {
-                        false
-                    }
-                }
-                _ => false,
-            }
-    */
 
     fn get_predicate_columns(expr: &Arc<dyn PhysicalExpr>) -> HashSet<String> {
         let mut columns = HashSet::new();
