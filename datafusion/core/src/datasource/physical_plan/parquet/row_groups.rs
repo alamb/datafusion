@@ -19,7 +19,8 @@ use arrow::{
     array::ArrayRef,
     datatypes::{DataType, Schema},
 };
-use datafusion_common::tree_node::{TreeNode, VisitRecursion};
+use arrow_schema::SchemaRef;
+use datafusion_common::tree_node::{Transformed, TreeNode, VisitRecursion};
 use datafusion_common::{Column, DataFusionError, Result, ScalarValue};
 use parquet::{
     arrow::{async_reader::AsyncFileReader, ParquetRecordBatchStreamBuilder},
@@ -30,6 +31,9 @@ use std::{
     collections::{HashMap, HashSet},
     sync::Arc,
 };
+
+use datafusion_physical_expr::expressions::lit;
+use datafusion_physical_expr::intervals::{ExprIntervalGraph, Interval};
 
 use crate::datasource::{
     listing::FileRange,
@@ -117,8 +121,10 @@ pub(crate) async fn prune_row_groups_by_bloom_filters<
     predicate: &PruningPredicate,
     metrics: &ParquetFileMetrics,
 ) -> Vec<usize> {
-    let bf_predicates = match BloomFilterPruningPredicate::try_new(predicate.orig_expr())
-    {
+    let bf_predicates = match BloomFilterPruningPredicate::try_new(
+        predicate.schema().clone(),
+        predicate.orig_expr(),
+    ) {
         Ok(predicates) => predicates,
         Err(_) => {
             return row_groups.to_vec();
@@ -168,93 +174,147 @@ pub(crate) async fn prune_row_groups_by_bloom_filters<
 }
 
 struct BloomFilterPruningPredicate {
-    /// Actual pruning predicate (rewritten in terms of column min/max statistics)
-    predicate_expr: Option<phys_expr::BinaryExpr>,
+    /// The input schema against which the predicate will be evaluated
+    schema: SchemaRef,
+
+    ///  predicate
+    predicate_expr: Arc<dyn PhysicalExpr>,
     /// The statistics required to evaluate this predicate
     required_columns: Vec<String>,
 }
 
 impl BloomFilterPruningPredicate {
-    fn try_new(expr: &Arc<dyn PhysicalExpr>) -> Result<Self> {
-        let binary_expr = expr.as_any().downcast_ref::<phys_expr::BinaryExpr>();
-        match binary_expr {
-            Some(binary_expr) => {
-                let columns = Self::get_predicate_columns(expr);
-                Ok(Self {
-                    predicate_expr: Some(binary_expr.clone()),
-                    required_columns: columns.into_iter().collect(),
-                })
-            }
-            None => Err(DataFusionError::Execution(
+    fn try_new(schema: SchemaRef, expr: &Arc<dyn PhysicalExpr>) -> Result<Self> {
+        let columns = Self::get_predicate_columns(expr);
+        if columns.is_empty() {
+            return Err(DataFusionError::Execution(
                 "BloomFilterPruningPredicate only support binary expr".to_string(),
-            )),
+            ));
         }
-    }
 
-    fn prune(&self, column_sbbf: &HashMap<String, Sbbf>) -> bool {
-        Self::prune_expr_with_bloom_filter(self.predicate_expr.as_ref(), column_sbbf)
+        Ok(Self {
+            schema,
+            predicate_expr: expr.clone(),
+            required_columns: columns.into_iter().collect(),
+        })
     }
 
     /// filter the expr with bloom filter return true if the expr can be pruned
-    fn prune_expr_with_bloom_filter(
-        expr: Option<&phys_expr::BinaryExpr>,
-        column_sbbf: &HashMap<String, Sbbf>,
-    ) -> bool {
-        if expr.is_none() {
+    fn prune(&self, column_sbbf: &HashMap<String, Sbbf>) -> bool {
+        // rewrite any <col = literal> exprs to to `false` if we can provve they are using the bloom filter.
+        let rewritten = self
+            .predicate_expr
+            .clone()
+            .transform_up(&|expr| {
+                let Some(binary_expr) =
+                    expr.as_any().downcast_ref::<phys_expr::BinaryExpr>()
+                else {
+                    return Ok(Transformed::No(expr));
+                };
+
+                // is this a <col> = <constant> expression?
+                let Some((col, val)) = Self::check_expr_is_col_equal_const(binary_expr)
+                else {
+                    return Ok(Transformed::No(expr));
+                };
+
+                // do we have a bloom filter for this column?
+                let Some(sbbf) = column_sbbf.get(col.name()) else {
+                    return Ok(Transformed::No(expr));
+                };
+
+                // Can we tell this value is not present by checking the bloom filter?
+                let filtered = match val {
+                    ScalarValue::Utf8(Some(v)) => !sbbf.check(&v.as_str()),
+                    ScalarValue::Boolean(Some(v)) => !sbbf.check(&v),
+                    ScalarValue::Float64(Some(v)) => !sbbf.check(&v),
+                    ScalarValue::Float32(Some(v)) => !sbbf.check(&v),
+                    ScalarValue::Int64(Some(v)) => !sbbf.check(&v),
+                    ScalarValue::Int32(Some(v)) => !sbbf.check(&v),
+                    ScalarValue::Int16(Some(v)) => !sbbf.check(&v),
+                    ScalarValue::Int8(Some(v)) => !sbbf.check(&v),
+                    _ => false,
+                };
+
+                if filtered {
+                    // rewrote col = <value> --> false
+                    Ok(Transformed::Yes(lit(false)))
+                } else {
+                    // could not rule this out based on the bloom filter
+                    Ok(Transformed::No(expr))
+                }
+            })
+            // error is never returned in closure
+            .unwrap();
+
+        // Run boundary analysis on this predicate, to see if we can prove it is false
+        println!("Evaluating. self.predicate_expr: {}", self.predicate_expr);
+        println!("   rewritten {rewritten}");
+        let Ok(mut graph) = ExprIntervalGraph::try_new(rewritten.clone()) else {
             return false;
-        }
-        let expr = expr.unwrap();
-        match expr.op() {
-            Operator::And => {
-                let left = Self::prune_expr_with_bloom_filter(
-                    expr.left().as_any().downcast_ref::<phys_expr::BinaryExpr>(),
-                    column_sbbf,
-                );
-                let right = Self::prune_expr_with_bloom_filter(
-                    expr.right()
-                        .as_any()
-                        .downcast_ref::<phys_expr::BinaryExpr>(),
-                    column_sbbf,
-                );
-                left || right
-            }
-            Operator::Or => {
-                let left = Self::prune_expr_with_bloom_filter(
-                    expr.left().as_any().downcast_ref::<phys_expr::BinaryExpr>(),
-                    column_sbbf,
-                );
-                let right = Self::prune_expr_with_bloom_filter(
-                    expr.right()
-                        .as_any()
-                        .downcast_ref::<phys_expr::BinaryExpr>(),
-                    column_sbbf,
-                );
-                left && right
-            }
-            Operator::Eq => {
-                if let Some((col, val)) = Self::check_expr_is_col_equal_const(expr) {
-                    if let Some(sbbf) = column_sbbf.get(col.name()) {
-                        match val {
-                            ScalarValue::Utf8(Some(v)) => !sbbf.check(&v.as_str()),
-                            ScalarValue::Boolean(Some(v)) => !sbbf.check(&v),
-                            ScalarValue::Float64(Some(v)) => !sbbf.check(&v),
-                            ScalarValue::Float32(Some(v)) => !sbbf.check(&v),
-                            ScalarValue::Int64(Some(v)) => !sbbf.check(&v),
-                            ScalarValue::Int32(Some(v)) => !sbbf.check(&v),
-                            ScalarValue::Int16(Some(v)) => !sbbf.check(&v),
-                            ScalarValue::Int8(Some(v)) => !sbbf.check(&v),
-                            _ => false,
+        };
+
+        // with no aprior knowledge can we determine the predicate is always false?
+        let Ok(interval) = graph.evaluate_bounds() else {
+            return false;
+        };
+        println!("   interval result: {interval}");
+
+        is_always_false_interval(interval)
+    }
+
+    /*
+            match expr.op() {
+                Operator::And => {
+                    let left = Self::prune_expr_with_bloom_filter(
+                        expr.left().as_any().downcast_ref::<phys_expr::BinaryExpr>(),
+                        column_sbbf,
+                    );
+                    let right = Self::prune_expr_with_bloom_filter(
+                        expr.right()
+                            .as_any()
+                            .downcast_ref::<phys_expr::BinaryExpr>(),
+                        column_sbbf,
+                    );
+                    left || right
+                }
+                Operator::Or => {
+                    let left = Self::prune_expr_with_bloom_filter(
+                        expr.left().as_any().downcast_ref::<phys_expr::BinaryExpr>(),
+                        column_sbbf,
+                    );
+                    let right = Self::prune_expr_with_bloom_filter(
+                        expr.right()
+                            .as_any()
+                            .downcast_ref::<phys_expr::BinaryExpr>(),
+                        column_sbbf,
+                    );
+                    left && right
+                }
+                Operator::Eq => {
+                    if let Some((col, val)) = Self::check_expr_is_col_equal_const(expr) {
+                        if let Some(sbbf) = column_sbbf.get(col.name()) {
+                            match val {
+                                ScalarValue::Utf8(Some(v)) => !sbbf.check(&v.as_str()),
+                                ScalarValue::Boolean(Some(v)) => !sbbf.check(&v),
+                                ScalarValue::Float64(Some(v)) => !sbbf.check(&v),
+                                ScalarValue::Float32(Some(v)) => !sbbf.check(&v),
+                                ScalarValue::Int64(Some(v)) => !sbbf.check(&v),
+                                ScalarValue::Int32(Some(v)) => !sbbf.check(&v),
+                                ScalarValue::Int16(Some(v)) => !sbbf.check(&v),
+                                ScalarValue::Int8(Some(v)) => !sbbf.check(&v),
+                                _ => false,
+                            }
+                        } else {
+                            false
                         }
                     } else {
                         false
                     }
-                } else {
-                    false
                 }
+                _ => false,
             }
-            _ => false,
-        }
-    }
+    */
 
     fn get_predicate_columns(expr: &Arc<dyn PhysicalExpr>) -> HashSet<String> {
         let mut columns = HashSet::new();
@@ -299,6 +359,16 @@ impl BloomFilterPruningPredicate {
         }
         None
     }
+}
+
+/// Returns true if the interval is always false
+fn is_always_false_interval(interval: &Interval) -> bool {
+    println!("lower: {:?}", interval.lower);
+    println!("upper: {:?}", interval.upper);
+    !interval.lower.open
+        && matches!(interval.lower.value, ScalarValue::Boolean(Some(false)))
+        && !interval.upper.open
+        && matches!(interval.upper.value, ScalarValue::Boolean(Some(false)))
 }
 
 /// Wraps parquet statistics in a way
