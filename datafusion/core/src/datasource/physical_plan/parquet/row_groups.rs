@@ -121,10 +121,8 @@ pub(crate) async fn prune_row_groups_by_bloom_filters<
     predicate: &PruningPredicate,
     metrics: &ParquetFileMetrics,
 ) -> Vec<usize> {
-    let bf_predicates = match BloomFilterPruningPredicate::try_new(
-        predicate.schema().clone(),
-        predicate.orig_expr(),
-    ) {
+    let bf_predicates = match BloomFilterPruningPredicate::try_new(predicate.orig_expr())
+    {
         Ok(predicates) => predicates,
         Err(_) => {
             return row_groups.to_vec();
@@ -174,9 +172,6 @@ pub(crate) async fn prune_row_groups_by_bloom_filters<
 }
 
 struct BloomFilterPruningPredicate {
-    /// The input schema against which the predicate will be evaluated
-    schema: SchemaRef,
-
     ///  predicate
     predicate_expr: Arc<dyn PhysicalExpr>,
     /// The statistics required to evaluate this predicate
@@ -184,7 +179,7 @@ struct BloomFilterPruningPredicate {
 }
 
 impl BloomFilterPruningPredicate {
-    fn try_new(schema: SchemaRef, expr: &Arc<dyn PhysicalExpr>) -> Result<Self> {
+    fn try_new(expr: &Arc<dyn PhysicalExpr>) -> Result<Self> {
         let columns = Self::get_predicate_columns(expr);
         if columns.is_empty() {
             return Err(DataFusionError::Execution(
@@ -193,7 +188,6 @@ impl BloomFilterPruningPredicate {
         }
 
         Ok(Self {
-            schema,
             predicate_expr: expr.clone(),
             required_columns: columns.into_iter().collect(),
         })
