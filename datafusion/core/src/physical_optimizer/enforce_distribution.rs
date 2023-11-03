@@ -4389,7 +4389,8 @@ mod tests {
         let physical_plan = sort_preserving_merge_exec(sort_key, filter_exec(input));
 
         let expected = &[
-            "SortPreservingMergeExec: [c@2 ASC]",
+            // After CoalescePartitionsExec c is still constant. Hence c@2 ASC ordering is already satisfied.
+            "CoalescePartitionsExec",
             // Since after this stage c is constant. c@2 ASC ordering is already satisfied.
             "FilterExec: c@2 = 0",
             "RepartitionExec: partitioning=RoundRobinBatch(10), input_partitions=2",
@@ -4397,14 +4398,6 @@ mod tests {
         ];
 
         assert_optimized!(expected, physical_plan.clone(), true);
-
-        let expected = &[
-            "SortExec: expr=[c@2 ASC]",
-            "CoalescePartitionsExec",
-            "FilterExec: c@2 = 0",
-            "RepartitionExec: partitioning=RoundRobinBatch(10), input_partitions=2",
-            "ParquetExec: file_groups={2 groups: [[x], [y]]}, projection=[a, b, c, d, e], output_ordering=[c@2 ASC]",
-        ];
         assert_optimized!(expected, physical_plan, false);
 
         Ok(())
