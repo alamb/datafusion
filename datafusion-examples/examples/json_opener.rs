@@ -29,7 +29,7 @@ use datafusion::{
     error::Result,
     physical_plan::metrics::ExecutionPlanMetricsSet,
 };
-use datafusion_common::Statistics;
+use datafusion_statistics::Statistics
 
 use futures::StreamExt;
 use object_store::ObjectStore;

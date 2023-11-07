@@ -26,7 +26,6 @@ use datafusion::datasource::physical_plan::ParquetExec;
 use datafusion::datasource::TableProvider;
 use datafusion::execution::context::SessionState;
 use datafusion::prelude::SessionContext;
-use datafusion_common::stats::Precision;
 use datafusion_execution::cache::cache_manager::CacheManagerConfig;
 use datafusion_execution::cache::cache_unit;
 use datafusion_execution::cache::cache_unit::{
@@ -34,6 +33,7 @@ use datafusion_execution::cache::cache_unit::{
 };
 use datafusion_execution::config::SessionConfig;
 use datafusion_execution::runtime_env::{RuntimeConfig, RuntimeEnv};
+use datafusion_statistics::Precision;
 
 use tempfile::tempdir;
 

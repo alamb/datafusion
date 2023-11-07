@@ -39,8 +39,8 @@ use datafusion::physical_plan::windows::create_window_expr;
 use datafusion::physical_plan::{
     functions, ColumnStatistics, Partitioning, PhysicalExpr, Statistics, WindowExpr,
 };
-use datafusion_common::stats::Precision;
 use datafusion_common::{not_impl_err, DataFusionError, JoinSide, Result, ScalarValue};
+use datafusion_statistics::Precision;
 
 use crate::common::proto_error;
 use crate::convert_required;

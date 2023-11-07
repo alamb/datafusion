@@ -521,7 +521,7 @@ mod tests {
     use arrow_schema::Schema;
     use datafusion_common::internal_err;
     use datafusion_common::DataFusionError;
-    use datafusion_common::Statistics;
+    use datafusion_statistics::Statistics;
 
     use super::*;
     use crate::datasource::file_format::write::BatchSerializer;

@@ -53,7 +53,6 @@ use datafusion::physical_plan::{
 };
 use datafusion::prelude::SessionContext;
 use datafusion::scalar::ScalarValue;
-use datafusion_common::stats::Precision;
 use datafusion_common::Result;
 use datafusion_expr::{
     Accumulator, AccumulatorFactoryFunction, AggregateUDF, ReturnTypeFunction, Signature,
@@ -61,6 +60,7 @@ use datafusion_expr::{
 };
 use datafusion_proto::physical_plan::{AsExecutionPlan, DefaultPhysicalExtensionCodec};
 use datafusion_proto::protobuf;
+use datafusion_statistics::Precision;
 
 fn roundtrip_test(exec_plan: Arc<dyn ExecutionPlan>) -> Result<()> {
     let ctx = SessionContext::new();

@@ -45,7 +45,6 @@ use arrow::{
     record_batch::RecordBatch,
 };
 use datafusion_common::hash_utils::create_hashes;
-use datafusion_common::stats::Precision;
 use datafusion_common::utils::{
     evaluate_partition_ranges, get_arrayref_at_indices, get_at_indices,
     get_record_batch_at_indices, get_row_at_idx,
@@ -60,6 +59,7 @@ use datafusion_physical_expr::window::{
 use datafusion_physical_expr::{
     EquivalenceProperties, PhysicalExpr, PhysicalSortRequirement,
 };
+use datafusion_statistics::Precision;
 
 use ahash::RandomState;
 use futures::stream::Stream;

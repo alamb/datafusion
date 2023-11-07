@@ -35,7 +35,6 @@ use arrow::compute;
 use arrow::datatypes::{Field, Schema, SchemaBuilder};
 use arrow::record_batch::{RecordBatch, RecordBatchOptions};
 use datafusion_common::cast::as_boolean_array;
-use datafusion_common::stats::Precision;
 use datafusion_common::{
     plan_datafusion_err, plan_err, DataFusionError, JoinSide, JoinType, Result,
     SharedResult,
@@ -47,6 +46,7 @@ use datafusion_physical_expr::utils::merge_vectors;
 use datafusion_physical_expr::{
     LexOrdering, LexOrderingRef, PhysicalExpr, PhysicalSortExpr,
 };
+use datafusion_statistics::Precision;
 
 use futures::future::{BoxFuture, Shared};
 use futures::{ready, FutureExt};

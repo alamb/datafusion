@@ -601,9 +601,10 @@ mod tests_statistical {
     };
 
     use arrow::datatypes::{DataType, Field, Schema};
-    use datafusion_common::{stats::Precision, JoinType, ScalarValue};
+    use datafusion_common::{JoinType, ScalarValue};
     use datafusion_physical_expr::expressions::Column;
     use datafusion_physical_expr::PhysicalExpr;
+    use datafusion_statistics::Precision;
 
     fn create_big_and_small() -> (Arc<dyn ExecutionPlan>, Arc<dyn ExecutionPlan>) {
         let big = Arc::new(StatisticsExec::new(

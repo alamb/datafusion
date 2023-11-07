@@ -77,13 +77,14 @@ pub use crate::visitor::{accept, visit_execution_plan, ExecutionPlanVisitor};
 
 use datafusion_common::config::ConfigOptions;
 pub use datafusion_common::hash_utils;
+pub use datafusion_common::internal_err;
 pub use datafusion_common::utils::project_schema;
-pub use datafusion_common::{internal_err, ColumnStatistics, Statistics};
 pub use datafusion_expr::{Accumulator, ColumnarValue};
 pub use datafusion_physical_expr::window::WindowExpr;
 pub use datafusion_physical_expr::{
     expressions, functions, udf, AggregateExpr, Distribution, Partitioning, PhysicalExpr,
 };
+pub use datafusion_statistics::{ColumnStatistics, Statistics};
 
 // Backwards compatibility
 pub use crate::stream::EmptyRecordBatchStream;

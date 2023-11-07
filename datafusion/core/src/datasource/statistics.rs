@@ -21,8 +21,8 @@ use crate::error::Result;
 use crate::physical_plan::expressions::{MaxAccumulator, MinAccumulator};
 use crate::physical_plan::{Accumulator, ColumnStatistics, Statistics};
 
-use datafusion_common::stats::Precision;
 use datafusion_common::ScalarValue;
+use datafusion_statistics::Precision;
 
 use futures::{Stream, StreamExt};
 use itertools::izip;

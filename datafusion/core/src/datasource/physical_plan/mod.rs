@@ -802,7 +802,7 @@ mod tests {
     /// Unit tests for `repartition_file_groups()`
     #[cfg(feature = "parquet")]
     mod repartition_file_groups_test {
-        use datafusion_common::Statistics;
+        use datafusion_statistics::Statistics;
         use itertools::Itertools;
 
         use super::*;

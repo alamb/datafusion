@@ -43,11 +43,11 @@ use arrow::{
     datatypes::{Schema, SchemaRef},
     record_batch::RecordBatch,
 };
-use datafusion_common::stats::Precision;
 use datafusion_common::utils::evaluate_partition_ranges;
 use datafusion_common::{internal_err, plan_err, DataFusionError, Result};
 use datafusion_execution::TaskContext;
 use datafusion_physical_expr::{EquivalenceProperties, PhysicalSortRequirement};
+use datafusion_statistics::Precision;
 
 use futures::stream::Stream;
 use futures::{ready, StreamExt};

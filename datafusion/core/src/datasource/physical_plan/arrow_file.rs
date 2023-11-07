@@ -30,9 +30,9 @@ use crate::physical_plan::{
 };
 
 use arrow_schema::SchemaRef;
-use datafusion_common::Statistics;
 use datafusion_execution::TaskContext;
 use datafusion_physical_expr::{EquivalenceProperties, LexOrdering, PhysicalSortExpr};
+use datafusion_statistics::Statistics;
 
 use futures::StreamExt;
 use object_store::{GetResultPayload, ObjectStore};

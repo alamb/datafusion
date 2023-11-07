@@ -36,8 +36,8 @@ use datafusion::{
     prelude::SessionContext,
     test_util::{self, arrow_test_data, parquet_test_data},
 };
-use datafusion_common::stats::Precision;
 use datafusion_common::ScalarValue;
+use datafusion_statistics::Precision;
 
 use async_trait::async_trait;
 use bytes::Bytes;

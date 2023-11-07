@@ -40,10 +40,11 @@ use crate::test_util::{aggr_test_schema, arrow_test_data};
 use arrow::array::{self, Array, ArrayRef, Decimal128Builder, Int32Array};
 use arrow::datatypes::{DataType, Field, Schema, SchemaRef};
 use arrow::record_batch::RecordBatch;
-use datafusion_common::{DataFusionError, FileType, Statistics};
+use datafusion_common::{DataFusionError, FileType};
 use datafusion_execution::{SendableRecordBatchStream, TaskContext};
 use datafusion_physical_expr::{Partitioning, PhysicalSortExpr};
 use datafusion_physical_plan::{DisplayAs, DisplayFormatType};
+use datafusion_statistics::Statistics;
 
 #[cfg(feature = "compression")]
 use bzip2::write::BzEncoder;

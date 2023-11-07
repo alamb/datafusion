@@ -19,8 +19,8 @@
 
 use arrow_array::RecordBatch;
 use async_trait::async_trait;
-use datafusion_common::stats::Precision;
 use datafusion_physical_plan::metrics::MetricsSet;
+use datafusion_statistics::Precision;
 use parquet::arrow::arrow_writer::{
     compute_leaves, get_column_writers, ArrowColumnChunk, ArrowColumnWriter,
     ArrowLeafColumn,

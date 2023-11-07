@@ -163,7 +163,7 @@ mod tests {
     use crate::cache::CacheAccessor;
     use arrow::datatypes::{DataType, Field, Schema, TimeUnit};
     use chrono::DateTime;
-    use datafusion_common::Statistics;
+    use datafusion_statistics::Statistics;
     use object_store::path::Path;
     use object_store::ObjectMeta;
 

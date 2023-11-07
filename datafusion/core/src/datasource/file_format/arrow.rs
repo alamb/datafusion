@@ -35,8 +35,9 @@ use arrow::ipc::root_as_message;
 use arrow_schema::{ArrowError, Schema, SchemaRef};
 
 use bytes::Bytes;
-use datafusion_common::{FileType, Statistics};
+use datafusion_common::FileType;
 use datafusion_physical_expr::PhysicalExpr;
+use datafusion_statistics::Statistics;
 
 use async_trait::async_trait;
 use futures::stream::BoxStream;

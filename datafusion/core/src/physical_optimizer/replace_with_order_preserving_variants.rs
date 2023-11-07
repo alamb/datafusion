@@ -291,11 +291,12 @@ mod tests {
     use arrow::compute::SortOptions;
     use arrow::datatypes::{DataType, Field, Schema, SchemaRef};
     use datafusion_common::tree_node::TreeNode;
-    use datafusion_common::{Result, Statistics};
+    use datafusion_common::Result;
     use datafusion_execution::object_store::ObjectStoreUrl;
     use datafusion_expr::{JoinType, Operator};
     use datafusion_physical_expr::expressions::{self, col, Column};
     use datafusion_physical_expr::PhysicalSortExpr;
+    use datafusion_statistics::Statistics;
 
     /// Runs the `replace_with_order_preserving_variants` sub-rule and asserts the plan
     /// against the original and expected plans.

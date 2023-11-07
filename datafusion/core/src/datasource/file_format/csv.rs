@@ -610,10 +610,10 @@ mod tests {
     use chrono::DateTime;
     use datafusion_common::cast::as_string_array;
     use datafusion_common::internal_err;
-    use datafusion_common::stats::Precision;
     use datafusion_common::FileType;
     use datafusion_common::GetExt;
     use datafusion_expr::{col, lit};
+    use datafusion_statistics::Precision;
     use futures::StreamExt;
     use object_store::local::LocalFileSystem;
     use object_store::path::Path;

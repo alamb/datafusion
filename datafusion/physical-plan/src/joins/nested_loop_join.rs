@@ -50,7 +50,7 @@ use datafusion_execution::TaskContext;
 use datafusion_expr::JoinType;
 use datafusion_physical_expr::equivalence::join_equivalence_properties;
 use datafusion_physical_expr::{EquivalenceProperties, PhysicalSortExpr};
-use datafusion_statstics::Statistics;
+use datafusion_statistics::Statistics;
 
 use futures::{ready, Stream, StreamExt, TryStreamExt};
 

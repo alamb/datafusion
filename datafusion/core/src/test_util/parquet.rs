@@ -36,7 +36,7 @@ use crate::physical_plan::metrics::MetricsSet;
 use crate::physical_plan::ExecutionPlan;
 use crate::prelude::{Expr, SessionConfig};
 
-use datafusion_common::Statistics;
+use datafusion_statistics::Statistics;
 
 use object_store::path::Path;
 use object_store::ObjectMeta;

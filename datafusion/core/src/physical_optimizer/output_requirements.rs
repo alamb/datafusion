@@ -31,11 +31,12 @@ use crate::physical_plan::{DisplayAs, DisplayFormatType, ExecutionPlan};
 use arrow_schema::SchemaRef;
 use datafusion_common::config::ConfigOptions;
 use datafusion_common::tree_node::{Transformed, TreeNode};
-use datafusion_common::{Result, Statistics};
+use datafusion_common::Result;
 use datafusion_physical_expr::{
     Distribution, LexRequirement, PhysicalSortExpr, PhysicalSortRequirement,
 };
 use datafusion_physical_plan::sorts::sort_preserving_merge::SortPreservingMergeExec;
+use datafusion_statistics::Statistics;
 
 /// This rule either adds or removes [`OutputRequirements`]s to/from the physical
 /// plan according to its `mode` attribute, which is set by the constructors

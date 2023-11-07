@@ -38,9 +38,10 @@ use arrow::buffer::Buffer;
 use arrow::datatypes::{ArrowNativeType, UInt16Type};
 use arrow_array::{ArrayRef, DictionaryArray, RecordBatch, RecordBatchOptions};
 use arrow_schema::{DataType, Field, Schema, SchemaRef};
-use datafusion_common::stats::Precision;
-use datafusion_common::{exec_err, ColumnStatistics, Statistics};
+use datafusion_common::exec_err;
 use datafusion_physical_expr::LexOrdering;
+use datafusion_statistics::Precision;
+use datafusion_statistics::{ColumnStatistics, Statistics};
 
 use itertools::Itertools;
 use log::warn;

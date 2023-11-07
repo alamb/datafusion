@@ -356,7 +356,7 @@ impl DataSink for JsonSink {
 mod tests {
     use super::super::test_util::scan_format;
     use datafusion_common::cast::as_int64_array;
-    use datafusion_common::stats::Precision;
+    use datafusion_statistics::Precision;
     use futures::StreamExt;
     use object_store::local::LocalFileSystem;
 
