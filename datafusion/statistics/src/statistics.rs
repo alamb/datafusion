@@ -19,7 +19,7 @@
 
 use std::fmt::{self, Debug, Display};
 
-use crate::ScalarValue;
+use datafusion_common::ScalarValue;
 
 use arrow_schema::Schema;
 

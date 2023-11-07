@@ -29,6 +29,7 @@ members = [
     "datafusion/proto/gen",
     "datafusion/sql",
     "datafusion/sqllogictest",
+    "datafusion/statistics",
     "datafusion/substrait",
     "datafusion/wasmtest",
     "datafusion-examples",
