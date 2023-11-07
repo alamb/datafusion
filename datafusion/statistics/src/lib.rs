@@ -16,6 +16,5 @@
 // under the License.
 
 /// Statistics for DataFusion
-
 mod statistics;
-pub use statistics::{Statistics, Precision, ColumnStatistics};
+pub use statistics::{ColumnStatistics, Precision, Statistics};

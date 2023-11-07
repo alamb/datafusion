@@ -19,7 +19,7 @@ use std::sync::Arc;
 
 use crate::cache::CacheAccessor;
 
-use datafusion_common::Statistics;
+use datafusion_statistics::Statistics;
 
 use dashmap::DashMap;
 use object_store::path::Path;

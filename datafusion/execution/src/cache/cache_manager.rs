@@ -16,7 +16,8 @@
 // under the License.
 
 use crate::cache::CacheAccessor;
-use datafusion_common::{Result, Statistics};
+use datafusion_common::Result;
+use datafusion_statistics::Statistics;
 use object_store::path::Path;
 use object_store::ObjectMeta;
 use std::fmt::{Debug, Formatter};

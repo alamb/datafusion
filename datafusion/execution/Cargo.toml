@@ -38,6 +38,7 @@ chrono = { version = "0.4", default-features = false }
 dashmap = { workspace = true }
 datafusion-common = { workspace = true }
 datafusion-expr = { workspace = true }
+datafusion-statistics = { workspace = true }
 futures = { workspace = true }
 hashbrown = { version = "0.14", features = ["raw"] }
 log = { workspace = true }

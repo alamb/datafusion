@@ -38,7 +38,6 @@ use crate::{
 use arrow::array::ArrayRef;
 use arrow::datatypes::{Field, Schema, SchemaRef};
 use arrow::record_batch::RecordBatch;
-use datafusion_common::stats::Precision;
 use datafusion_common::{not_impl_err, plan_err, DataFusionError, Result};
 use datafusion_execution::TaskContext;
 use datafusion_expr::Accumulator;
@@ -49,6 +48,7 @@ use datafusion_physical_expr::{
     physical_exprs_contains, reverse_order_bys, AggregateExpr, EquivalenceProperties,
     LexOrdering, LexRequirement, PhysicalExpr, PhysicalSortExpr, PhysicalSortRequirement,
 };
+use datafusion_statistics::Precision;
 
 use itertools::{izip, Itertools};
 

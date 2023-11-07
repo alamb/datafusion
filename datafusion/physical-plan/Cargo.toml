@@ -44,6 +44,7 @@ datafusion-common = { workspace = true }
 datafusion-execution = { workspace = true }
 datafusion-expr = { workspace = true }
 datafusion-physical-expr = { workspace = true }
+datafusion-statistics = { workspace = true }
 futures = { workspace = true }
 half = { version = "2.1", default-features = false }
 hashbrown = { version = "0.14", features = ["raw"] }

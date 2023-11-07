@@ -37,7 +37,6 @@ use arrow::compute::filter_record_batch;
 use arrow::datatypes::{DataType, SchemaRef};
 use arrow::record_batch::RecordBatch;
 use datafusion_common::cast::as_boolean_array;
-use datafusion_common::stats::Precision;
 use datafusion_common::{plan_err, DataFusionError, Result};
 use datafusion_execution::TaskContext;
 use datafusion_expr::Operator;
@@ -48,6 +47,7 @@ use datafusion_physical_expr::{
     analyze, split_conjunction, AnalysisContext, EquivalenceProperties, ExprBoundaries,
     PhysicalExpr,
 };
+use datafusion_statistics::Precision;
 
 use futures::stream::{Stream, StreamExt};
 use log::trace;

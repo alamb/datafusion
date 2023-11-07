@@ -27,10 +27,8 @@ use crate::utils::collect_columns;
 use crate::PhysicalExpr;
 
 use arrow::datatypes::Schema;
-use datafusion_common::stats::Precision;
-use datafusion_common::{
-    internal_err, ColumnStatistics, DataFusionError, Result, ScalarValue,
-};
+use datafusion_common::{internal_err, DataFusionError, Result, ScalarValue};
+use datafusion_statistics::{ColumnStatistics, Precision};
 
 /// The shared context used during the analysis of an expression. Includes
 /// the boundaries for all known columns.

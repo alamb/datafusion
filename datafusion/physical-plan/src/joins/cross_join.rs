@@ -34,12 +34,12 @@ use crate::{
 use arrow::datatypes::{Fields, Schema, SchemaRef};
 use arrow::record_batch::RecordBatch;
 use arrow_array::RecordBatchOptions;
-use datafusion_common::stats::Precision;
 use datafusion_common::{plan_err, DataFusionError, JoinType, Result, ScalarValue};
 use datafusion_execution::memory_pool::{MemoryConsumer, MemoryReservation};
 use datafusion_execution::TaskContext;
 use datafusion_physical_expr::equivalence::join_equivalence_properties;
 use datafusion_physical_expr::EquivalenceProperties;
+use datafusion_statistics::Precision;
 
 use async_trait::async_trait;
 use futures::{ready, Stream, StreamExt, TryStreamExt};

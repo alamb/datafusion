@@ -70,6 +70,7 @@ datafusion-physical-plan = { path = "datafusion/physical-plan" }
 datafusion-execution = { path = "datafusion/execution" }
 datafusion-proto = { path = "datafusion/proto" }
 datafusion-sqllogictest = { path = "datafusion/sqllogictest" }
+datafusion-statistics = { path = "datafusion/statistics" }
 datafusion-substrait = { path = "datafusion/substrait" }
 dashmap = "5.4.0"
 doc-comment = "0.3"
