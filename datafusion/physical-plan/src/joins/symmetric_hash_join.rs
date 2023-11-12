@@ -626,9 +626,7 @@ impl Stream for SymmetricHashJoinStream {
 /// # Returns
 ///
 /// A [Result] object that contains the pruning length. The function will return
-/// an error if
-/// - there is an issue evaluating the build side filter expression;
-/// - there is an issue converting the build side filter expression into an array
+/// an error if there is an issue evaluating the build side filter expression.
 fn determine_prune_length(
     buffer: &RecordBatch,
     build_side_filter_expr: &SortedFilterExpr,
@@ -639,7 +637,7 @@ fn determine_prune_length(
     let batch_arr = origin_sorted_expr
         .expr
         .evaluate(buffer)?
-        .into_array(buffer.num_rows())?;
+        .into_array(buffer.num_rows());
 
     // Get the lower or upper interval based on the sort direction
     let target = if origin_sorted_expr.options.descending {

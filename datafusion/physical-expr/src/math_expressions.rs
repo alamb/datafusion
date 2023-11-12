@@ -769,8 +769,7 @@ mod tests {
         let args = vec![ColumnarValue::Array(Arc::new(NullArray::new(1)))];
         let array = random(&args)
             .expect("failed to initialize function random")
-            .into_array(1)
-            .expect("Failed to convert to array");
+            .into_array(1);
         let floats =
             as_float64_array(&array).expect("failed to initialize function random");
 

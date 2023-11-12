@@ -67,15 +67,13 @@ fn array_struct(args: &[ArrayRef]) -> Result<ArrayRef> {
 
 /// put values in a struct array.
 pub fn struct_expr(values: &[ColumnarValue]) -> Result<ColumnarValue> {
-    let arrays = values
+    let arrays: Vec<ArrayRef> = values
         .iter()
-        .map(|x| {
-            Ok(match x {
-                ColumnarValue::Array(array) => array.clone(),
-                ColumnarValue::Scalar(scalar) => scalar.to_array()?.clone(),
-            })
+        .map(|x| match x {
+            ColumnarValue::Array(array) => array.clone(),
+            ColumnarValue::Scalar(scalar) => scalar.to_array().clone(),
         })
-        .collect::<Result<Vec<ArrayRef>>>()?;
+        .collect();
     Ok(ColumnarValue::Array(array_struct(arrays.as_slice())?))
 }
 
@@ -95,8 +93,7 @@ mod tests {
         ];
         let struc = struct_expr(&args)
             .expect("failed to initialize function struct")
-            .into_array(1)
-            .expect("Failed to convert to array");
+            .into_array(1);
         let result =
             as_struct_array(&struc).expect("failed to initialize function struct");
         assert_eq!(

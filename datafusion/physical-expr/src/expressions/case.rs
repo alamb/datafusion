@@ -126,7 +126,7 @@ impl CaseExpr {
         let return_type = self.data_type(&batch.schema())?;
         let expr = self.expr.as_ref().unwrap();
         let base_value = expr.evaluate(batch)?;
-        let base_value = base_value.into_array(batch.num_rows())?;
+        let base_value = base_value.into_array(batch.num_rows());
         let base_nulls = is_null(base_value.as_ref())?;
 
         // start with nulls as default output
@@ -137,7 +137,7 @@ impl CaseExpr {
             let when_value = self.when_then_expr[i]
                 .0
                 .evaluate_selection(batch, &remainder)?;
-            let when_value = when_value.into_array(batch.num_rows())?;
+            let when_value = when_value.into_array(batch.num_rows());
             // build boolean array representing which rows match the "when" value
             let when_match = eq(&when_value, &base_value)?;
             // Treat nulls as false
@@ -153,7 +153,7 @@ impl CaseExpr {
                 ColumnarValue::Scalar(value) if value.is_null() => {
                     new_null_array(&return_type, batch.num_rows())
                 }
-                _ => then_value.into_array(batch.num_rows())?,
+                _ => then_value.into_array(batch.num_rows()),
             };
 
             current_value =
@@ -170,7 +170,7 @@ impl CaseExpr {
             remainder = or(&base_nulls, &remainder)?;
             let else_ = expr
                 .evaluate_selection(batch, &remainder)?
-                .into_array(batch.num_rows())?;
+                .into_array(batch.num_rows());
             current_value = zip(&remainder, else_.as_ref(), current_value.as_ref())?;
         }
 
@@ -194,7 +194,7 @@ impl CaseExpr {
             let when_value = self.when_then_expr[i]
                 .0
                 .evaluate_selection(batch, &remainder)?;
-            let when_value = when_value.into_array(batch.num_rows())?;
+            let when_value = when_value.into_array(batch.num_rows());
             let when_value = as_boolean_array(&when_value).map_err(|e| {
                 DataFusionError::Context(
                     "WHEN expression did not return a BooleanArray".to_string(),
@@ -214,7 +214,7 @@ impl CaseExpr {
                 ColumnarValue::Scalar(value) if value.is_null() => {
                     new_null_array(&return_type, batch.num_rows())
                 }
-                _ => then_value.into_array(batch.num_rows())?,
+                _ => then_value.into_array(batch.num_rows()),
             };
 
             current_value =
@@ -231,7 +231,7 @@ impl CaseExpr {
                 .unwrap_or_else(|_| e.clone());
             let else_ = expr
                 .evaluate_selection(batch, &remainder)?
-                .into_array(batch.num_rows())?;
+                .into_array(batch.num_rows());
             current_value = zip(&remainder, else_.as_ref(), current_value.as_ref())?;
         }
 
@@ -425,10 +425,7 @@ mod tests {
             None,
             schema.as_ref(),
         )?;
-        let result = expr
-            .evaluate(&batch)?
-            .into_array(batch.num_rows())
-            .expect("Failed to convert to array");
+        let result = expr.evaluate(&batch)?.into_array(batch.num_rows());
         let result = as_int32_array(&result)?;
 
         let expected = &Int32Array::from(vec![Some(123), None, None, Some(456)]);
@@ -456,10 +453,7 @@ mod tests {
             Some(else_value),
             schema.as_ref(),
         )?;
-        let result = expr
-            .evaluate(&batch)?
-            .into_array(batch.num_rows())
-            .expect("Failed to convert to array");
+        let result = expr.evaluate(&batch)?.into_array(batch.num_rows());
         let result = as_int32_array(&result)?;
 
         let expected =
@@ -491,10 +485,7 @@ mod tests {
             Some(else_value),
             schema.as_ref(),
         )?;
-        let result = expr
-            .evaluate(&batch)?
-            .into_array(batch.num_rows())
-            .expect("Failed to convert to array");
+        let result = expr.evaluate(&batch)?.into_array(batch.num_rows());
         let result =
             as_float64_array(&result).expect("failed to downcast to Float64Array");
 
@@ -532,10 +523,7 @@ mod tests {
             None,
             schema.as_ref(),
         )?;
-        let result = expr
-            .evaluate(&batch)?
-            .into_array(batch.num_rows())
-            .expect("Failed to convert to array");
+        let result = expr.evaluate(&batch)?.into_array(batch.num_rows());
         let result = as_int32_array(&result)?;
 
         let expected = &Int32Array::from(vec![Some(123), None, None, Some(456)]);
@@ -563,10 +551,7 @@ mod tests {
             Some(else_value),
             schema.as_ref(),
         )?;
-        let result = expr
-            .evaluate(&batch)?
-            .into_array(batch.num_rows())
-            .expect("Failed to convert to array");
+        let result = expr.evaluate(&batch)?.into_array(batch.num_rows());
         let result = as_int32_array(&result)?;
 
         let expected =
@@ -598,10 +583,7 @@ mod tests {
             Some(x),
             schema.as_ref(),
         )?;
-        let result = expr
-            .evaluate(&batch)?
-            .into_array(batch.num_rows())
-            .expect("Failed to convert to array");
+        let result = expr.evaluate(&batch)?.into_array(batch.num_rows());
         let result =
             as_float64_array(&result).expect("failed to downcast to Float64Array");
 
@@ -647,10 +629,7 @@ mod tests {
             Some(else_value),
             schema.as_ref(),
         )?;
-        let result = expr
-            .evaluate(&batch)?
-            .into_array(batch.num_rows())
-            .expect("Failed to convert to array");
+        let result = expr.evaluate(&batch)?.into_array(batch.num_rows());
         let result = as_int32_array(&result)?;
 
         let expected =
@@ -682,10 +661,7 @@ mod tests {
             Some(else_value),
             schema.as_ref(),
         )?;
-        let result = expr
-            .evaluate(&batch)?
-            .into_array(batch.num_rows())
-            .expect("Failed to convert to array");
+        let result = expr.evaluate(&batch)?.into_array(batch.num_rows());
         let result =
             as_float64_array(&result).expect("failed to downcast to Float64Array");
 
@@ -717,10 +693,7 @@ mod tests {
             None,
             schema.as_ref(),
         )?;
-        let result = expr
-            .evaluate(&batch)?
-            .into_array(batch.num_rows())
-            .expect("Failed to convert to array");
+        let result = expr.evaluate(&batch)?.into_array(batch.num_rows());
         let result =
             as_float64_array(&result).expect("failed to downcast to Float64Array");
 
@@ -748,10 +721,7 @@ mod tests {
             None,
             schema.as_ref(),
         )?;
-        let result = expr
-            .evaluate(&batch)?
-            .into_array(batch.num_rows())
-            .expect("Failed to convert to array");
+        let result = expr.evaluate(&batch)?.into_array(batch.num_rows());
         let result =
             as_float64_array(&result).expect("failed to downcast to Float64Array");
 

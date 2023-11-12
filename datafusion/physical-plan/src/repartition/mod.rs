@@ -169,7 +169,9 @@ impl BatchPartitioner {
 
                     let arrays = exprs
                         .iter()
-                        .map(|expr| expr.evaluate(&batch)?.into_array(batch.num_rows()))
+                        .map(|expr| {
+                            Ok(expr.evaluate(&batch)?.into_array(batch.num_rows()))
+                        })
                         .collect::<Result<Vec<_>>>()?;
 
                     hash_buffer.clear();

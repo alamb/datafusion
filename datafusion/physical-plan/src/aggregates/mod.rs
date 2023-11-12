@@ -1064,11 +1064,10 @@ fn finalize_aggregation(
             // build the vector of states
             let a = accumulators
                 .iter()
-                .map(|accumulator| {
-                    accumulator.state().and_then(|e| {
-                        e.iter()
-                            .map(|v| v.to_array())
-                            .collect::<Result<Vec<ArrayRef>>>()
+                .map(|accumulator| accumulator.state())
+                .map(|value| {
+                    value.map(|e| {
+                        e.iter().map(|v| v.to_array()).collect::<Vec<ArrayRef>>()
                     })
                 })
                 .collect::<Result<Vec<_>>>()?;
@@ -1081,7 +1080,7 @@ fn finalize_aggregation(
             // merge the state to the final value
             accumulators
                 .iter()
-                .map(|accumulator| accumulator.evaluate().and_then(|v| v.to_array()))
+                .map(|accumulator| accumulator.evaluate().map(|v| v.to_array()))
                 .collect::<Result<Vec<ArrayRef>>>()
         }
     }
@@ -1093,11 +1092,9 @@ fn evaluate(
     batch: &RecordBatch,
 ) -> Result<Vec<ArrayRef>> {
     expr.iter()
-        .map(|expr| {
-            expr.evaluate(batch)
-                .and_then(|v| v.into_array(batch.num_rows()))
-        })
-        .collect()
+        .map(|expr| expr.evaluate(batch))
+        .map(|r| r.map(|v| v.into_array(batch.num_rows())))
+        .collect::<Result<Vec<_>>>()
 }
 
 /// Evaluates expressions against a record batch.
@@ -1117,11 +1114,9 @@ fn evaluate_optional(
     expr.iter()
         .map(|expr| {
             expr.as_ref()
-                .map(|expr| {
-                    expr.evaluate(batch)
-                        .and_then(|v| v.into_array(batch.num_rows()))
-                })
+                .map(|expr| expr.evaluate(batch))
                 .transpose()
+                .map(|r| r.map(|v| v.into_array(batch.num_rows())))
         })
         .collect::<Result<Vec<_>>>()
 }
@@ -1145,7 +1140,7 @@ pub(crate) fn evaluate_group_by(
         .iter()
         .map(|(expr, _)| {
             let value = expr.evaluate(batch)?;
-            value.into_array(batch.num_rows())
+            Ok(value.into_array(batch.num_rows()))
         })
         .collect::<Result<Vec<_>>>()?;
 
@@ -1154,7 +1149,7 @@ pub(crate) fn evaluate_group_by(
         .iter()
         .map(|(expr, _)| {
             let value = expr.evaluate(batch)?;
-            value.into_array(batch.num_rows())
+            Ok(value.into_array(batch.num_rows()))
         })
         .collect::<Result<Vec<_>>>()?;
 

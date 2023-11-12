@@ -150,10 +150,7 @@ mod tests {
         let batch =
             RecordBatch::try_new(Arc::new(schema.clone()), vec![Arc::new(input)])?;
 
-        let result = expr
-            .evaluate(&batch)?
-            .into_array(batch.num_rows())
-            .expect("Failed to convert to array");
+        let result = expr.evaluate(&batch)?.into_array(batch.num_rows());
         let result =
             as_boolean_array(&result).expect("failed to downcast to BooleanArray");
         assert_eq!(result, expected);

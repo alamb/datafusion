@@ -126,7 +126,7 @@ impl ArrowPredicate for DatafusionArrowPredicate {
         match self
             .physical_expr
             .evaluate(&batch)
-            .and_then(|v| v.into_array(batch.num_rows()))
+            .map(|v| v.into_array(batch.num_rows()))
         {
             Ok(array) => {
                 let bool_arr = as_boolean_array(&array)?.clone();

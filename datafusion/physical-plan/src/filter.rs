@@ -312,7 +312,7 @@ pub(crate) fn batch_filter(
 ) -> Result<RecordBatch> {
     predicate
         .evaluate(batch)
-        .and_then(|v| v.into_array(batch.num_rows()))
+        .map(|v| v.into_array(batch.num_rows()))
         .and_then(|array| {
             Ok(as_boolean_array(&array)?)
                 // apply filter array to record batch

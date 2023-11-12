@@ -36,11 +36,11 @@ use std::sync::Arc;
 pub fn get_accum_scalar_values_as_arrays(
     accum: &dyn Accumulator,
 ) -> Result<Vec<ArrayRef>> {
-    accum
+    Ok(accum
         .state()?
         .iter()
         .map(|s| s.to_array_of_size(1))
-        .collect::<Result<Vec<_>>>()
+        .collect::<Vec<_>>())
 }
 
 /// Computes averages for `Decimal128`/`Decimal256` values, checking for overflow
