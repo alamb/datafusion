@@ -24,6 +24,7 @@ use std::task::Poll;
 
 use crate::displayable;
 use arrow::{datatypes::SchemaRef, record_batch::RecordBatch};
+use arrow_schema::Schema;
 use datafusion_common::DataFusionError;
 use datafusion_common::Result;
 use datafusion_common::{exec_err, internal_err};
@@ -305,6 +306,19 @@ impl<S> RecordBatchStreamAdapter<S> {
     pub fn new(schema: SchemaRef, stream: S) -> Self {
         Self { schema, stream }
     }
+
+}
+
+/// Create a new RecordBatchStream from the specified batches.
+pub fn batches_to_stream(batches: Vec<RecordBatch>) ->  SendableRecordBatchStream {
+    let schema = batches
+        .first()
+        .map(|b| b.schema().clone())
+        // no batches => empty schema
+        .unwrap_or_else(|| Arc::new(Schema::empty()));
+
+    let batches = batches.into_iter().map(|b| Ok(b));
+    Box::pin(RecordBatchStreamAdapter::new(schema, futures::stream::iter(batches)))
 }
 
 impl<S> std::fmt::Debug for RecordBatchStreamAdapter<S> {

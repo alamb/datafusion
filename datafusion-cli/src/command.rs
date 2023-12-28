@@ -21,12 +21,14 @@ use crate::exec::exec_from_lines;
 use crate::functions::{display_all_functions, Function};
 use crate::print_format::PrintFormat;
 use crate::print_options::PrintOptions;
+use crate::printer::Printer;
 use clap::ArgEnum;
 use datafusion::arrow::array::{ArrayRef, StringArray};
 use datafusion::arrow::datatypes::{DataType, Field, Schema};
 use datafusion::arrow::record_batch::RecordBatch;
 use datafusion::common::exec_err;
 use datafusion::error::{DataFusionError, Result};
+use datafusion::physical_plan::stream::batches_to_stream;
 use datafusion::prelude::SessionContext;
 use std::fs::File;
 use std::io::BufReader;
@@ -59,17 +61,20 @@ impl Command {
         print_options: &mut PrintOptions,
     ) -> Result<()> {
         let now = Instant::now();
+        // print based on the current options
+        let printer = Printer::new(print_options.clone());
         match self {
-            Self::Help => print_options.print_batches(&[all_commands_info()], now),
+            Self::Help => {
+                let stream = batches_to_stream(vec![all_commands_info()]);
+                printer.print(stream).await
+            }
             Self::ListTables => {
                 let df = ctx.sql("SHOW TABLES").await?;
-                let batches = df.collect().await?;
-                print_options.print_batches(&batches, now)
+                printer.print(df.execute_stream().await?).await
             }
             Self::DescribeTableStmt(name) => {
                 let df = ctx.sql(&format!("SHOW COLUMNS FROM {}", name)).await?;
-                let batches = df.collect().await?;
-                print_options.print_batches(&batches, now)
+                printer.print(df.execute_stream().await?).await
             }
             Self::Include(filename) => {
                 if let Some(filename) = filename {
@@ -148,6 +153,7 @@ const ALL_COMMANDS: [Command; 9] = [
     Command::OutputFormat(None),
 ];
 
+/// Returns a RecordBatch with available datafusion-cli commands and their descriptions
 fn all_commands_info() -> RecordBatch {
     let schema = Arc::new(Schema::new(vec![
         Field::new("Command", DataType::Utf8, false),

@@ -42,6 +42,7 @@ use datafusion::physical_plan::{collect, execute_stream};
 use datafusion::prelude::SessionContext;
 use datafusion::sql::{parser::DFParser, sqlparser::dialect::dialect_from_str};
 
+use crate::printer::Printer;
 use object_store::ObjectStore;
 use rustyline::error::ReadlineError;
 use rustyline::Editor;
@@ -197,7 +198,6 @@ async fn exec_and_print(
     print_options: &PrintOptions,
     sql: String,
 ) -> Result<()> {
-    let now = Instant::now();
     let sql = unescape_input(&sql)?;
     let task_ctx = ctx.task_ctx();
     let dialect = &task_ctx.session_config().options().sql_parser.dialect;
@@ -210,15 +210,18 @@ async fn exec_and_print(
     })?;
     let statements = DFParser::parse_sql_with_dialect(&sql, dialect.as_ref())?;
     for statement in statements {
+        let mut printer = Printer::new(print_options.clone());
         let mut plan = ctx.state().statement_to_plan(statement).await?;
 
         // For plans like `Explain` ignore `MaxRows` option and always display all rows
-        let should_ignore_maxrows = matches!(
+        if matches!(
             plan,
             LogicalPlan::Explain(_)
                 | LogicalPlan::DescribeTable(_)
                 | LogicalPlan::Analyze(_)
-        );
+        ) {
+            printer.print_all_rows();
+        }
 
         // Note that cmd is a mutable reference so that create_external_table function can remove all
         // datafusion-cli specific options before passing through to datafusion. Otherwise, datafusion
@@ -230,20 +233,10 @@ async fn exec_and_print(
         let df = ctx.execute_logical_plan(plan).await?;
         let physical_plan = df.create_physical_plan().await?;
 
-        if is_plan_streaming(&physical_plan)? {
-            let stream = execute_stream(physical_plan, task_ctx.clone())?;
-            print_options.print_stream(stream, now).await?;
-        } else {
-            let mut print_options = print_options.clone();
-            if should_ignore_maxrows {
-                print_options.maxrows = MaxRows::Unlimited;
-            }
-            if print_options.format == PrintFormat::Automatic {
-                print_options.format = PrintFormat::Table;
-            }
-            let results = collect(physical_plan, task_ctx.clone()).await?;
-            print_options.print_batches(&results, now)?;
-        }
+        // figure output format based on the details of the plan
+        printer.resolve_output_format(is_plan_streaming(&physical_plan)?);
+        let stream = execute_stream(physical_plan, task_ctx.clone())?;
+        printer.print(stream).await?;
     }
 
     Ok(())

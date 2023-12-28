@@ -31,11 +31,19 @@ use datafusion::error::Result;
 /// Allow records to be printed in different formats
 #[derive(Debug, PartialEq, Eq, clap::ArgEnum, Clone, Copy)]
 pub enum PrintFormat {
+    /// Comma separated values
     Csv,
+    /// Tab separate values
     Tsv,
+    /// PrettyTable formatting
     Table,
+    /// JSON
     Json,
+    /// newline delimited JSON
     NdJson,
+    /// Automatically pick based on plan: If the plan will run to completion uses Table.
+    /// based on the plan. If the plan will run indefinitely (streaming) then
+    /// uses NdJson,
     Automatic,
 }
 
