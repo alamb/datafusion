@@ -55,6 +55,9 @@ impl FromStr for PrintFormat {
     }
 }
 
+
+
+
 macro_rules! batches_to_json {
     ($WRITER: ident, $writer: expr, $batches: expr) => {{
         {
