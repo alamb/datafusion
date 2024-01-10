@@ -172,3 +172,7 @@ name = "topk_aggregate"
 [[bench]]
 harness = false
 name = "array_expression"
+
+[[bench]]
+harness = false
+name = "write_threads"
