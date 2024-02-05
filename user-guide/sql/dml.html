@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>DML &#8212; Arrow DataFusion  documentation</title>
+    <title>DML &#8212; Apache Arrow DataFusion  documentation</title>
     
     <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -24,13 +24,14 @@
     
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/pydata-sphinx-theme.css?v=1140d252" />
-    <link rel="stylesheet" type="text/css" href="../../_static/theme_overrides.css?v=51945fb5" />
+    <link rel="stylesheet" type="text/css" href="../../_static/theme_overrides.css?v=c6d785ac" />
     
     <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
   
     <script src="../../_static/documentation_options.js?v=8a448e45"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="true" defer="true" src="https://buttons.github.io/buttons.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="EXPLAIN" href="explain.html" />
@@ -193,6 +194,11 @@
      Status
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="write_options.html">
+     Write Options
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1">
@@ -224,7 +230,13 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../../library-user-guide/working-with-exprs.html">
-   Working with Exprs
+   Working with
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     Expr
+    </span>
+   </code>
+   s
   </a>
  </li>
  <li class="toctree-l1">
@@ -244,7 +256,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../../library-user-guide/adding-udfs.html">
-   Adding User Defined Functions: Scalar/Window/Aggregate
+   Adding User Defined Functions: Scalar/Window/Aggregate/Table Functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -405,16 +417,10 @@ and modifying data in tables.</p>
 <p>Copies the contents of a table or query to file(s). Supported file
 formats are <code class="docutils literal notranslate"><span class="pre">parquet</span></code>, <code class="docutils literal notranslate"><span class="pre">csv</span></code>, and <code class="docutils literal notranslate"><span class="pre">json</span></code> and can be inferred based on
 filename if writing to a single file.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">PER_THREAD_OUTPUT</span></code> option treats <code class="docutils literal notranslate"><span class="pre">file_name</span></code> as a directory and writes a file per thread within it.</p>
 <pre>
 COPY { <i><b>table_name</i></b> | <i><b>query</i></b> } TO '<i><b>file_name</i></b>' [ ( <i><b>option</i></b> [, ... ] ) ]
-
-where <i><b>option</i></b> can be one of:
-    FORMAT <i><b>format_name</i></b>
-    PER_THREAD_OUTPUT <i><b>boolean</i></b>
-    ROW_GROUP_SIZE <i><b>integer</i></b>
-    ROW_GROUP_LIMIT_BYTES <i><b>integer</i></b>
 </pre>
+<p>For a detailed list of valid OPTIONS, see <a class="reference internal" href="write_options.html"><span class="doc std std-doc">Write Options</span></a>.</p>
 <p>Copy the contents of <code class="docutils literal notranslate"><span class="pre">source_table</span></code> to <code class="docutils literal notranslate"><span class="pre">file_name.json</span></code> in JSON format:</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="w"> </span><span class="k">COPY</span><span class="w"> </span><span class="n">source_table</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">&#39;file_name.json&#39;</span><span class="p">;</span>
 <span class="o">+</span><span class="c1">-------+</span>
@@ -426,7 +432,7 @@ where <i><b>option</i></b> can be one of:
 </div>
 <p>Copy the contents of <code class="docutils literal notranslate"><span class="pre">source_table</span></code> to one or more Parquet formatted
 files in the <code class="docutils literal notranslate"><span class="pre">dir_name</span></code> directory:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="w"> </span><span class="k">COPY</span><span class="w"> </span><span class="n">source_table</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">&#39;dir_name&#39;</span><span class="w"> </span><span class="p">(</span><span class="n">FORMAT</span><span class="w"> </span><span class="n">parquet</span><span class="p">,</span><span class="w"> </span><span class="n">PER_THREAD_OUTPUT</span><span class="w"> </span><span class="k">true</span><span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="w"> </span><span class="k">COPY</span><span class="w"> </span><span class="n">source_table</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">&#39;dir_name&#39;</span><span class="w"> </span><span class="p">(</span><span class="n">FORMAT</span><span class="w"> </span><span class="n">parquet</span><span class="p">);</span>
 <span class="o">+</span><span class="c1">-------+</span>
 <span class="o">|</span><span class="w"> </span><span class="k">count</span><span class="w"> </span><span class="o">|</span>
 <span class="o">+</span><span class="c1">-------+</span>
@@ -492,22 +498,30 @@ INSERT INTO <i><b>table_name</i></b> { VALUES ( <i><b>expression</i></b> [, ...]
     </div>
   
     <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-  <footer class="footer mt-5 mt-md-0">
+  
+<!-- Based on pydata_sphinx_theme/footer.html -->
+<footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright 2023, Apache Software Foundation.<br>
+    &copy; Copyright 2019-2024, Apache Software Foundation.<br>
 </p>
     </div>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.5.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6.<br>
 </p>
     </div>
     
+    <div class="footer-item">
+      <p>Apache Arrow DataFusion, Arrow DataFusion, Apache, the Apache feather logo, and the Apache Arrow DataFusion project logo</p>
+      <p>are either registered trademarks or trademarks of The Apache Software Foundation in the United States and other countries.</p>
+    </div>
   </div>
 </footer>
+
+
   </body>
 </html>

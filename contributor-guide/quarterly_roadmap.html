@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Quarterly Roadmap &#8212; Arrow DataFusion  documentation</title>
+    <title>Quarterly Roadmap &#8212; Apache Arrow DataFusion  documentation</title>
     
     <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -24,13 +24,14 @@
     
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/pydata-sphinx-theme.css?v=1140d252" />
-    <link rel="stylesheet" type="text/css" href="../_static/theme_overrides.css?v=51945fb5" />
+    <link rel="stylesheet" type="text/css" href="../_static/theme_overrides.css?v=c6d785ac" />
     
     <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
   
     <script src="../_static/documentation_options.js?v=8a448e45"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="true" defer="true" src="https://buttons.github.io/buttons.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Specifications" href="specification/index.html" />
@@ -193,6 +194,11 @@
      Status
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user-guide/sql/write_options.html">
+     Write Options
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1">
@@ -224,7 +230,13 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../library-user-guide/working-with-exprs.html">
-   Working with Exprs
+   Working with
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     Expr
+    </span>
+   </code>
+   s
   </a>
  </li>
  <li class="toctree-l1">
@@ -244,7 +256,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../library-user-guide/adding-udfs.html">
-   Adding User Defined Functions: Scalar/Window/Aggregate
+   Adding User Defined Functions: Scalar/Window/Aggregate/Table Functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -340,6 +352,11 @@
 
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#q4">
+   2023 Q4
+  </a>
+ </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#q2">
    2022 Q2
@@ -438,6 +455,14 @@
 <section id="quarterly-roadmap">
 <h1>Quarterly Roadmap<a class="headerlink" href="#quarterly-roadmap" title="Link to this heading">¶</a></h1>
 <p>A quarterly roadmap will be published to give the DataFusion community visibility into the priorities of the projects contributors. This roadmap is not binding.</p>
+<section id="q4">
+<h2>2023 Q4<a class="headerlink" href="#q4" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Improve data output (<code class="docutils literal notranslate"><span class="pre">COPY</span></code>, <code class="docutils literal notranslate"><span class="pre">INSERT</span></code> and DataFrame) output capability <a class="reference external" href="https://github.com/apache/arrow-datafusion/issues/6569">#6569</a></p></li>
+<li><p>Implementation of <code class="docutils literal notranslate"><span class="pre">ARRAY</span></code> types and related functions <a class="reference external" href="https://github.com/apache/arrow-datafusion/issues/6980">#6980</a></p></li>
+<li><p>Write an industrial paper about DataFusion for SIGMOD <a class="reference external" href="https://github.com/apache/arrow-datafusion/issues/6782">#6782</a></p></li>
+</ul>
+</section>
 <section id="q2">
 <h2>2022 Q2<a class="headerlink" href="#q2" title="Link to this heading">¶</a></h2>
 <section id="datafusion-core">
@@ -580,22 +605,30 @@
     </div>
   
     <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-  <footer class="footer mt-5 mt-md-0">
+  
+<!-- Based on pydata_sphinx_theme/footer.html -->
+<footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright 2023, Apache Software Foundation.<br>
+    &copy; Copyright 2019-2024, Apache Software Foundation.<br>
 </p>
     </div>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.5.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6.<br>
 </p>
     </div>
     
+    <div class="footer-item">
+      <p>Apache Arrow DataFusion, Arrow DataFusion, Apache, the Apache feather logo, and the Apache Arrow DataFusion project logo</p>
+      <p>are either registered trademarks or trademarks of The Apache Software Foundation in the United States and other countries.</p>
+    </div>
   </div>
 </footer>
+
+
   </body>
 </html>

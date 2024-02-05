@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Custom Table Provider &#8212; Arrow DataFusion  documentation</title>
+    <title>Custom Table Provider &#8212; Apache Arrow DataFusion  documentation</title>
     
     <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -24,17 +24,18 @@
     
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/pydata-sphinx-theme.css?v=1140d252" />
-    <link rel="stylesheet" type="text/css" href="../_static/theme_overrides.css?v=51945fb5" />
+    <link rel="stylesheet" type="text/css" href="../_static/theme_overrides.css?v=c6d785ac" />
     
     <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
   
     <script src="../_static/documentation_options.js?v=8a448e45"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="true" defer="true" src="https://buttons.github.io/buttons.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Extending DataFusion’s operators: custom LogicalPlan and Execution Plans" href="extending-operators.html" />
-    <link rel="prev" title="Adding User Defined Functions: Scalar/Window/Aggregate" href="adding-udfs.html" />
+    <link rel="prev" title="Adding User Defined Functions: Scalar/Window/Aggregate/Table Functions" href="adding-udfs.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en">
     
@@ -193,6 +194,11 @@
      Status
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user-guide/sql/write_options.html">
+     Write Options
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1">
@@ -224,7 +230,13 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="working-with-exprs.html">
-   Working with Exprs
+   Working with
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     Expr
+    </span>
+   </code>
+   s
   </a>
  </li>
  <li class="toctree-l1">
@@ -244,7 +256,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="adding-udfs.html">
-   Adding User Defined Functions: Scalar/Window/Aggregate
+   Adding User Defined Functions: Scalar/Window/Aggregate/Table Functions
   </a>
  </li>
  <li class="toctree-l1 current active">
@@ -359,6 +371,30 @@
       <a class="reference internal nav-link" href="#scan-revisited">
        Scan Revisited
       </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#additional-tableprovider-methods">
+         Additional
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           TableProvider
+          </span>
+         </code>
+         Methods
+        </a>
+        <ul class="nav section-nav flex-column">
+         <li class="toc-h6 nav-item toc-entry">
+          <a class="reference internal nav-link" href="#supports-filters-pushdown">
+           <code class="docutils literal notranslate">
+            <span class="pre">
+             supports_filters_pushdown
+            </span>
+           </code>
+          </a>
+         </li>
+        </ul>
+       </li>
+      </ul>
      </li>
     </ul>
    </li>
@@ -431,7 +467,7 @@
 <p>This section will also touch on how to have DataFusion use the new <code class="docutils literal notranslate"><span class="pre">TableProvider</span></code> implementation.</p>
 <section id="table-provider-and-scan">
 <h2>Table Provider and Scan<a class="headerlink" href="#table-provider-and-scan" title="Link to this heading">¶</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">scan</span></code> method on the <code class="docutils literal notranslate"><span class="pre">TableProvider</span></code> is likely its most important. It returns an <code class="docutils literal notranslate"><span class="pre">ExecutionPlan</span></code> that DataFusion will use to read the actual data during execution o the query.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">scan</span></code> method on the <code class="docutils literal notranslate"><span class="pre">TableProvider</span></code> is likely its most important. It returns an <code class="docutils literal notranslate"><span class="pre">ExecutionPlan</span></code> that DataFusion will use to read the actual data during execution of the query.</p>
 <section id="scan">
 <h3>Scan<a class="headerlink" href="#scan" title="Link to this heading">¶</a></h3>
 <p>As mentioned, <code class="docutils literal notranslate"><span class="pre">scan</span></code> returns an execution plan, and in particular a <code class="docutils literal notranslate"><span class="pre">Result&lt;Arc&lt;dyn</span> <span class="pre">ExecutionPlan&gt;&gt;</span></code>. The core of this is returning something that can be dynamically dispatched to an <code class="docutils literal notranslate"><span class="pre">ExecutionPlan</span></code>. And as per the general DataFusion idea, we’ll need to implement it.</p>
@@ -517,13 +553,28 @@
 </pre></div>
 </div>
 <p>With this, and the implementation of the omitted methods, we can now use the <code class="docutils literal notranslate"><span class="pre">CustomDataSource</span></code> as a <code class="docutils literal notranslate"><span class="pre">TableProvider</span></code> in DataFusion.</p>
+<section id="additional-tableprovider-methods">
+<h5>Additional <code class="docutils literal notranslate"><span class="pre">TableProvider</span></code> Methods<a class="headerlink" href="#additional-tableprovider-methods" title="Link to this heading">¶</a></h5>
+<p><code class="docutils literal notranslate"><span class="pre">scan</span></code> has no default implementation, so it needed to be written. There are other methods on the <code class="docutils literal notranslate"><span class="pre">TableProvider</span></code> that have default implementations, but can be overridden if needed to provide additional functionality.</p>
+<section id="supports-filters-pushdown">
+<h6><code class="docutils literal notranslate"><span class="pre">supports_filters_pushdown</span></code><a class="headerlink" href="#supports-filters-pushdown" title="Link to this heading">¶</a></h6>
+<p>The <code class="docutils literal notranslate"><span class="pre">supports_filters_pushdown</span></code> method can be overridden to indicate which filter expressions support being pushed down to the data source and within that the specificity of the pushdown.</p>
+<p>This returns a <code class="docutils literal notranslate"><span class="pre">Vec</span></code> of <code class="docutils literal notranslate"><span class="pre">TableProviderFilterPushDown</span></code> enums where each enum represents a filter that can be pushed down. The <code class="docutils literal notranslate"><span class="pre">TableProviderFilterPushDown</span></code> enum has three variants:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TableProviderFilterPushDown::Unsupported</span></code> - the filter cannot be pushed down</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TableProviderFilterPushDown::Exact</span></code> - the filter can be pushed down and the data source can guarantee that the filter will be applied completely to all rows. This is the highest performance option.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TableProviderFilterPushDown::Inexact</span></code> - the filter can be pushed down, but the data source cannot guarantee that the filter will be applied to all rows. DataFusion will apply <code class="docutils literal notranslate"><span class="pre">Inexact</span></code> filters again after the scan to ensure correctness.</p></li>
+</ul>
+<p>For filters that can be pushed down, they’ll be passed to the <code class="docutils literal notranslate"><span class="pre">scan</span></code> method as the <code class="docutils literal notranslate"><span class="pre">filters</span></code> parameter and they can be made use of there.</p>
+</section>
+</section>
 </section>
 </section>
 </section>
 <section id="using-the-custom-table-provider">
 <h2>Using the Custom Table Provider<a class="headerlink" href="#using-the-custom-table-provider" title="Link to this heading">¶</a></h2>
-<p>In order to use the custom table provider, we need to register it with DataFusion. This is done by creating a <code class="docutils literal notranslate"><span class="pre">TableProvider</span></code> and registering it with the <code class="docutils literal notranslate"><span class="pre">ExecutionContext</span></code>.</p>
-<div class="highlight-rust notranslate"><div class="highlight"><pre><span></span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">ctx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ExecutionContext</span>::<span class="n">new</span><span class="p">();</span>
+<p>In order to use the custom table provider, we need to register it with DataFusion. This is done by creating a <code class="docutils literal notranslate"><span class="pre">TableProvider</span></code> and registering it with the <code class="docutils literal notranslate"><span class="pre">SessionContext</span></code>.</p>
+<div class="highlight-rust notranslate"><div class="highlight"><pre><span></span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">ctx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SessionContext</span>::<span class="n">new</span><span class="p">();</span>
 
 <span class="kd">let</span><span class="w"> </span><span class="n">custom_table_provider</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CustomDataSource</span>::<span class="n">new</span><span class="p">();</span>
 <span class="n">ctx</span><span class="p">.</span><span class="n">register_table</span><span class="p">(</span><span class="s">&quot;custom_table&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Arc</span>::<span class="n">new</span><span class="p">(</span><span class="n">custom_table_provider</span><span class="p">));</span>
@@ -540,7 +591,7 @@
 <ol class="arabic simple">
 <li><p>Implement the <code class="docutils literal notranslate"><span class="pre">TableProvider</span></code> trait</p></li>
 <li><p>Implement the <code class="docutils literal notranslate"><span class="pre">ExecutionPlan</span></code> trait</p></li>
-<li><p>Register the <code class="docutils literal notranslate"><span class="pre">TableProvider</span></code> with the <code class="docutils literal notranslate"><span class="pre">ExecutionContext</span></code></p></li>
+<li><p>Register the <code class="docutils literal notranslate"><span class="pre">TableProvider</span></code> with the <code class="docutils literal notranslate"><span class="pre">SessionContext</span></code></p></li>
 </ol>
 </section>
 <section id="next-steps">
@@ -565,7 +616,7 @@
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Adding User Defined Functions: Scalar/Window/Aggregate</p>
+            <p class="prev-next-title">Adding User Defined Functions: Scalar/Window/Aggregate/Table Functions</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="extending-operators.html" title="next page">
@@ -584,22 +635,30 @@
     </div>
   
     <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-  <footer class="footer mt-5 mt-md-0">
+  
+<!-- Based on pydata_sphinx_theme/footer.html -->
+<footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright 2023, Apache Software Foundation.<br>
+    &copy; Copyright 2019-2024, Apache Software Foundation.<br>
 </p>
     </div>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.5.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6.<br>
 </p>
     </div>
     
+    <div class="footer-item">
+      <p>Apache Arrow DataFusion, Arrow DataFusion, Apache, the Apache feather logo, and the Apache Arrow DataFusion project logo</p>
+      <p>are either registered trademarks or trademarks of The Apache Software Foundation in the United States and other countries.</p>
+    </div>
   </div>
 </footer>
+
+
   </body>
 </html>

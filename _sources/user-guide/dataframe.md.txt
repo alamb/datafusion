@@ -44,7 +44,7 @@ let df = df.filter(col("a").lt_eq(col("b")))?
            .aggregate(vec![col("a")], vec![min(col("b"))])?
            .limit(0, Some(100))?;
 // Print results
-df.show();
+df.show().await?;
 ```
 
 The DataFrame API is well documented in the [API reference on docs.rs](https://docs.rs/datafusion/latest/datafusion/dataframe/struct.DataFrame.html).
@@ -95,6 +95,7 @@ These methods execute the logical plan represented by the DataFrame and either c
 | write_csv                  | Execute this DataFrame and write the results to disk in CSV format.                                                         |
 | write_json                 | Execute this DataFrame and write the results to disk in JSON format.                                                        |
 | write_parquet              | Execute this DataFrame and write the results to disk in Parquet format.                                                     |
+| write_table                | Execute this DataFrame and write the results via the insert_into method of the registered TableProvider                     |
 
 ## Other DataFrame Methods
 

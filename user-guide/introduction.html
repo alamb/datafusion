@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Introduction &#8212; Arrow DataFusion  documentation</title>
+    <title>Introduction &#8212; Apache Arrow DataFusion  documentation</title>
     
     <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -24,13 +24,14 @@
     
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/pydata-sphinx-theme.css?v=1140d252" />
-    <link rel="stylesheet" type="text/css" href="../_static/theme_overrides.css?v=51945fb5" />
+    <link rel="stylesheet" type="text/css" href="../_static/theme_overrides.css?v=c6d785ac" />
     
     <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
   
     <script src="../_static/documentation_options.js?v=8a448e45"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="true" defer="true" src="https://buttons.github.io/buttons.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Example Usage" href="example-usage.html" />
@@ -193,6 +194,11 @@
      Status
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="sql/write_options.html">
+     Write Options
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1">
@@ -224,7 +230,13 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../library-user-guide/working-with-exprs.html">
-   Working with Exprs
+   Working with
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     Expr
+    </span>
+   </code>
+   s
   </a>
  </li>
  <li class="toctree-l1">
@@ -244,7 +256,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../library-user-guide/adding-udfs.html">
-   Adding User Defined Functions: Scalar/Window/Aggregate
+   Adding User Defined Functions: Scalar/Window/Aggregate/Table Functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -482,7 +494,7 @@ suitable for “streaming” and “transaction” style systems (low
 latency).</p>
 <p>Here are some example systems built using DataFusion:</p>
 <ul class="simple">
-<li><p>Specialized Analytical Database systems such as <a class="reference external" href="https://github.com/CeresDB/ceresdb">CeresDB</a> and more general Apache Spark like system such a <a class="reference external" href="https://github.com/apache/arrow-ballista">Ballista</a>.</p></li>
+<li><p>Specialized Analytical Database systems such as <a class="reference external" href="https://github.com/apache/incubator-horaedb">HoraeDB</a> and more general Apache Spark like system such a <a class="reference external" href="https://github.com/apache/arrow-ballista">Ballista</a>.</p></li>
 <li><p>New query language engines such as <a class="reference external" href="https://github.com/prql/prql-query">prql-query</a> and accelerators such as <a class="reference external" href="https://vegafusion.io/">VegaFusion</a></p></li>
 <li><p>Research platform for new Database Systems, such as <a class="reference external" href="https://github.com/flock-lab/flock">Flock</a></p></li>
 <li><p>SQL support to another library, such as <a class="reference external" href="https://github.com/dask-contrib/dask-sql">dask sql</a></p></li>
@@ -502,7 +514,6 @@ parellelized streaming execution plans, file format support, etc.</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/ArroyoSystems/arroyo">Arroyo</a> Distributed stream processing engine in Rust</p></li>
 <li><p><a class="reference external" href="https://github.com/apache/arrow-ballista">Ballista</a> Distributed SQL Query Engine</p></li>
-<li><p><a class="reference external" href="https://github.com/CeresDB/ceresdb">CeresDB</a> Distributed Time-Series Database</p></li>
 <li><p><a class="reference external" href="https://github.com/cnosdb/cnosdb">CnosDB</a> Open Source Distributed Time Series Database</p></li>
 <li><p><a class="reference external" href="https://github.com/cube-js/cube.js/tree/master/rust">Cube Store</a></p></li>
 <li><p><a class="reference external" href="https://github.com/dask-contrib/dask-sql">Dask SQL</a> Distributed SQL query engine in Python</p></li>
@@ -510,9 +521,13 @@ parellelized streaming execution plans, file format support, etc.</p>
 <li><p><a class="reference external" href="https://github.com/delta-io/delta-rs">delta-rs</a> Native Rust implementation of Delta Lake</p></li>
 <li><p><a class="reference external" href="https://github.com/GreptimeTeam/greptimedb">GreptimeDB</a> Open Source &amp; Cloud Native Distributed Time Series Database</p></li>
 <li><p><a class="reference external" href="https://github.com/GlareDB/glaredb">GlareDB</a> Fast SQL database for querying and analyzing distributed data.</p></li>
-<li><p><a class="reference external" href="https://github.com/influxdata/influxdb_iox">InfluxDB IOx</a> Time Series Database</p></li>
+<li><p><a class="reference external" href="https://github.com/apache/incubator-horaedb">HoraeDB</a> Distributed Time-Series Database</p></li>
+<li><p><a class="reference external" href="https://github.com/influxdata/influxdb">InfluxDB</a> Time Series Database</p></li>
 <li><p><a class="reference external" href="https://github.com/kamu-data/kamu-cli/">Kamu</a> Planet-scale streaming data pipeline</p></li>
+<li><p><a class="reference external" href="https://github.com/lakesoul-io/LakeSoul">LakeSoul</a> Open source LakeHouse framework with native IO in Rust.</p></li>
+<li><p><a class="reference external" href="https://github.com/lancedb/lance">Lance</a> Modern columnar data format for ML</p></li>
 <li><p><a class="reference external" href="https://github.com/parseablehq/parseable">Parseable</a> Log storage and observability platform</p></li>
+<li><p><a class="reference external" href="https://github.com/paradedb/paradedb">ParadeDB</a> PostgreSQL for Search &amp; Analytics</p></li>
 <li><p><a class="reference external" href="https://github.com/timvw/qv">qv</a> Quickly view your data</p></li>
 <li><p><a class="reference external" href="https://github.com/andygrove/bdt">bdt</a> Boring Data Tool</p></li>
 <li><p><a class="reference external" href="https://github.com/restatedev">Restate</a> Easily build resilient applications using distributed durable async/await</p></li>
@@ -592,22 +607,30 @@ provide integrations with other systems, some of which are described below:</p>
     </div>
   
     <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-  <footer class="footer mt-5 mt-md-0">
+  
+<!-- Based on pydata_sphinx_theme/footer.html -->
+<footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright 2023, Apache Software Foundation.<br>
+    &copy; Copyright 2019-2024, Apache Software Foundation.<br>
 </p>
     </div>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.5.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6.<br>
 </p>
     </div>
     
+    <div class="footer-item">
+      <p>Apache Arrow DataFusion, Arrow DataFusion, Apache, the Apache feather logo, and the Apache Arrow DataFusion project logo</p>
+      <p>are either registered trademarks or trademarks of The Apache Software Foundation in the United States and other countries.</p>
+    </div>
   </div>
 </footer>
+
+
   </body>
 </html>

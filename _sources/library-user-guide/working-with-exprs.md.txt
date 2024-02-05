@@ -17,7 +17,7 @@
   under the License.
 -->
 
-# Working with Exprs
+# Working with `Expr`s
 
 <!-- https://github.com/apache/arrow-datafusion/issues/7304 -->
 
@@ -48,12 +48,11 @@ As another example, the SQL expression `a + b * c` would be represented as an `E
                     └────────────────────┘  └────────────────────┘
 ```
 
-As the writer of a library, you may want to use or create `Expr`s to represent computations that you want to perform. This guide will walk you through how to make your own scalar UDF as an `Expr` and how to rewrite `Expr`s to inline the simple UDF.
+As the writer of a library, you can use `Expr`s to represent computations that you want to perform. This guide will walk you through how to make your own scalar UDF as an `Expr` and how to rewrite `Expr`s to inline the simple UDF.
 
-There are also executable examples for working with `Expr`s:
+## Creating and Evaluating `Expr`s
 
-- [rewrite_expr.rs](../../../datafusion-examples/examples/catalog.rs)
-- [expr_api.rs](../../../datafusion-examples/examples/expr_api.rs)
+Please see [expr_api.rs](https://github.com/apache/arrow-datafusion/blob/main/datafusion-examples/examples/expr_api.rs) for well commented code for creating, evaluating, simplifying, and analyzing `Expr`s.
 
 ## A Scalar UDF Example
 
@@ -79,7 +78,9 @@ let expr = add_one_udf.call(vec![col("my_column")]);
 
 If you'd like to learn more about `Expr`s, before we get into the details of creating and rewriting them, you can read the [expression user-guide](./../user-guide/expressions.md).
 
-## Rewriting Exprs
+## Rewriting `Expr`s
+
+[rewrite_expr.rs](https://github.com/apache/arrow-datafusion/blob/main/datafusion-examples/examples/rewrite_expr.rs) contains example code for rewriting `Expr`s.
 
 Rewriting Expressions is the process of taking an `Expr` and transforming it into another `Expr`. This is useful for a number of reasons, including:
 
@@ -178,6 +179,34 @@ Projection: Int64(1) + Int64(1) AS added_one
 ```
 
 I.e. the `add_one` UDF has been inlined into the projection.
+
+## Getting the data type of the expression
+
+The `arrow::datatypes::DataType` of the expression can be obtained by calling the `get_type` given something that implements `Expr::Schemable`, for example a `DFschema` object:
+
+```rust
+use arrow_schema::DataType;
+use datafusion::common::{DFField, DFSchema};
+use datafusion::logical_expr::{col, ExprSchemable};
+use std::collections::HashMap;
+
+let expr = col("c1") + col("c2");
+let schema = DFSchema::new_with_metadata(
+    vec![
+        DFField::new_unqualified("c1", DataType::Int32, true),
+        DFField::new_unqualified("c2", DataType::Float32, true),
+    ],
+    HashMap::new(),
+)
+.unwrap();
+print!("type = {}", expr.get_type(&schema).unwrap());
+```
+
+This results in the following output:
+
+```text
+type = Float32
+```
 
 ## Conclusion
 
