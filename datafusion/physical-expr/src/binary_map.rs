@@ -480,6 +480,7 @@ where
 /// This is logically a part of `ArrowBytesMap::insert_if_new` but is factored
 /// out so the hashes batch can be shared.
 #[allow(clippy::too_many_arguments)]
+#[inline(always)]
 fn insert_value<O, V, MP, OP>(
     map: &mut hashbrown::raw::RawTable<Entry<O, V>>,
     map_size: &mut usize,
