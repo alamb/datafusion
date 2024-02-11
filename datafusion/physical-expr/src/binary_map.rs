@@ -34,6 +34,7 @@ use std::fmt::Debug;
 use std::mem;
 use std::ops::Range;
 use std::sync::Arc;
+use arrow_buffer::ArrowNativeType;
 
 /// Should the output be a String or Binary?
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -199,7 +200,7 @@ impl<O: OffsetSizeTrait> ArrowBytesSet<O> {
 /// Storing "foobar"        │               │ │ │ │ │ │ │ │ │  length, in   │
 /// (short string)          │  hash value   │?│?│f│o│o│b│a│r│  bytes (not   │
 ///                         │               │ │ │ │ │ │ │ │ │  characters)  │
-///                         └───────────────┴─┴─┴─┴─┴─┴─┴─┴─┴───────────────┘
+///                          └───────────────┴─┴─┴─┴─┴─┴─┴─┴─┴───────────────┘
 ///                              8 bytes         8 bytes        4 or 8
 /// ```
 pub struct ArrowBytesMap<O, V>
@@ -257,6 +258,77 @@ where
         let mut new_self = Self::new(self.output_type);
         std::mem::swap(self, &mut new_self);
         new_self
+    }
+
+    /// Converts this set into a `StringArray`, `LargeStringArray`,
+    /// `BinaryArray`, or `LargeBinaryArray` containing each distinct value
+    /// that was inserted. This is done without copying the values.
+    ///
+    /// The values are guaranteed to be returned in the same order in which
+    /// they were first seen.
+    pub fn into_state(self) -> ArrayRef {
+        let Self {
+            output_type,
+            map: _,
+            map_size: _,
+            offsets,
+            mut buffer,
+            random_state: _,
+            hashes_buffer: _,
+            null,
+        } = self;
+
+        // Only make a `NullBuffer` if there was a null value
+        let nulls = null.map(|(_payload, null_index)| {
+            let num_values = offsets.len() - 1;
+            single_null_buffer(num_values, null_index)
+        });
+        let offsets = OffsetBuffer::new(ScalarBuffer::from(offsets));
+        let values = buffer.finish();
+
+        match output_type {
+            OutputType::Binary => {
+                // SAFETY: the offsets were constructed correctly
+                Arc::new(unsafe {
+                    GenericBinaryArray::new_unchecked(offsets, values, nulls)
+                })
+            }
+            OutputType::Utf8 => {
+                // SAFETY:
+                // 1. the offsets were constructed safely
+                //
+                // 2. we asserted the input arrays were all the correct type and
+                // thus since all the values that went in were valid (e.g. utf8)
+                // so are all the values that come out
+                Arc::new(unsafe {
+                    GenericStringArray::new_unchecked(offsets, values, nulls)
+                })
+            }
+        }
+    }
+
+    /// Total number of entries (including null, if present)
+    pub fn len(&self) -> usize {
+        self.non_null_len() + self.null.map(|_| 1).unwrap_or(0)
+    }
+
+    /// Is the set empty?
+    pub fn is_empty(&self) -> bool {
+        self.map.is_empty() && self.null.is_none()
+    }
+
+    /// Number of non null entries
+    pub fn non_null_len(&self) -> usize {
+        self.map.len()
+    }
+
+    /// Return the total size, in bytes, of memory used to store the data in
+    /// this set, not including `self`
+    pub fn size(&self) -> usize {
+        self.map_size
+            + self.buffer.capacity() * std::mem::size_of::<u8>()
+            + self.offsets.allocated_size()
+            + self.hashes_buffer.allocated_size()
     }
 
     /// Inserts each value from `values` into the map, invoking `payload_fn` for
@@ -354,184 +426,160 @@ where
         // Ensure lengths are equivalent
         assert_eq!(values.len(), batch_hashes.len());
 
-        for (value, &hash) in values.iter().zip(batch_hashes.iter()) {
-            // hande null value
-            let Some(value) = value else {
-                let payload = if let Some(&(payload, _offset)) = self.null.as_ref() {
-                    payload
-                } else {
-                    let payload = make_payload_fn(None);
-                    let null_index = self.offsets.len() - 1;
-                    // nulls need a zero length in the offset buffer
-                    let offset = self.buffer.len();
-                    self.offsets.push(O::from_usize(offset).unwrap());
-                    self.null = Some((payload, null_index));
-                    payload
+        // The loop below is performance critical, so special case nulls/no nulls
+        if values.null_count() == 0 {
+            let (offsets, values, nulls) = values.clone().into_parts();
+            assert!(nulls.map(|nulls| nulls.null_count() == 0).unwrap_or(true));
+            let values = values.as_slice();
+            let offsets = offsets.as_ref();
+
+            // iterate over the raw values, without checking for nulls
+            let values = offsets.iter()
+                .zip(offsets.iter().skip(1))
+                .map(|(start, end)| {
+                    let start = start.to_usize().unwrap();
+                    let end = end.to_usize().unwrap();
+                    // SAFETY: we know the offsets are valid
+                    unsafe { values.get_unchecked(start..end) }
+                });
+
+            for (value, &hash) in values.zip(batch_hashes.iter()) {
+                insert_value(&mut self.map, &mut self.map_size, &mut self.offsets, &mut self.buffer, value, hash, &mut make_payload_fn, &mut observe_payload_fn);
+            }
+        }
+        else {
+            // must check for nulls
+            for (value, &hash) in values.iter().zip(batch_hashes.iter()) {
+                // hande null value
+                let Some(value) = value else {
+                    let payload = if let Some(&(payload, _offset)) = self.null.as_ref() {
+                        payload
+                    } else {
+                        let payload = make_payload_fn(None);
+                        let null_index = self.offsets.len() - 1;
+                        // nulls need a zero length in the offset buffer
+                        let offset = self.buffer.len();
+                        self.offsets.push(O::from_usize(offset).unwrap());
+                        self.null = Some((payload, null_index));
+                        payload
+                    };
+                    observe_payload_fn(payload);
+                    continue;
                 };
-                observe_payload_fn(payload);
-                continue;
-            };
 
-            // get the value as bytes
-            let value: &[u8] = value.as_ref();
-            let value_len = O::from_usize(value.len()).unwrap();
+                // get the value as bytes
+                let value: &[u8] = value.as_ref();
 
-            // value is "small"
-            let payload = if value.len() <= SHORT_VALUE_LEN {
-                let inline = value.iter().fold(0usize, |acc, &x| acc << 8 | x as usize);
-
-                // is value is already present in the set?
-                let entry = self.map.get_mut(hash, |header| {
-                    // compare value if hashes match
-                    if header.len != value_len {
-                        return false;
-                    }
-                    // value is stored inline so no need to consult buffer
-                    // (this is the "small string optimization")
-                    inline == header.offset_or_inline
-                });
-
-                if let Some(entry) = entry {
-                    entry.payload
-                }
-                // if no existing entry, make a new one
-                else {
-                    // Put the small values into buffer and offsets so it appears
-                    // the output array, but store the actual bytes inline for
-                    // comparison
-                    self.buffer.append_slice(value);
-                    self.offsets.push(O::from_usize(self.buffer.len()).unwrap());
-                    let payload = make_payload_fn(Some(value));
-                    let new_header = Entry {
-                        hash,
-                        len: value_len,
-                        offset_or_inline: inline,
-                        payload,
-                    };
-                    self.map.insert_accounted(
-                        new_header,
-                        |header| header.hash,
-                        &mut self.map_size,
-                    );
-                    payload
-                }
+                insert_value(&mut self.map, &mut self.map_size, &mut self.offsets, &mut self.buffer, value, hash, &mut make_payload_fn, &mut observe_payload_fn);
             }
-            // value is not "small"
-            else {
-                // Check if the value is already present in the set
-                let entry = self.map.get_mut(hash, |header| {
-                    // compare value if hashes match
-                    if header.len != value_len {
-                        return false;
-                    }
-                    // Need to compare the bytes in the buffer
-                    // SAFETY: buffer is only appended to, and we correctly inserted values and offsets
-                    let existing_value =
-                        unsafe { self.buffer.as_slice().get_unchecked(header.range()) };
-                    value == existing_value
-                });
-
-                if let Some(entry) = entry {
-                    entry.payload
-                }
-                // if no existing entry, make a new one
-                else {
-                    // Put the small values into buffer and offsets so it
-                    // appears the output array, and store that offset
-                    // so the bytes can be compared if needed
-                    let offset = self.buffer.len(); // offset of start fof data
-                    self.buffer.append_slice(value);
-                    self.offsets.push(O::from_usize(self.buffer.len()).unwrap());
-
-                    let payload = make_payload_fn(Some(value));
-                    let new_header = Entry {
-                        hash,
-                        len: value_len,
-                        offset_or_inline: offset,
-                        payload,
-                    };
-                    self.map.insert_accounted(
-                        new_header,
-                        |header| header.hash,
-                        &mut self.map_size,
-                    );
-                    payload
-                }
-            };
-            observe_payload_fn(payload);
         }
     }
+}
 
-    /// Converts this set into a `StringArray`, `LargeStringArray`,
-    /// `BinaryArray`, or `LargeBinaryArray` containing each distinct value
-    /// that was inserted. This is done without copying the values.
-    ///
-    /// The values are guaranteed to be returned in the same order in which
-    /// they were first seen.
-    pub fn into_state(self) -> ArrayRef {
-        let Self {
-            output_type,
-            map: _,
-            map_size: _,
-            offsets,
-            mut buffer,
-            random_state: _,
-            hashes_buffer: _,
-            null,
-        } = self;
+/// Inserts the value into the map, if not already present.
+/// This is logically a part of `ArrowBytesMap::insert_if_new` but is factored
+/// out so the hashes batch can be shared.
+#[allow(clippy::too_many_arguments)]
+fn insert_value<O, V, MP, OP>(
+    map: &mut hashbrown::raw::RawTable<Entry<O, V>>,
+    map_size: &mut usize,
+    offsets: &mut Vec<O>,
+    buffer: &mut BufferBuilder<u8>,
+    value: &[u8],
+    hash: u64,
+    make_payload_fn: &mut MP,
+    observe_payload_fn: &mut OP,
+) where
+    O: OffsetSizeTrait,
+    V: Debug + PartialEq + Eq + Clone + Copy + Default,
+    MP: FnMut(Option<&[u8]>) -> V,
+    OP: FnMut(V)
+{
+    let value_len = O::from_usize(value.len()).unwrap();
 
-        // Only make a `NullBuffer` if there was a null value
-        let nulls = null.map(|(_payload, null_index)| {
-            let num_values = offsets.len() - 1;
-            single_null_buffer(num_values, null_index)
+    // value is "small"
+    let payload = if value.len() <= SHORT_VALUE_LEN {
+        let inline = value.iter().fold(0usize, |acc, &x| acc << 8 | x as usize);
+
+        // is value is already present in the set?
+        let entry = map.get_mut(hash, |header| {
+            // compare value if hashes match
+            if header.len != value_len {
+                return false;
+            }
+            // value is stored inline so no need to consult buffer
+            // (this is the "small string optimization")
+            inline == header.offset_or_inline
         });
-        let offsets = OffsetBuffer::new(ScalarBuffer::from(offsets));
-        let values = buffer.finish();
 
-        match output_type {
-            OutputType::Binary => {
-                // SAFETY: the offsets were constructed correctly
-                Arc::new(unsafe {
-                    GenericBinaryArray::new_unchecked(offsets, values, nulls)
-                })
-            }
-            OutputType::Utf8 => {
-                // SAFETY:
-                // 1. the offsets were constructed safely
-                //
-                // 2. we asserted the input arrays were all the correct type and
-                // thus since all the values that went in were valid (e.g. utf8)
-                // so are all the values that come out
-                Arc::new(unsafe {
-                    GenericStringArray::new_unchecked(offsets, values, nulls)
-                })
-            }
+        if let Some(entry) = entry {
+            entry.payload
+        }
+        // if no existing entry, make a new one
+        else {
+            // Put the small values into buffer and offsets so it appears
+            // the output array, but store the actual bytes inline for
+            // comparison
+            buffer.append_slice(value);
+            offsets.push(O::from_usize(buffer.len()).unwrap());
+            let payload = make_payload_fn(Some(value));
+            let new_header = Entry {
+                hash,
+                len: value_len,
+                offset_or_inline: inline,
+                payload,
+            };
+            map.insert_accounted(
+                new_header,
+                |header| header.hash,
+                map_size,
+            );
+            payload
         }
     }
+    // value is not "small"
+    else {
+        // Check if the value is already present in the set
+        let entry = map.get_mut(hash, |header| {
+            // compare value if hashes match
+            if header.len != value_len {
+                return false;
+            }
+            // Need to compare the bytes in the buffer
+            // SAFETY: buffer is only appended to, and we correctly inserted values and offsets
+            let existing_value =
+                unsafe { buffer.as_slice().get_unchecked(header.range()) };
+            value == existing_value
+        });
 
-    /// Total number of entries (including null, if present)
-    pub fn len(&self) -> usize {
-        self.non_null_len() + self.null.map(|_| 1).unwrap_or(0)
-    }
+        if let Some(entry) = entry {
+            entry.payload
+        }
+        // if no existing entry, make a new one
+        else {
+            // Put the small values into buffer and offsets so it
+            // appears the output array, and store that offset
+            // so the bytes can be compared if needed
+            let offset = buffer.len(); // offset of start fof data
+            buffer.append_slice(value);
+            offsets.push(O::from_usize(buffer.len()).unwrap());
 
-    /// Is the set empty?
-    pub fn is_empty(&self) -> bool {
-        self.map.is_empty() && self.null.is_none()
-    }
-
-    /// Number of non null entries
-    pub fn non_null_len(&self) -> usize {
-        self.map.len()
-    }
-
-    /// Return the total size, in bytes, of memory used to store the data in
-    /// this set, not including `self`
-    pub fn size(&self) -> usize {
-        self.map_size
-            + self.buffer.capacity() * std::mem::size_of::<u8>()
-            + self.offsets.allocated_size()
-            + self.hashes_buffer.allocated_size()
-    }
+            let payload = make_payload_fn(Some(value));
+            let new_header = Entry {
+                hash,
+                len: value_len,
+                offset_or_inline: offset,
+                payload,
+            };
+            map.insert_accounted(
+                new_header,
+                |header| header.hash,
+                map_size,
+            );
+            payload
+        }
+    };
+    observe_payload_fn(payload);
 }
 
 /// Returns a `NullBuffer` with a single null value at the given index
