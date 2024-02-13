@@ -19,9 +19,7 @@ use crate::planner::{ContextProvider, PlannerContext, SqlToRel};
 use arrow::compute::kernels::cast_utils::parse_interval_month_day_nano;
 use arrow::datatypes::DECIMAL128_MAX_PRECISION;
 use arrow_schema::DataType;
-use datafusion_common::{
-    internal_err, not_impl_err, plan_err, DFSchema, DataFusionError, Result, ScalarValue,
-};
+use datafusion_common::{not_impl_err, plan_err, DFSchema, DataFusionError, Result, ScalarValue, internal_datafusion_err};
 use datafusion_expr::expr::{BinaryExpr, Placeholder};
 use datafusion_expr::{lit, Expr, Operator};
 use log::debug;
@@ -143,7 +141,7 @@ impl<'a, S: ContextProvider> SqlToRel<'a, S> {
         let make_array = self
             .context_provider
             .get_function_meta("make_array")
-            .ok_or_else(|| internal_err!("make_array function not found"))?;
+            .ok_or_else(|| internal_datafusion_err!("make_array function not found"))?;
 
         Ok(make_array.call(values))
     }

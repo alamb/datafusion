@@ -423,9 +423,6 @@ pub fn create_physical_fun(
         BuiltinScalarFunction::ArrayResize => Arc::new(|args| {
             make_scalar_function_inner(array_expressions::array_resize)(args)
         }),
-        BuiltinScalarFunction::MakeArray => Arc::new(|args| {
-            make_scalar_function_inner(array_expressions::make_array)(args)
-        }),
         BuiltinScalarFunction::ArrayUnion => Arc::new(|args| {
             make_scalar_function_inner(array_expressions::array_union)(args)
         }),

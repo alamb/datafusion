@@ -70,6 +70,8 @@ impl<'a, S: ContextProvider> SqlToRel<'a, S> {
             return Ok(Expr::ScalarFunction(ScalarFunction::new_udf(fm, args)));
         }
 
+
+
         // Build Unnest expression
         if name.eq("unnest") {
             let exprs =
@@ -80,14 +82,7 @@ impl<'a, S: ContextProvider> SqlToRel<'a, S> {
                     return exec_err!("unnest() requires at least one argument");
                 }
                 1 => {
-                    if let Expr::ScalarFunction(ScalarFunction {
-                        func_def:
-                            ScalarFunctionDefinition::BuiltIn(
-                                BuiltinScalarFunction::MakeArray,
-                            ),
-                        ..
-                    }) = exprs[0]
-                    {
+                    if is_make_array(&exprs[0]) {
                         // valid
                     } else if let Expr::Column(_) = exprs[0] {
                         // valid
@@ -310,5 +305,14 @@ impl<'a, S: ContextProvider> SqlToRel<'a, S> {
         args.into_iter()
             .map(|a| self.sql_fn_arg_to_logical_expr(a, schema, planner_context))
             .collect::<Result<Vec<Expr>>>()
+    }
+}
+
+// Returns true if this is the make_array function
+fn is_make_array(expr: &Expr) -> bool {
+    if let Expr::ScalarFunction(ScalarFunction { func_def, .. }) = expr {
+        func_def.name() == "make_array"
+    } else {
+        false
     }
 }
