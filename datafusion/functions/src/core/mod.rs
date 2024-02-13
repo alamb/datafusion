@@ -23,6 +23,6 @@ make_udf_function!(make_array::MakeArray, MAKE_ARRAY, make_array);
 
 // Export the functions out of this package, both as expr_fn as well as a list of functions
 export_functions!(
-    (make_array, inputs, "XXXX")
+    (make_array, array, "returns an Arrow array using the specified input expressions.")
 );
 

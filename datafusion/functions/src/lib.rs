@@ -96,7 +96,6 @@ make_package!(
     "'Core' functions that are generally available in DataFusion"
 );
 
-
 /// Fluent-style API for creating `Expr`s
 pub mod expr_fn {
     #[cfg(feature = "encoding_expressions")]

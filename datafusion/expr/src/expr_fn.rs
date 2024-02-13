@@ -756,11 +756,6 @@ scalar_expr!(
     "returns an array with the specified size filled with the given value."
 );
 
-nary_scalar_expr!(
-    MakeArray,
-    array,
-    "returns an Arrow array using the specified input expressions."
-);
 scalar_expr!(
     ArrayIntersect,
     array_intersect,
@@ -1449,7 +1444,6 @@ mod test {
         test_scalar_expr!(ArrayReplaceN, array_replace_n, array, from, to, max);
         test_scalar_expr!(ArrayReplaceAll, array_replace_all, array, from, to);
         test_unary_scalar_expr!(Cardinality, cardinality);
-        test_nary_scalar_expr!(MakeArray, array, input);
 
         test_unary_scalar_expr!(ArrowTypeof, arrow_typeof);
         test_nary_scalar_expr!(OverLay, overlay, string, characters, position, len);
