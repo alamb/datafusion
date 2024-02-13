@@ -30,10 +30,11 @@ rust-version = { workspace = true }
 
 [features]
 # Enable encoding by default so the doctests work. In general don't automatically enable all packages.
-default = ["encoding_expressions"]
+default = ["core_expressions", "encoding_expressions"]
 # enable the encode/decode functions
 encoding_expressions = ["base64", "hex"]
-
+# "core" datafusion expressions
+core_expressions = []
 
 [lib]
 name = "datafusion_functions"

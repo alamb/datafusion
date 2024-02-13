@@ -90,6 +90,13 @@ make_package!(
     "Hex and binary `encode` and `decode` functions."
 );
 
+make_package!(
+    core,
+    "core_expressions",
+    "'Core' functions that are generally available in DataFusion"
+);
+
+
 /// Fluent-style API for creating `Expr`s
 pub mod expr_fn {
     #[cfg(feature = "encoding_expressions")]
