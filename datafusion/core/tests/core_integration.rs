@@ -24,6 +24,9 @@ mod dataframe;
 /// Run all tests that are found in the `macro_hygiene` directory
 mod macro_hygiene;
 
+/// Run all tests that are found in the `user_defined` directory
+mod user_defined;
+
 #[cfg(test)]
 #[ctor::ctor]
 fn init() {
