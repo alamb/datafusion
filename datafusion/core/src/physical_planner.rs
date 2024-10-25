@@ -1792,8 +1792,7 @@ impl DefaultPhysicalPlanner {
                             Err(e) => return Err(e),
                         }
                     }
-                    Err(e) => stringified_plans
-                        .push(StringifiedPlan::new(InitialPhysicalPlan, e.to_string())),
+                    Err(e) => return plan_err!("{}", e.to_string()),
                 }
             }
 
