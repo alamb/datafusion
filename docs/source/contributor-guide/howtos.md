@@ -19,57 +19,6 @@
 
 # HOWTOs
 
-## How to add a new scalar function
-
-Below is a checklist of what you need to do to add a new scalar function to DataFusion:
-
-- Add the actual implementation of the function to a new module file within:
-  - [here](https://github.com/apache/datafusion/tree/main/datafusion/functions-nested) for arrays, maps and structs functions
-  - [here](https://github.com/apache/datafusion/tree/main/datafusion/functions/src/crypto) for crypto functions
-  - [here](https://github.com/apache/datafusion/tree/main/datafusion/functions/src/datetime) for datetime functions
-  - [here](https://github.com/apache/datafusion/tree/main/datafusion/functions/src/encoding) for encoding functions
-  - [here](https://github.com/apache/datafusion/tree/main/datafusion/functions/src/math) for math functions
-  - [here](https://github.com/apache/datafusion/tree/main/datafusion/functions/src/regex) for regex functions
-  - [here](https://github.com/apache/datafusion/tree/main/datafusion/functions/src/string) for string functions
-  - [here](https://github.com/apache/datafusion/tree/main/datafusion/functions/src/unicode) for unicode functions
-  - create a new module [here](https://github.com/apache/datafusion/tree/main/datafusion/functions/src/) for other functions.
-- New function modules - for example a `vector` module, should use a [rust feature](https://doc.rust-lang.org/cargo/reference/features.html) (for example `vector_expressions`) to allow DataFusion
-  users to enable or disable the new module as desired.
-- The implementation of the function is done via implementing `ScalarUDFImpl` trait for the function struct.
-  - See the [advanced_udf.rs] example for an example implementation
-  - Add tests for the new function
-- To connect the implementation of the function add to the mod.rs file:
-  - a `mod xyz;` where xyz is the new module file
-  - a call to `make_udf_function!(..);`
-  - an item in `export_functions!(..);`
-- In [sqllogictest/test_files], add new `sqllogictest` integration tests where the function is called through SQL against well known data and returns the expected result.
-  - Documentation for `sqllogictest` [here](https://github.com/apache/datafusion/blob/main/datafusion/sqllogictest/README.md)
-- Add SQL reference documentation [here](https://github.com/apache/datafusion/blob/main/docs/source/user-guide/sql/scalar_functions.md)
-  - An example of this being done can be seen [here](https://github.com/apache/datafusion/pull/12775)
-  - Run `./dev/update_function_docs.sh` to update docs
-
-[advanced_udf.rs]: https://github.com/apache/datafusion/blob/main/datafusion-examples/examples/advanced_udaf.rs
-[datafusion/expr/src]: https://github.com/apache/datafusion/tree/main/datafusion/expr/src
-[sqllogictest/test_files]: https://github.com/apache/datafusion/tree/main/datafusion/sqllogictest/test_files
-
-## How to add a new aggregate function
-
-Below is a checklist of what you need to do to add a new aggregate function to DataFusion:
-
-- Add the actual implementation of an `Accumulator` and `AggregateExpr`:
-- In [datafusion/expr/src], add:
-  - a new variant to `AggregateFunction`
-  - a new entry to `FromStr` with the name of the function as called by SQL
-  - a new line in `return_type` with the expected return type of the function, given an incoming type
-  - a new line in `signature` with the signature of the function (number and types of its arguments)
-  - a new line in `create_aggregate_expr` mapping the built-in to the implementation
-  - tests to the function.
-- In [sqllogictest/test_files], add new `sqllogictest` integration tests where the function is called through SQL against well known data and returns the expected result.
-  - Documentation for `sqllogictest` [here](https://github.com/apache/datafusion/blob/main/datafusion/sqllogictest/README.md)
-- Add SQL reference documentation [here](https://github.com/apache/datafusion/blob/main/docs/source/user-guide/sql/aggregate_functions.md)
-  - An example of this being done can be seen [here](https://github.com/apache/datafusion/pull/12775)
-  - Run `./dev/update_function_docs.sh` to update docs
-
 ## How to display plans graphically
 
 The query plans represented by `LogicalPlan` nodes can be graphically
