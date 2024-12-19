@@ -37,7 +37,6 @@ use datafusion::logical_expr::{
 };
 use datafusion::optimizer::simplify_expressions::expr_simplifier::THRESHOLD_INLINE_INLIST;
 use datafusion::prelude::*;
-use datafusion_substrait::extensions::Extensions;
 use datafusion_substrait::logical_plan::consumer::{
     from_substrait_plan_with_consumer, DefaultSubstraitConsumer,
 };
@@ -992,10 +991,8 @@ async fn extension_logical_plan() -> Result<()> {
         }),
     });
 
-    let consumer = DefaultSubstraitConsumer::new(
-        Arc::new(Extensions::default()),
-        Arc::new(ctx.state()),
-    );
+    let state = ctx.state();
+    let consumer = DefaultSubstraitConsumer::new(&state);
 
     let proto = to_substrait_plan(&ext_plan, &ctx.state())?;
     let plan2 = from_substrait_plan_with_consumer(&consumer, &proto).await?;

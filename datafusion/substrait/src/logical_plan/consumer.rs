@@ -65,7 +65,7 @@ use datafusion::logical_expr::{
     col, expr, GroupingSet, Like, LogicalPlanBuilder, Partitioning, Repartition,
     WindowFrameBound, WindowFrameUnits, WindowFunctionDefinition,
 };
-use datafusion::prelude::{JoinType, SessionContext};
+use datafusion::prelude::JoinType;
 use datafusion::sql::TableReference;
 use datafusion::{
     error::Result, logical_expr::utils::split_conjunction, prelude::Column,
@@ -225,7 +225,7 @@ pub trait SubstraitConsumer: Send + Sync + Sized {
     //   The functionality for which the Extensions and FunctionRegistry is needed should be abstracted
     //   out into methods on the trait. As an example, resolve_table_reference is such a method.
     fn get_extensions(&self) -> &Extensions;
-    fn get_function_registry(&self) -> &impl FunctionRegistry;
+    fn get_function_registry(&self) -> &dyn FunctionRegistry;
 
     // Relation Methods
     // There is one method per Substrait relation to allow for easy overriding of consumer behaviour.
@@ -471,28 +471,28 @@ pub async fn from_substrait_rel(
 }
 
 /// Can be used to consume standard Substrait without user-defined extensions
-pub struct DefaultSubstraitConsumer {
+pub struct DefaultSubstraitConsumer<'a> {
     extensions: Arc<Extensions>,
-    state: Arc<SessionState>,
+    state: &'a SessionState,
 }
 
-impl DefaultSubstraitConsumer {
-    pub fn new(extensions: Arc<Extensions>, state: Arc<SessionState>) -> Self {
-        DefaultSubstraitConsumer { extensions, state }
-    }
-}
-
-impl Default for DefaultSubstraitConsumer {
-    fn default() -> Self {
+impl<'a> DefaultSubstraitConsumer<'a> {
+    /// Create a new DefaultSubstraitConsumer
+    pub fn new(state: &'a SessionState) -> Self {
         DefaultSubstraitConsumer {
             extensions: Arc::new(Extensions::default()),
-            state: Arc::new(SessionContext::default().state()),
+            state,
         }
+    }
+
+    pub fn with_extensions(mut self, extensions: Arc<Extensions>) -> Self {
+        self.extensions = extensions;
+        self
     }
 }
 
 #[async_trait]
-impl SubstraitConsumer for DefaultSubstraitConsumer {
+impl SubstraitConsumer for DefaultSubstraitConsumer<'_> {
     async fn resolve_table_ref(
         &self,
         table_ref: &TableReference,
@@ -507,8 +507,8 @@ impl SubstraitConsumer for DefaultSubstraitConsumer {
         self.extensions.as_ref()
     }
 
-    fn get_function_registry(&self) -> &impl FunctionRegistry {
-        self.state.as_ref()
+    fn get_function_registry(&self) -> &dyn FunctionRegistry {
+        self.state
     }
 
     async fn consume_extension_leaf(
@@ -733,10 +733,8 @@ pub async fn from_substrait_plan(
         return not_impl_err!("Type variation extensions are not supported");
     }
 
-    let consumer = DefaultSubstraitConsumer {
-        extensions: Arc::new(extensions),
-        state: Arc::new(state.clone()),
-    };
+    let consumer =
+        DefaultSubstraitConsumer::new(state).with_extensions(Arc::new(extensions));
     from_substrait_plan_with_consumer(&consumer, plan).await
 }
 
@@ -830,10 +828,8 @@ pub async fn from_substrait_extended_expr(
         return not_impl_err!("Type variation extensions are not supported");
     }
 
-    let consumer = DefaultSubstraitConsumer {
-        extensions: Arc::new(extensions),
-        state: Arc::new(state.clone()),
-    };
+    let consumer =
+        DefaultSubstraitConsumer::new(state).with_extensions(Arc::new(extensions));
 
     let input_schema = DFSchemaRef::new(match &extended_expr.base_schema {
         Some(base_schema) => from_substrait_named_struct(&consumer, base_schema),
@@ -3434,6 +3430,7 @@ mod test {
     };
     use arrow_buffer::IntervalMonthDayNano;
     use datafusion::error::Result;
+    use datafusion::prelude::SessionContext;
     use datafusion::scalar::ScalarValue;
     use substrait::proto::expression::literal::{
         interval_day_to_second, IntervalCompound, IntervalDayToSecond,
@@ -3464,7 +3461,8 @@ mod test {
             })),
         };
 
-        let consumer = DefaultSubstraitConsumer::default();
+        let state = SessionContext::new().state();
+        let consumer = DefaultSubstraitConsumer::new(&state);
         assert_eq!(
             from_substrait_literal_without_names(&consumer, &substrait)?,
             ScalarValue::IntervalMonthDayNano(Some(IntervalMonthDayNano {

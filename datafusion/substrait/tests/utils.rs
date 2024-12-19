@@ -51,7 +51,8 @@ pub mod test {
         ctx: SessionContext,
         plan: &Plan,
     ) -> Result<SessionContext> {
-        let consumer = Arc::new(DefaultSubstraitConsumer::default());
+        let state = ctx.state();
+        let consumer = Arc::new(DefaultSubstraitConsumer::new(&state));
         let schemas = TestSchemaCollector::collect_schemas(consumer, plan)?;
         let mut schema_map: HashMap<TableReference, Arc<dyn TableProvider>> =
             HashMap::new();
