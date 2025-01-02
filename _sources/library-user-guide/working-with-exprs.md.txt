@@ -19,7 +19,7 @@
 
 # Working with `Expr`s
 
-<!-- https://github.com/apache/arrow-datafusion/issues/7304 -->
+<!-- https://github.com/apache/datafusion/issues/7304 -->
 
 `Expr` is short for "expression". It is a core abstraction in DataFusion for representing a computation, and follows the standard "expression tree" abstraction found in most compilers and databases.
 
@@ -52,7 +52,7 @@ As the writer of a library, you can use `Expr`s to represent computations that y
 
 ## Creating and Evaluating `Expr`s
 
-Please see [expr_api.rs](https://github.com/apache/arrow-datafusion/blob/main/datafusion-examples/examples/expr_api.rs) for well commented code for creating, evaluating, simplifying, and analyzing `Expr`s.
+Please see [expr_api.rs](https://github.com/apache/datafusion/blob/main/datafusion-examples/examples/expr_api.rs) for well commented code for creating, evaluating, simplifying, and analyzing `Expr`s.
 
 ## A Scalar UDF Example
 
@@ -80,7 +80,11 @@ If you'd like to learn more about `Expr`s, before we get into the details of cre
 
 ## Rewriting `Expr`s
 
-[rewrite_expr.rs](https://github.com/apache/arrow-datafusion/blob/main/datafusion-examples/examples/rewrite_expr.rs) contains example code for rewriting `Expr`s.
+There are several examples of rewriting and working with `Exprs`:
+
+- [expr_api.rs](https://github.com/apache/datafusion/blob/main/datafusion-examples/examples/expr_api.rs)
+- [analyzer_rule.rs](https://github.com/apache/datafusion/blob/main/datafusion-examples/examples/analyzer_rule.rs)
+- [optimizer_rule.rs](https://github.com/apache/datafusion/blob/main/datafusion-examples/examples/optimizer_rule.rs)
 
 Rewriting Expressions is the process of taking an `Expr` and transforming it into another `Expr`. This is useful for a number of reasons, including:
 
@@ -92,7 +96,7 @@ In our example, we'll use rewriting to update our `add_one` UDF, to be rewritten
 
 ### Rewriting with `transform`
 
-To implement the inlining, we'll need to write a function that takes an `Expr` and returns a `Result<Expr>`. If the expression is _not_ to be rewritten `Transformed::No` is used to wrap the original `Expr`. If the expression _is_ to be rewritten, `Transformed::Yes` is used to wrap the new `Expr`.
+To implement the inlining, we'll need to write a function that takes an `Expr` and returns a `Result<Expr>`. If the expression is _not_ to be rewritten `Transformed::no` is used to wrap the original `Expr`. If the expression _is_ to be rewritten, `Transformed::yes` is used to wrap the new `Expr`.
 
 ```rust
 fn rewrite_add_one(expr: Expr) -> Result<Expr> {
@@ -102,9 +106,9 @@ fn rewrite_add_one(expr: Expr) -> Result<Expr> {
                 let input_arg = scalar_fun.args[0].clone();
                 let new_expression = input_arg + lit(1i64);
 
-                Transformed::Yes(new_expression)
+                Transformed::yes(new_expression)
             }
-            _ => Transformed::No(expr),
+            _ => Transformed::no(expr),
         })
     })
 }

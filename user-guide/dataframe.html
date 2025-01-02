@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>DataFrame API &#8212; Apache Arrow DataFusion  documentation</title>
+    <title>DataFrame API &#8212; Apache DataFusion  documentation</title>
     
     <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -29,13 +29,13 @@
     <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
   
     <script src="../_static/documentation_options.js?v=8a448e45"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="true" defer="true" src="https://buttons.github.io/buttons.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Expression API" href="expressions.html" />
-    <link rel="prev" title="Command line SQL console" href="cli.html" />
+    <link rel="prev" title="Local Files / Directories" href="cli/datasources.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en">
     
@@ -68,13 +68,45 @@
     
     <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  ASF Links
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://apache.org">
+   Apache Software Foundation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://www.apache.org/licenses/">
+   License
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://www.apache.org/foundation/sponsorship.html">
+   Donate
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://www.apache.org/foundation/thanks.html">
+   Thanks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://www.apache.org/security/">
+   Security
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Links
  </span>
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/apache/arrow-datafusion">
-   Github and Issue Tracker
+  <a class="reference external" href="https://github.com/apache/datafusion">
+   GitHub and Issue Tracker
   </a>
  </li>
  <li class="toctree-l1">
@@ -88,8 +120,18 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/apache/arrow-datafusion/blob/main/CODE_OF_CONDUCT.md">
+  <a class="reference external" href="https://datafusion.apache.org/blog/">
+   Blog
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/apache/datafusion/blob/main/CODE_OF_CONDUCT.md">
    Code of conduct
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../download.html">
+   Download
   </a>
  </li>
 </ul>
@@ -110,9 +152,46 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="cli.html">
-   Command line SQL console
+  <a class="reference internal" href="concepts-readings-events.html">
+   Concepts, Readings, Events
   </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="crate-configuration.html">
+   Crate Configuration
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="cli/index.html">
+   DataFusion CLI
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="cli/overview.html">
+     Overview
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="cli/installation.html">
+     Installation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="cli/usage.html">
+     Usage
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="cli/datasources.html">
+     Local Files / Directories
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
@@ -128,8 +207,8 @@
   <a class="reference internal" href="sql/index.html">
    SQL Reference
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -190,6 +269,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="sql/special_functions.html">
+     Special Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="sql/sql_status.html">
      Status
     </a>
@@ -207,6 +291,11 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="explain-usage.html">
+   Reading Explain Plans
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="faq.html">
    Frequently Asked Questions
   </a>
@@ -221,6 +310,11 @@
  <li class="toctree-l1">
   <a class="reference internal" href="../library-user-guide/index.html">
    Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../library-user-guide/extensions.html">
+   Extensions List
   </a>
  </li>
  <li class="toctree-l1">
@@ -269,6 +363,21 @@
    Extending DataFusion’s operators: custom LogicalPlan and Execution Plans
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../library-user-guide/profiling.html">
+   Profiling Cookbook
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../library-user-guide/query-optimizer.html">
+   DataFusion Query Optimizer
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../library-user-guide/api-health.html">
+   API health policy
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -287,8 +396,23 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../contributor-guide/getting_started.html">
+   Getting Started
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../contributor-guide/architecture.html">
    Architecture
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../contributor-guide/testing.html">
+   Testing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../contributor-guide/howtos.html">
+   HOWTOs
   </a>
  </li>
  <li class="toctree-l1">
@@ -297,16 +421,21 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../contributor-guide/quarterly_roadmap.html">
-   Quarterly Roadmap
+  <a class="reference internal" href="../contributor-guide/governance.html">
+   Governance
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../contributor-guide/inviting.html">
+   Inviting New Committers and PMC Members
   </a>
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../contributor-guide/specification/index.html">
    Specifications
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -324,12 +453,34 @@
   </ul>
  </li>
 </ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  DataFusion Subprojects
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://arrow.apache.org/ballista/">
+   DataFusion Ballista
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://datafusion.apache.org/comet/">
+   DataFusion Comet
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://datafusion.apache.org/python/">
+   DataFusion Python
+  </a>
+ </li>
+</ul>
 
     
   </div>
 
   <a class="navbar-brand" href="../index.html">
-    <img src="../_static/images/DataFusion-Logo-Background-White.png" class="logo" alt="logo">
+    <img src="../_static/images/2x_bgwhite_original.png" class="logo" alt="logo">
   </a>
 </nav>
 
@@ -353,18 +504,8 @@
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#dataframe-transformations">
-   DataFrame Transformations
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#dataframe-actions">
-   DataFrame Actions
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#other-dataframe-methods">
-   Other DataFrame Methods
+  <a class="reference internal nav-link" href="#example">
+   Example
   </a>
  </li>
 </ul>
@@ -415,166 +556,46 @@
 -->
 <section id="dataframe-api">
 <h1>DataFrame API<a class="headerlink" href="#dataframe-api" title="Link to this heading">¶</a></h1>
-<p>A DataFrame represents a logical set of rows with the same named columns, similar to a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html">Pandas DataFrame</a> or
-<a class="reference external" href="https://spark.apache.org/docs/latest/sql-programming-guide.html">Spark DataFrame</a>.</p>
-<p>DataFrames are typically created by calling a method on
-<code class="docutils literal notranslate"><span class="pre">SessionContext</span></code>, such as <code class="docutils literal notranslate"><span class="pre">read_csv</span></code>, and can then be modified
-by calling the transformation methods, such as <code class="docutils literal notranslate"><span class="pre">filter</span></code>, <code class="docutils literal notranslate"><span class="pre">select</span></code>, <code class="docutils literal notranslate"><span class="pre">aggregate</span></code>, and <code class="docutils literal notranslate"><span class="pre">limit</span></code>
-to build up a query definition.</p>
-<p>The query can be executed by calling the <code class="docutils literal notranslate"><span class="pre">collect</span></code> method.</p>
-<p>The DataFrame struct is part of DataFusion’s prelude and can be imported with the following statement.</p>
-<div class="highlight-rust notranslate"><div class="highlight"><pre><span></span><span class="k">use</span><span class="w"> </span><span class="n">datafusion</span>::<span class="n">prelude</span>::<span class="o">*</span><span class="p">;</span>
+<p>A DataFrame represents a logical set of rows with the same named columns,
+similar to a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html">Pandas DataFrame</a> or <a class="reference external" href="https://spark.apache.org/docs/latest/sql-programming-guide.html">Spark DataFrame</a>.</p>
+<p>DataFrames are typically created by calling a method on <a class="reference external" href="https://docs.rs/datafusion/latest/datafusion/execution/context/struct.SessionContext.html"><code class="docutils literal notranslate"><span class="pre">SessionContext</span></code></a>, such
+as <a class="reference external" href="https://docs.rs/datafusion/latest/datafusion/execution/context/struct.SessionContext.html#method.read_csv"><code class="docutils literal notranslate"><span class="pre">read_csv</span></code></a>, and can then be modified by calling the transformation methods,
+such as <a class="reference external" href="https://docs.rs/datafusion/latest/datafusion/dataframe/struct.DataFrame.html#method.filter"><code class="docutils literal notranslate"><span class="pre">filter</span></code></a>, <a class="reference external" href="https://docs.rs/datafusion/latest/datafusion/dataframe/struct.DataFrame.html#method.select"><code class="docutils literal notranslate"><span class="pre">select</span></code></a>, <a class="reference external" href="https://docs.rs/datafusion/latest/datafusion/dataframe/struct.DataFrame.html#method.aggregate"><code class="docutils literal notranslate"><span class="pre">aggregate</span></code></a>, and <a class="reference external" href="https://docs.rs/datafusion/latest/datafusion/dataframe/struct.DataFrame.html#method.limit"><code class="docutils literal notranslate"><span class="pre">limit</span></code></a> to build up a query
+definition.</p>
+<p>The query can be executed by calling the <a class="reference external" href="https://docs.rs/datafusion/latest/datafusion/dataframe/struct.DataFrame.html#method.collect"><code class="docutils literal notranslate"><span class="pre">collect</span></code></a> method.</p>
+<p>DataFusion DataFrames use lazy evaluation, meaning that each transformation
+creates a new plan but does not actually perform any immediate actions. This
+approach allows for the overall plan to be optimized before execution. The plan
+is evaluated (executed) when an action method is invoked, such as <a class="reference external" href="https://docs.rs/datafusion/latest/datafusion/dataframe/struct.DataFrame.html#method.collect"><code class="docutils literal notranslate"><span class="pre">collect</span></code></a>.
+See the <a class="reference internal" href="../library-user-guide/using-the-dataframe-api.html"><span class="std std-doc">Library Users Guide</span></a> for more details.</p>
+<p>The DataFrame API is well documented in the <a class="reference external" href="https://docs.rs/datafusion/latest/datafusion/dataframe/struct.DataFrame.html">API reference on docs.rs</a>.
+Please refer to the <a class="reference internal" href="expressions.html"><span class="doc std std-doc">Expressions Reference</span></a> for more information on
+building logical expressions (<code class="docutils literal notranslate"><span class="pre">Expr</span></code>) to use with the DataFrame API.</p>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Link to this heading">¶</a></h2>
+<p>The DataFrame struct is part of DataFusion’s <code class="docutils literal notranslate"><span class="pre">prelude</span></code> and can be imported with
+the following statement.</p>
+<div class="highlight-rust notranslate"><div class="highlight"><pre><span></span><span class="k">use</span><span class="w"> </span><span class="n">datafusion</span><span class="p">::</span><span class="n">prelude</span><span class="p">::</span><span class="o">*</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Here is a minimal example showing the execution of a query using the DataFrame API.</p>
-<div class="highlight-rust notranslate"><div class="highlight"><pre><span></span><span class="kd">let</span><span class="w"> </span><span class="n">ctx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SessionContext</span>::<span class="n">new</span><span class="p">();</span>
-<span class="kd">let</span><span class="w"> </span><span class="n">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">&quot;tests/data/example.csv&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">CsvReadOptions</span>::<span class="n">new</span><span class="p">()).</span><span class="k">await</span><span class="o">?</span><span class="p">;</span>
-<span class="kd">let</span><span class="w"> </span><span class="n">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df</span><span class="p">.</span><span class="n">filter</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">).</span><span class="n">lt_eq</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s">&quot;b&quot;</span><span class="p">)))</span><span class="o">?</span>
-<span class="w">           </span><span class="p">.</span><span class="n">aggregate</span><span class="p">(</span><span class="fm">vec!</span><span class="p">[</span><span class="n">col</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">)],</span><span class="w"> </span><span class="fm">vec!</span><span class="p">[</span><span class="n">min</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s">&quot;b&quot;</span><span class="p">))])</span><span class="o">?</span>
-<span class="w">           </span><span class="p">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nb">Some</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span><span class="o">?</span><span class="p">;</span>
-<span class="c1">// Print results</span>
-<span class="n">df</span><span class="p">.</span><span class="n">show</span><span class="p">().</span><span class="k">await</span><span class="o">?</span><span class="p">;</span>
+<div class="highlight-rust notranslate"><div class="highlight"><pre><span></span><span class="k">use</span><span class="w"> </span><span class="n">datafusion</span><span class="p">::</span><span class="n">prelude</span><span class="p">::</span><span class="o">*</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="n">datafusion</span><span class="p">::</span><span class="n">error</span><span class="p">::</span><span class="nb">Result</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="n">datafusion</span><span class="p">::</span><span class="n">functions_aggregate</span><span class="p">::</span><span class="n">expr_fn</span><span class="p">::</span><span class="n">min</span><span class="p">;</span>
+
+<span class="cp">#[tokio::main]</span>
+<span class="k">async</span><span class="w"> </span><span class="k">fn</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">-&gt;</span><span class="w"> </span><span class="nb">Result</span><span class="o">&lt;</span><span class="p">()</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">ctx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SessionContext</span><span class="p">::</span><span class="n">new</span><span class="p">();</span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">&quot;tests/data/example.csv&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">CsvReadOptions</span><span class="p">::</span><span class="n">new</span><span class="p">()).</span><span class="k">await</span><span class="o">?</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df</span><span class="p">.</span><span class="n">filter</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">).</span><span class="n">lt_eq</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s">&quot;b&quot;</span><span class="p">)))</span><span class="o">?</span>
+<span class="w">        </span><span class="p">.</span><span class="n">aggregate</span><span class="p">(</span><span class="fm">vec!</span><span class="p">[</span><span class="n">col</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">)],</span><span class="w"> </span><span class="fm">vec!</span><span class="p">[</span><span class="n">min</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s">&quot;b&quot;</span><span class="p">))])</span><span class="o">?</span>
+<span class="w">        </span><span class="p">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nb">Some</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span><span class="o">?</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// Print results</span>
+<span class="w">    </span><span class="n">df</span><span class="p">.</span><span class="n">show</span><span class="p">().</span><span class="k">await</span><span class="o">?</span><span class="p">;</span>
+<span class="w">    </span><span class="nb">Ok</span><span class="p">(())</span>
+<span class="p">}</span>
 </pre></div>
 </div>
-<p>The DataFrame API is well documented in the <a class="reference external" href="https://docs.rs/datafusion/latest/datafusion/dataframe/struct.DataFrame.html">API reference on docs.rs</a>.</p>
-<p>Refer to the <a class="reference internal" href="expressions.html"><span class="doc std std-doc">Expressions Reference</span></a> for available functions for building logical expressions for use with the
-DataFrame API.</p>
-<section id="dataframe-transformations">
-<h2>DataFrame Transformations<a class="headerlink" href="#dataframe-transformations" title="Link to this heading">¶</a></h2>
-<p>These methods create a new DataFrame after applying a transformation to the logical plan that the DataFrame represents.</p>
-<p>DataFusion DataFrames use lazy evaluation, meaning that each transformation is just creating a new query plan and
-not actually performing any transformations. This approach allows for the overall plan to be optimized before
-execution. The plan is evaluated (executed) when an action method is invoked, such as <code class="docutils literal notranslate"><span class="pre">collect</span></code>.</p>
-<table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Function</p></th>
-<th class="head"><p>Notes</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>aggregate</p></td>
-<td><p>Perform an aggregate query with optional grouping expressions.</p></td>
-</tr>
-<tr class="row-odd"><td><p>distinct</p></td>
-<td><p>Filter out duplicate rows.</p></td>
-</tr>
-<tr class="row-even"><td><p>except</p></td>
-<td><p>Calculate the exception of two DataFrames. The two DataFrames must have exactly the same schema</p></td>
-</tr>
-<tr class="row-odd"><td><p>filter</p></td>
-<td><p>Filter a DataFrame to only include rows that match the specified filter expression.</p></td>
-</tr>
-<tr class="row-even"><td><p>intersect</p></td>
-<td><p>Calculate the intersection of two DataFrames. The two DataFrames must have exactly the same schema</p></td>
-</tr>
-<tr class="row-odd"><td><p>join</p></td>
-<td><p>Join this DataFrame with another DataFrame using the specified columns as join keys.</p></td>
-</tr>
-<tr class="row-even"><td><p>join_on</p></td>
-<td><p>Join this DataFrame with another DataFrame using arbitrary expressions.</p></td>
-</tr>
-<tr class="row-odd"><td><p>limit</p></td>
-<td><p>Limit the number of rows returned from this DataFrame.</p></td>
-</tr>
-<tr class="row-even"><td><p>repartition</p></td>
-<td><p>Repartition a DataFrame based on a logical partitioning scheme.</p></td>
-</tr>
-<tr class="row-odd"><td><p>sort</p></td>
-<td><p>Sort the DataFrame by the specified sorting expressions. Any expression can be turned into a sort expression by calling its <code class="docutils literal notranslate"><span class="pre">sort</span></code> method.</p></td>
-</tr>
-<tr class="row-even"><td><p>select</p></td>
-<td><p>Create a projection based on arbitrary expressions. Example: <code class="docutils literal notranslate"><span class="pre">df.select(vec![col(&quot;c1&quot;),</span> <span class="pre">abs(col(&quot;c2&quot;))])?</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p>select_columns</p></td>
-<td><p>Create a projection based on column names. Example: <code class="docutils literal notranslate"><span class="pre">df.select_columns(&amp;[&quot;id&quot;,</span> <span class="pre">&quot;name&quot;])?</span></code>.</p></td>
-</tr>
-<tr class="row-even"><td><p>union</p></td>
-<td><p>Calculate the union of two DataFrames, preserving duplicate rows. The two DataFrames must have exactly the same schema.</p></td>
-</tr>
-<tr class="row-odd"><td><p>union_distinct</p></td>
-<td><p>Calculate the distinct union of two DataFrames. The two DataFrames must have exactly the same schema.</p></td>
-</tr>
-<tr class="row-even"><td><p>with_column</p></td>
-<td><p>Add an additional column to the DataFrame.</p></td>
-</tr>
-<tr class="row-odd"><td><p>with_column_renamed</p></td>
-<td><p>Rename one column by applying a new projection.</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="dataframe-actions">
-<h2>DataFrame Actions<a class="headerlink" href="#dataframe-actions" title="Link to this heading">¶</a></h2>
-<p>These methods execute the logical plan represented by the DataFrame and either collects the results into memory, prints them to stdout, or writes them to disk.</p>
-<table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Function</p></th>
-<th class="head"><p>Notes</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>collect</p></td>
-<td><p>Executes this DataFrame and collects all results into a vector of RecordBatch.</p></td>
-</tr>
-<tr class="row-odd"><td><p>collect_partitioned</p></td>
-<td><p>Executes this DataFrame and collects all results into a vector of vector of RecordBatch maintaining the input partitioning.</p></td>
-</tr>
-<tr class="row-even"><td><p>count</p></td>
-<td><p>Executes this DataFrame to get the total number of rows.</p></td>
-</tr>
-<tr class="row-odd"><td><p>execute_stream</p></td>
-<td><p>Executes this DataFrame and returns a stream over a single partition.</p></td>
-</tr>
-<tr class="row-even"><td><p>execute_stream_partitioned</p></td>
-<td><p>Executes this DataFrame and returns one stream per partition.</p></td>
-</tr>
-<tr class="row-odd"><td><p>show</p></td>
-<td><p>Execute this DataFrame and print the results to stdout.</p></td>
-</tr>
-<tr class="row-even"><td><p>show_limit</p></td>
-<td><p>Execute this DataFrame and print a subset of results to stdout.</p></td>
-</tr>
-<tr class="row-odd"><td><p>write_csv</p></td>
-<td><p>Execute this DataFrame and write the results to disk in CSV format.</p></td>
-</tr>
-<tr class="row-even"><td><p>write_json</p></td>
-<td><p>Execute this DataFrame and write the results to disk in JSON format.</p></td>
-</tr>
-<tr class="row-odd"><td><p>write_parquet</p></td>
-<td><p>Execute this DataFrame and write the results to disk in Parquet format.</p></td>
-</tr>
-<tr class="row-even"><td><p>write_table</p></td>
-<td><p>Execute this DataFrame and write the results via the insert_into method of the registered TableProvider</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="other-dataframe-methods">
-<h2>Other DataFrame Methods<a class="headerlink" href="#other-dataframe-methods" title="Link to this heading">¶</a></h2>
-<table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Function</p></th>
-<th class="head"><p>Notes</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>explain</p></td>
-<td><p>Return a DataFrame with the explanation of its plan so far.</p></td>
-</tr>
-<tr class="row-odd"><td><p>registry</p></td>
-<td><p>Return a <code class="docutils literal notranslate"><span class="pre">FunctionRegistry</span></code> used to plan udf’s calls.</p></td>
-</tr>
-<tr class="row-even"><td><p>schema</p></td>
-<td><p>Returns the schema describing the output of this DataFrame in terms of columns returned, where each column has a name, data type, and nullability attribute.</p></td>
-</tr>
-<tr class="row-odd"><td><p>to_logical_plan</p></td>
-<td><p>Return the optimized logical plan represented by this DataFrame.</p></td>
-</tr>
-<tr class="row-even"><td><p>to_unoptimized_plan</p></td>
-<td><p>Return the unoptimized logical plan represented by this DataFrame.</p></td>
-</tr>
-</tbody>
-</table>
 </section>
 </section>
 
@@ -584,11 +605,11 @@ execution. The plan is evaluated (executed) when an action method is invoked, su
               
               <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="cli.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="cli/datasources.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Command line SQL console</p>
+            <p class="prev-next-title">Local Files / Directories</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="expressions.html" title="next page">
@@ -620,12 +641,12 @@ execution. The plan is evaluated (executed) when an action method is invoked, su
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.1.3.<br>
 </p>
     </div>
     
     <div class="footer-item">
-      <p>Apache Arrow DataFusion, Arrow DataFusion, Apache, the Apache feather logo, and the Apache Arrow DataFusion project logo</p>
+      <p>Apache DataFusion, Apache, the Apache feather logo, and the Apache DataFusion project logo</p>
       <p>are either registered trademarks or trademarks of The Apache Software Foundation in the United States and other countries.</p>
     </div>
   </div>

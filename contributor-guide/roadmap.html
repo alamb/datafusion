@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Roadmap &#8212; Apache Arrow DataFusion  documentation</title>
+    <title>Roadmap &#8212; Apache DataFusion  documentation</title>
     
     <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -29,13 +29,13 @@
     <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
   
     <script src="../_static/documentation_options.js?v=8a448e45"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="true" defer="true" src="https://buttons.github.io/buttons.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Quarterly Roadmap" href="quarterly_roadmap.html" />
-    <link rel="prev" title="Architecture" href="architecture.html" />
+    <link rel="next" title="Governance" href="governance.html" />
+    <link rel="prev" title="HOWTOs" href="howtos.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en">
     
@@ -68,13 +68,45 @@
     
     <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  ASF Links
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://apache.org">
+   Apache Software Foundation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://www.apache.org/licenses/">
+   License
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://www.apache.org/foundation/sponsorship.html">
+   Donate
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://www.apache.org/foundation/thanks.html">
+   Thanks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://www.apache.org/security/">
+   Security
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Links
  </span>
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/apache/arrow-datafusion">
-   Github and Issue Tracker
+  <a class="reference external" href="https://github.com/apache/datafusion">
+   GitHub and Issue Tracker
   </a>
  </li>
  <li class="toctree-l1">
@@ -88,8 +120,18 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/apache/arrow-datafusion/blob/main/CODE_OF_CONDUCT.md">
+  <a class="reference external" href="https://datafusion.apache.org/blog/">
+   Blog
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/apache/datafusion/blob/main/CODE_OF_CONDUCT.md">
    Code of conduct
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../download.html">
+   Download
   </a>
  </li>
 </ul>
@@ -110,9 +152,46 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../user-guide/cli.html">
-   Command line SQL console
+  <a class="reference internal" href="../user-guide/concepts-readings-events.html">
+   Concepts, Readings, Events
   </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../user-guide/crate-configuration.html">
+   Crate Configuration
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../user-guide/cli/index.html">
+   DataFusion CLI
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user-guide/cli/overview.html">
+     Overview
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user-guide/cli/installation.html">
+     Installation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user-guide/cli/usage.html">
+     Usage
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user-guide/cli/datasources.html">
+     Local Files / Directories
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../user-guide/dataframe.html">
@@ -128,8 +207,8 @@
   <a class="reference internal" href="../user-guide/sql/index.html">
    SQL Reference
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -190,6 +269,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../user-guide/sql/special_functions.html">
+     Special Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../user-guide/sql/sql_status.html">
      Status
     </a>
@@ -207,6 +291,11 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../user-guide/explain-usage.html">
+   Reading Explain Plans
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../user-guide/faq.html">
    Frequently Asked Questions
   </a>
@@ -221,6 +310,11 @@
  <li class="toctree-l1">
   <a class="reference internal" href="../library-user-guide/index.html">
    Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../library-user-guide/extensions.html">
+   Extensions List
   </a>
  </li>
  <li class="toctree-l1">
@@ -269,6 +363,21 @@
    Extending DataFusion’s operators: custom LogicalPlan and Execution Plans
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../library-user-guide/profiling.html">
+   Profiling Cookbook
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../library-user-guide/query-optimizer.html">
+   DataFusion Query Optimizer
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../library-user-guide/api-health.html">
+   API health policy
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -287,8 +396,23 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="getting_started.html">
+   Getting Started
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="architecture.html">
    Architecture
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="testing.html">
+   Testing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="howtos.html">
+   HOWTOs
   </a>
  </li>
  <li class="toctree-l1 current active">
@@ -297,16 +421,21 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="quarterly_roadmap.html">
-   Quarterly Roadmap
+  <a class="reference internal" href="governance.html">
+   Governance
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inviting.html">
+   Inviting New Committers and PMC Members
   </a>
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="specification/index.html">
    Specifications
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -324,12 +453,34 @@
   </ul>
  </li>
 </ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  DataFusion Subprojects
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://arrow.apache.org/ballista/">
+   DataFusion Ballista
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://datafusion.apache.org/comet/">
+   DataFusion Comet
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://datafusion.apache.org/python/">
+   DataFusion Python
+  </a>
+ </li>
+</ul>
 
     
   </div>
 
   <a class="navbar-brand" href="../index.html">
-    <img src="../_static/images/DataFusion-Logo-Background-White.png" class="logo" alt="logo">
+    <img src="../_static/images/2x_bgwhite_original.png" class="logo" alt="logo">
   </a>
 </nav>
 
@@ -352,16 +503,82 @@
 
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#planning-epics">
-   Planning
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     EPIC
-    </span>
-   </code>
-   s
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Roadmap
   </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#planning-epics">
+     Planning
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       EPIC
+      </span>
+     </code>
+     s
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#quarterly-roadmap">
+   Quarterly Roadmap
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#q4">
+     2023 Q4
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#q2">
+     2022 Q2
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#datafusion-core">
+       DataFusion Core
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ballista">
+       Ballista
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#extensions-datafusion-contrib">
+       Extensions (datafusion-contrib)
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#datafusion-python">
+       DataFusion-Python
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#datafusion-s3">
+       DataFusion-S3
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#datafusion-tui">
+       DataFusion-Tui
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#datafusion-bigtable">
+       DataFusion-BigTable
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#datafusion-streams">
+       DataFusion-Streams
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -416,7 +633,7 @@ overview and goals of DataFusion, and our development efforts largely
 align to that vision.</p>
 <section id="planning-epics">
 <h2>Planning <code class="docutils literal notranslate"><span class="pre">EPIC</span></code>s<a class="headerlink" href="#planning-epics" title="Link to this heading">¶</a></h2>
-<p>DataFusion uses <a class="reference external" href="https://github.com/apache/arrow-datafusion/issues">GitHub
+<p>DataFusion uses <a class="reference external" href="https://github.com/apache/datafusion/issues">GitHub
 issues</a> to track
 planned work. We collect related tickets using tracking issues labeled
 with <code class="docutils literal notranslate"><span class="pre">[EPIC]</span></code> which contain discussion and links to more detailed items.</p>
@@ -430,7 +647,133 @@ before submitting a large PR, we strongly suggest and request you
 start a conversation using a github issue or the
 <a class="reference external" href="mailto:dev&#37;&#52;&#48;arrow&#46;apache&#46;org">dev<span>&#64;</span>arrow<span>&#46;</span>apache<span>&#46;</span>org</a> mailing list to
 make review efficient and avoid surprises.</p>
-<p><a class="reference external" href="https://github.com/apache/arrow-datafusion/issues?q=is%3Aissue+is%3Aopen+epic">The current list of <code class="docutils literal notranslate"><span class="pre">EPIC</span></code>s can be found here</a>.</p>
+<p><a class="reference external" href="https://github.com/apache/datafusion/issues?q=is%3Aissue+is%3Aopen+epic">The current list of <code class="docutils literal notranslate"><span class="pre">EPIC</span></code>s can be found here</a>.</p>
+</section>
+</section>
+<section id="quarterly-roadmap">
+<h1>Quarterly Roadmap<a class="headerlink" href="#quarterly-roadmap" title="Link to this heading">¶</a></h1>
+<p>A quarterly roadmap will be published to give the DataFusion community
+visibility into the priorities of the projects contributors. This roadmap is not
+binding and we would welcome any/all contributions to help keep this list up to
+date.</p>
+<section id="q4">
+<h2>2023 Q4<a class="headerlink" href="#q4" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Improve data output (<code class="docutils literal notranslate"><span class="pre">COPY</span></code>, <code class="docutils literal notranslate"><span class="pre">INSERT</span></code> and DataFrame) output capability <a class="reference external" href="https://github.com/apache/datafusion/issues/6569">#6569</a></p></li>
+<li><p>Implementation of <code class="docutils literal notranslate"><span class="pre">ARRAY</span></code> types and related functions <a class="reference external" href="https://github.com/apache/datafusion/issues/6980">#6980</a></p></li>
+<li><p>Write an industrial paper about DataFusion for SIGMOD <a class="reference external" href="https://github.com/apache/datafusion/issues/6782">#6782</a></p></li>
+</ul>
+</section>
+<section id="q2">
+<h2>2022 Q2<a class="headerlink" href="#q2" title="Link to this heading">¶</a></h2>
+<section id="datafusion-core">
+<h3>DataFusion Core<a class="headerlink" href="#datafusion-core" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>IO Improvements</p>
+<ul>
+<li><p>Reading, registering, and writing more file formats from both DataFrame API and SQL</p></li>
+<li><p>Additional options for IO including partitioning and metadata support</p></li>
+</ul>
+</li>
+<li><p>Work Scheduling</p>
+<ul>
+<li><p>Improve predictability, observability and performance of IO and CPU-bound work</p></li>
+<li><p>Develop a more explicit story for managing parallelism during plan execution</p></li>
+</ul>
+</li>
+<li><p>Memory Management</p>
+<ul>
+<li><p>Add more operators for memory limited execution</p></li>
+</ul>
+</li>
+<li><p>Performance</p>
+<ul>
+<li><p>Incorporate row-format into operators such as aggregate</p></li>
+<li><p>Add row-format benchmarks</p></li>
+<li><p>Explore JIT-compiling complex expressions</p></li>
+<li><p>Explore LLVM for JIT, with inline Rust functions as the primary goal</p></li>
+<li><p>Improve performance of Sort and Merge using Row Format / JIT expressions</p></li>
+</ul>
+</li>
+<li><p>Documentation</p>
+<ul>
+<li><p>General improvements to DataFusion website</p></li>
+<li><p>Publish design documents</p></li>
+</ul>
+</li>
+<li><p>Streaming</p>
+<ul>
+<li><p>Create <code class="docutils literal notranslate"><span class="pre">StreamProvider</span></code> trait</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="ballista">
+<h3>Ballista<a class="headerlink" href="#ballista" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Make production ready</p>
+<ul>
+<li><p>Shuffle file cleanup</p></li>
+<li><p>Fill functional gaps between DataFusion and Ballista</p></li>
+<li><p>Improve task scheduling and data exchange efficiency</p></li>
+<li><p>Better error handling</p>
+<ul>
+<li><p>Task failure</p></li>
+<li><p>Executor lost</p></li>
+<li><p>Schedule restart</p></li>
+</ul>
+</li>
+<li><p>Improve monitoring and logging</p></li>
+<li><p>Auto scaling support</p></li>
+</ul>
+</li>
+<li><p>Support for multi-scheduler deployments. Initially for resiliency and fault tolerance but ultimately to support sharding for scalability and more efficient caching.</p></li>
+<li><p>Executor deployment grouping based on resource allocation</p></li>
+</ul>
+</section>
+<section id="extensions-datafusion-contrib">
+<h3>Extensions (<a class="reference external" href="https://github.com/datafusion-contrib">datafusion-contrib</a>)<a class="headerlink" href="#extensions-datafusion-contrib" title="Link to this heading">¶</a></h3>
+</section>
+<section id="datafusion-python">
+<h3><a class="reference external" href="https://github.com/datafusion-contrib/datafusion-python">DataFusion-Python</a><a class="headerlink" href="#datafusion-python" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Add missing functionality to DataFrame and SessionContext</p></li>
+<li><p>Improve documentation</p></li>
+</ul>
+</section>
+<section id="datafusion-s3">
+<h3><a class="reference external" href="https://github.com/datafusion-contrib/datafusion-objectstore-s3">DataFusion-S3</a><a class="headerlink" href="#datafusion-s3" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Create Python bindings to use with datafusion-python</p></li>
+</ul>
+</section>
+<section id="datafusion-tui">
+<h3><a class="reference external" href="https://github.com/datafusion-contrib/datafusion-tui">DataFusion-Tui</a><a class="headerlink" href="#datafusion-tui" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Create multiple SQL editors</p></li>
+<li><p>Expose more Context and query metadata</p></li>
+<li><p>Support new data sources</p>
+<ul>
+<li><p>BigTable, HDFS, HTTP APIs</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="datafusion-bigtable">
+<h3><a class="reference external" href="https://github.com/datafusion-contrib/datafusion-bigtable">DataFusion-BigTable</a><a class="headerlink" href="#datafusion-bigtable" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Python binding to use with datafusion-python</p></li>
+<li><p>Timestamp range predicate pushdown</p></li>
+<li><p>Multi-threaded partition aware execution</p></li>
+<li><p>Production ready Rust SDK</p></li>
+</ul>
+</section>
+<section id="datafusion-streams">
+<h3><a class="reference external" href="https://github.com/datafusion-contrib/datafusion-streams">DataFusion-Streams</a><a class="headerlink" href="#datafusion-streams" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Create experimental implementation of <code class="docutils literal notranslate"><span class="pre">StreamProvider</span></code> trait</p></li>
+</ul>
+</section>
 </section>
 </section>
 
@@ -440,17 +783,17 @@ make review efficient and avoid surprises.</p>
               
               <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="architecture.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="howtos.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Architecture</p>
+            <p class="prev-next-title">HOWTOs</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="quarterly_roadmap.html" title="next page">
+    <a class='right-next' id="next-link" href="governance.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Quarterly Roadmap</p>
+        <p class="prev-next-title">Governance</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
@@ -476,12 +819,12 @@ make review efficient and avoid surprises.</p>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.1.3.<br>
 </p>
     </div>
     
     <div class="footer-item">
-      <p>Apache Arrow DataFusion, Arrow DataFusion, Apache, the Apache feather logo, and the Apache Arrow DataFusion project logo</p>
+      <p>Apache DataFusion, Apache, the Apache feather logo, and the Apache DataFusion project logo</p>
       <p>are either registered trademarks or trademarks of The Apache Software Foundation in the United States and other countries.</p>
     </div>
   </div>

@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Introduction &#8212; Apache Arrow DataFusion  documentation</title>
+    <title>Introduction &#8212; Apache DataFusion  documentation</title>
     
     <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -29,13 +29,13 @@
     <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
   
     <script src="../_static/documentation_options.js?v=8a448e45"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="true" defer="true" src="https://buttons.github.io/buttons.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Example Usage" href="example-usage.html" />
-    <link rel="prev" title="Apache Arrow DataFusion" href="../index.html" />
+    <link rel="prev" title="Download" href="../download.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en">
     
@@ -68,13 +68,45 @@
     
     <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  ASF Links
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://apache.org">
+   Apache Software Foundation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://www.apache.org/licenses/">
+   License
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://www.apache.org/foundation/sponsorship.html">
+   Donate
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://www.apache.org/foundation/thanks.html">
+   Thanks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://www.apache.org/security/">
+   Security
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Links
  </span>
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/apache/arrow-datafusion">
-   Github and Issue Tracker
+  <a class="reference external" href="https://github.com/apache/datafusion">
+   GitHub and Issue Tracker
   </a>
  </li>
  <li class="toctree-l1">
@@ -88,8 +120,18 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/apache/arrow-datafusion/blob/main/CODE_OF_CONDUCT.md">
+  <a class="reference external" href="https://datafusion.apache.org/blog/">
+   Blog
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/apache/datafusion/blob/main/CODE_OF_CONDUCT.md">
    Code of conduct
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../download.html">
+   Download
   </a>
  </li>
 </ul>
@@ -110,9 +152,46 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="cli.html">
-   Command line SQL console
+  <a class="reference internal" href="concepts-readings-events.html">
+   Concepts, Readings, Events
   </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="crate-configuration.html">
+   Crate Configuration
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="cli/index.html">
+   DataFusion CLI
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="cli/overview.html">
+     Overview
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="cli/installation.html">
+     Installation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="cli/usage.html">
+     Usage
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="cli/datasources.html">
+     Local Files / Directories
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="dataframe.html">
@@ -128,8 +207,8 @@
   <a class="reference internal" href="sql/index.html">
    SQL Reference
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -190,6 +269,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="sql/special_functions.html">
+     Special Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="sql/sql_status.html">
      Status
     </a>
@@ -207,6 +291,11 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="explain-usage.html">
+   Reading Explain Plans
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="faq.html">
    Frequently Asked Questions
   </a>
@@ -221,6 +310,11 @@
  <li class="toctree-l1">
   <a class="reference internal" href="../library-user-guide/index.html">
    Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../library-user-guide/extensions.html">
+   Extensions List
   </a>
  </li>
  <li class="toctree-l1">
@@ -269,6 +363,21 @@
    Extending DataFusion’s operators: custom LogicalPlan and Execution Plans
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../library-user-guide/profiling.html">
+   Profiling Cookbook
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../library-user-guide/query-optimizer.html">
+   DataFusion Query Optimizer
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../library-user-guide/api-health.html">
+   API health policy
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -287,8 +396,23 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../contributor-guide/getting_started.html">
+   Getting Started
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../contributor-guide/architecture.html">
    Architecture
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../contributor-guide/testing.html">
+   Testing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../contributor-guide/howtos.html">
+   HOWTOs
   </a>
  </li>
  <li class="toctree-l1">
@@ -297,16 +421,21 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../contributor-guide/quarterly_roadmap.html">
-   Quarterly Roadmap
+  <a class="reference internal" href="../contributor-guide/governance.html">
+   Governance
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../contributor-guide/inviting.html">
+   Inviting New Committers and PMC Members
   </a>
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../contributor-guide/specification/index.html">
    Specifications
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -324,12 +453,34 @@
   </ul>
  </li>
 </ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  DataFusion Subprojects
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://arrow.apache.org/ballista/">
+   DataFusion Ballista
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://datafusion.apache.org/comet/">
+   DataFusion Comet
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://datafusion.apache.org/python/">
+   DataFusion Python
+  </a>
+ </li>
+</ul>
 
     
   </div>
 
   <a class="navbar-brand" href="../index.html">
-    <img src="../_static/images/DataFusion-Logo-Background-White.png" class="logo" alt="logo">
+    <img src="../_static/images/2x_bgwhite_original.png" class="logo" alt="logo">
   </a>
 </nav>
 
@@ -445,9 +596,9 @@
 <p>DataFusion is a very fast, extensible query engine for building
 high-quality data-centric systems in <a class="reference external" href="http://rustlang.org">Rust</a>,
 using the <a class="reference external" href="https://arrow.apache.org">Apache Arrow</a> in-memory format.
-DataFusion is part of the <a class="reference external" href="https://arrow.apache.org/">Apache Arrow</a>
+DataFusion originated as part of the <a class="reference external" href="https://arrow.apache.org/">Apache Arrow</a>
 project.</p>
-<p>DataFusion offers SQL and Dataframe APIs, excellent <a class="reference external" href="https://benchmark.clickhouse.com/">performance</a>, built-in support for CSV, Parquet, JSON, and Avro, <a class="reference external" href="https://github.com/apache/arrow-datafusion-python">python bindings</a>, extensive customization, a great community, and more.</p>
+<p>DataFusion offers SQL and Dataframe APIs, excellent <a class="reference external" href="https://benchmark.clickhouse.com/">performance</a>, built-in support for CSV, Parquet, JSON, and Avro, <a class="reference external" href="https://github.com/apache/datafusion-python">python bindings</a>, extensive customization, a great community, and more.</p>
 <section id="project-goals">
 <h2>Project Goals<a class="headerlink" href="#project-goals" title="Link to this heading">¶</a></h2>
 <p>DataFusion aims to be the query engine of choice for new, fast
@@ -459,7 +610,7 @@ Arrow</a>.</p>
 <section id="features">
 <h2>Features<a class="headerlink" href="#features" title="Link to this heading">¶</a></h2>
 <ul class="simple">
-<li><p>Feature-rich <a class="reference external" href="https://arrow.apache.org/datafusion/user-guide/sql/index.html">SQL support</a> and <a class="reference external" href="https://arrow.apache.org/datafusion/user-guide/dataframe.html">DataFrame API</a></p></li>
+<li><p>Feature-rich <a class="reference external" href="https://datafusion.apache.org/user-guide/sql/index.html">SQL support</a> and <a class="reference external" href="https://datafusion.apache.org/user-guide/dataframe.html">DataFrame API</a></p></li>
 <li><p>Blazingly fast, vectorized, multi-threaded, streaming execution engine.</p></li>
 <li><p>Native support for Parquet, CSV, JSON, and Avro file formats. Support
 for custom file formats and non file datasources via the <code class="docutils literal notranslate"><span class="pre">TableProvider</span></code> trait.</p></li>
@@ -469,7 +620,7 @@ other query languages, custom plan and execution nodes, optimizer passes, and mo
 Azure Blob Storage, and Google Cloud Storage (Other storage systems are supported via the
 <code class="docutils literal notranslate"><span class="pre">ObjectStore</span></code> trait).</p></li>
 <li><p><a class="reference external" href="https://docs.rs/datafusion/latest">Excellent Documentation</a> and a
-<a class="reference external" href="https://arrow.apache.org/datafusion/contributor-guide/communication.html">welcoming community</a>.</p></li>
+<a class="reference external" href="https://datafusion.apache.org/contributor-guide/communication.html">welcoming community</a>.</p></li>
 <li><p>A state of the art query optimizer with expression coercion and
 simplification, projection and filter pushdown, sort and distribution
 aware optimizations, automatic join reordering, and more.</p></li>
@@ -494,8 +645,8 @@ suitable for “streaming” and “transaction” style systems (low
 latency).</p>
 <p>Here are some example systems built using DataFusion:</p>
 <ul class="simple">
-<li><p>Specialized Analytical Database systems such as <a class="reference external" href="https://github.com/apache/incubator-horaedb">HoraeDB</a> and more general Apache Spark like system such a <a class="reference external" href="https://github.com/apache/arrow-ballista">Ballista</a>.</p></li>
-<li><p>New query language engines such as <a class="reference external" href="https://github.com/prql/prql-query">prql-query</a> and accelerators such as <a class="reference external" href="https://vegafusion.io/">VegaFusion</a></p></li>
+<li><p>Specialized Analytical Database systems such as <a class="reference external" href="https://github.com/apache/incubator-horaedb">HoraeDB</a> and more general Apache Spark like system such a <a class="reference external" href="https://github.com/apache/datafusion-ballista">Ballista</a>.</p></li>
+<li><p>New query language engines such as <a class="reference external" href="https://github.com/prql/prql-query">prql-query</a> and accelerators such as <a class="reference external" href="https://vegafusion.io/" title="if you know of another project, please submit a PR to add a link!">VegaFusion</a></p></li>
 <li><p>Research platform for new Database Systems, such as <a class="reference external" href="https://github.com/flock-lab/flock">Flock</a></p></li>
 <li><p>SQL support to another library, such as <a class="reference external" href="https://github.com/dask-contrib/dask-sql">dask sql</a></p></li>
 <li><p>Streaming data platforms such as <a class="reference external" href="https://synnada.ai/">Synnada</a></p></li>
@@ -513,33 +664,36 @@ parellelized streaming execution plans, file format support, etc.</p>
  <!-- "Active" means github repositories that had at least one commit in the last 6 months -->
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/ArroyoSystems/arroyo">Arroyo</a> Distributed stream processing engine in Rust</p></li>
-<li><p><a class="reference external" href="https://github.com/apache/arrow-ballista">Ballista</a> Distributed SQL Query Engine</p></li>
+<li><p><a class="reference external" href="https://github.com/apache/datafusion-ballista">Ballista</a> Distributed SQL Query Engine</p></li>
+<li><p><a class="reference external" href="https://github.com/kwai/blaze">Blaze</a> The Blaze accelerator for Apache Spark leverages native vectorized execution to accelerate query processing</p></li>
 <li><p><a class="reference external" href="https://github.com/cnosdb/cnosdb">CnosDB</a> Open Source Distributed Time Series Database</p></li>
+<li><p><a class="reference external" href="https://github.com/apache/datafusion-comet">Comet</a> Apache Spark native query execution plugin</p></li>
 <li><p><a class="reference external" href="https://github.com/cube-js/cube.js/tree/master/rust">Cube Store</a></p></li>
 <li><p><a class="reference external" href="https://github.com/dask-contrib/dask-sql">Dask SQL</a> Distributed SQL query engine in Python</p></li>
-<li><p><a class="reference external" href="https://github.com/wheretrue/exon">Exon</a> Analysis toolkit for life-science applications</p></li>
 <li><p><a class="reference external" href="https://github.com/delta-io/delta-rs">delta-rs</a> Native Rust implementation of Delta Lake</p></li>
-<li><p><a class="reference external" href="https://github.com/GreptimeTeam/greptimedb">GreptimeDB</a> Open Source &amp; Cloud Native Distributed Time Series Database</p></li>
+<li><p><a class="reference external" href="https://github.com/wheretrue/exon">Exon</a> Analysis toolkit for life-science applications</p></li>
 <li><p><a class="reference external" href="https://github.com/GlareDB/glaredb">GlareDB</a> Fast SQL database for querying and analyzing distributed data.</p></li>
+<li><p><a class="reference external" href="https://github.com/GreptimeTeam/greptimedb">GreptimeDB</a> Open Source &amp; Cloud Native Distributed Time Series Database</p></li>
 <li><p><a class="reference external" href="https://github.com/apache/incubator-horaedb">HoraeDB</a> Distributed Time-Series Database</p></li>
 <li><p><a class="reference external" href="https://github.com/influxdata/influxdb">InfluxDB</a> Time Series Database</p></li>
 <li><p><a class="reference external" href="https://github.com/kamu-data/kamu-cli/">Kamu</a> Planet-scale streaming data pipeline</p></li>
 <li><p><a class="reference external" href="https://github.com/lakesoul-io/LakeSoul">LakeSoul</a> Open source LakeHouse framework with native IO in Rust.</p></li>
 <li><p><a class="reference external" href="https://github.com/lancedb/lance">Lance</a> Modern columnar data format for ML</p></li>
-<li><p><a class="reference external" href="https://github.com/parseablehq/parseable">Parseable</a> Log storage and observability platform</p></li>
+<li><p><a class="reference external" href="https://github.com/openobserve/openobserve">OpenObserve</a> Distributed cloud native observability platform</p></li>
 <li><p><a class="reference external" href="https://github.com/paradedb/paradedb">ParadeDB</a> PostgreSQL for Search &amp; Analytics</p></li>
+<li><p><a class="reference external" href="https://github.com/parseablehq/parseable">Parseable</a> Log storage and observability platform</p></li>
 <li><p><a class="reference external" href="https://github.com/timvw/qv">qv</a> Quickly view your data</p></li>
-<li><p><a class="reference external" href="https://github.com/andygrove/bdt">bdt</a> Boring Data Tool</p></li>
 <li><p><a class="reference external" href="https://github.com/restatedev">Restate</a> Easily build resilient applications using distributed durable async/await</p></li>
 <li><p><a class="reference external" href="https://github.com/roapi/roapi">ROAPI</a></p></li>
+<li><p><a class="reference external" href="https://github.com/lakehq/sail">Sail</a> Unifying stream, batch, and AI workloads with Apache Spark compatibility</p></li>
 <li><p><a class="reference external" href="https://github.com/splitgraph/seafowl">Seafowl</a> CDN-friendly analytical database</p></li>
+<li><p><a class="reference external" href="https://github.com/spiceai/spiceai">Spice.ai</a> Unified SQL query interface &amp; materialization engine</p></li>
 <li><p><a class="reference external" href="https://synnada.ai/">Synnada</a> Streaming-first framework for data products</p></li>
 <li><p><a class="reference external" href="https://vegafusion.io/">VegaFusion</a> Server-side acceleration for the <a class="reference external" href="https://vega.github.io/">Vega</a> visualization grammar</p></li>
-<li><p><a class="reference external" href="https://github.com/zinclabs/zincobserve">ZincObserve</a> Distributed cloud native observability platform</p></li>
 </ul>
 <p>Here are some less active projects that used DataFusion:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://github.com/blaze-init/blaze">Blaze</a> Spark accelerator with DataFusion at its core</p></li>
+<li><p><a class="reference external" href="https://github.com/datafusion-contrib/bdt">bdt</a> Boring Data Tool</p></li>
 <li><p><a class="reference external" href="https://github.com/cloudfuse-io/buzz-rust">Cloudfuse Buzz</a></p></li>
 <li><p><a class="reference external" href="https://github.com/datafusion-contrib/datafusion-tui">datafusion-tui</a> Text UI for DataFusion</p></li>
 <li><p><a class="reference external" href="https://github.com/flock-lab/flock">Flock</a></p></li>
@@ -554,7 +708,7 @@ provide integrations with other systems, some of which are described below:</p>
 <h3>Language Bindings<a class="headerlink" href="#language-bindings" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/datafusion-contrib/datafusion-c">datafusion-c</a></p></li>
-<li><p><a class="reference external" href="https://github.com/apache/arrow-datafusion-python">datafusion-python</a></p></li>
+<li><p><a class="reference external" href="https://github.com/apache/datafusion-python">datafusion-python</a></p></li>
 <li><p><a class="reference external" href="https://github.com/datafusion-contrib/datafusion-ruby">datafusion-ruby</a></p></li>
 <li><p><a class="reference external" href="https://github.com/datafusion-contrib/datafusion-java">datafusion-java</a></p></li>
 </ul>
@@ -564,6 +718,7 @@ provide integrations with other systems, some of which are described below:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/datafusion-contrib/datafusion-bigtable">datafusion-bigtable</a></p></li>
 <li><p><a class="reference external" href="https://github.com/datafusion-contrib/datafusion-catalogprovider-glue">datafusion-catalogprovider-glue</a></p></li>
+<li><p><a class="reference external" href="https://github.com/datafusion-contrib/datafusion-federation">datafusion-federation</a></p></li>
 </ul>
 </section>
 </section>
@@ -584,11 +739,11 @@ provide integrations with other systems, some of which are described below:</p>
               
               <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="../index.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="../download.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Apache Arrow DataFusion</p>
+            <p class="prev-next-title">Download</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="example-usage.html" title="next page">
@@ -620,12 +775,12 @@ provide integrations with other systems, some of which are described below:</p>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.1.3.<br>
 </p>
     </div>
     
     <div class="footer-item">
-      <p>Apache Arrow DataFusion, Arrow DataFusion, Apache, the Apache feather logo, and the Apache Arrow DataFusion project logo</p>
+      <p>Apache DataFusion, Apache, the Apache feather logo, and the Apache DataFusion project logo</p>
       <p>are either registered trademarks or trademarks of The Apache Software Foundation in the United States and other countries.</p>
     </div>
   </div>

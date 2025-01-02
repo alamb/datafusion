@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Working with Exprs &#8212; Apache Arrow DataFusion  documentation</title>
+    <title>Working with Exprs &#8212; Apache DataFusion  documentation</title>
     
     <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -29,7 +29,7 @@
     <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
   
     <script src="../_static/documentation_options.js?v=8a448e45"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="true" defer="true" src="https://buttons.github.io/buttons.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -68,13 +68,45 @@
     
     <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  ASF Links
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://apache.org">
+   Apache Software Foundation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://www.apache.org/licenses/">
+   License
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://www.apache.org/foundation/sponsorship.html">
+   Donate
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://www.apache.org/foundation/thanks.html">
+   Thanks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://www.apache.org/security/">
+   Security
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Links
  </span>
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/apache/arrow-datafusion">
-   Github and Issue Tracker
+  <a class="reference external" href="https://github.com/apache/datafusion">
+   GitHub and Issue Tracker
   </a>
  </li>
  <li class="toctree-l1">
@@ -88,8 +120,18 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference external" href="https://github.com/apache/arrow-datafusion/blob/main/CODE_OF_CONDUCT.md">
+  <a class="reference external" href="https://datafusion.apache.org/blog/">
+   Blog
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/apache/datafusion/blob/main/CODE_OF_CONDUCT.md">
    Code of conduct
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../download.html">
+   Download
   </a>
  </li>
 </ul>
@@ -110,9 +152,46 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../user-guide/cli.html">
-   Command line SQL console
+  <a class="reference internal" href="../user-guide/concepts-readings-events.html">
+   Concepts, Readings, Events
   </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../user-guide/crate-configuration.html">
+   Crate Configuration
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../user-guide/cli/index.html">
+   DataFusion CLI
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user-guide/cli/overview.html">
+     Overview
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user-guide/cli/installation.html">
+     Installation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user-guide/cli/usage.html">
+     Usage
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user-guide/cli/datasources.html">
+     Local Files / Directories
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../user-guide/dataframe.html">
@@ -128,8 +207,8 @@
   <a class="reference internal" href="../user-guide/sql/index.html">
    SQL Reference
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -190,6 +269,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../user-guide/sql/special_functions.html">
+     Special Functions
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../user-guide/sql/sql_status.html">
      Status
     </a>
@@ -207,6 +291,11 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../user-guide/explain-usage.html">
+   Reading Explain Plans
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../user-guide/faq.html">
    Frequently Asked Questions
   </a>
@@ -221,6 +310,11 @@
  <li class="toctree-l1">
   <a class="reference internal" href="index.html">
    Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="extensions.html">
+   Extensions List
   </a>
  </li>
  <li class="toctree-l1">
@@ -269,6 +363,21 @@
    Extending DataFusion’s operators: custom LogicalPlan and Execution Plans
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="profiling.html">
+   Profiling Cookbook
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="query-optimizer.html">
+   DataFusion Query Optimizer
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="api-health.html">
+   API health policy
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -287,8 +396,23 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../contributor-guide/getting_started.html">
+   Getting Started
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../contributor-guide/architecture.html">
    Architecture
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../contributor-guide/testing.html">
+   Testing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../contributor-guide/howtos.html">
+   HOWTOs
   </a>
  </li>
  <li class="toctree-l1">
@@ -297,16 +421,21 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../contributor-guide/quarterly_roadmap.html">
-   Quarterly Roadmap
+  <a class="reference internal" href="../contributor-guide/governance.html">
+   Governance
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../contributor-guide/inviting.html">
+   Inviting New Committers and PMC Members
   </a>
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../contributor-guide/specification/index.html">
    Specifications
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -324,12 +453,34 @@
   </ul>
  </li>
 </ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  DataFusion Subprojects
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://arrow.apache.org/ballista/">
+   DataFusion Ballista
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://datafusion.apache.org/comet/">
+   DataFusion Comet
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://datafusion.apache.org/python/">
+   DataFusion Python
+  </a>
+ </li>
+</ul>
 
     
   </div>
 
   <a class="navbar-brand" href="../index.html">
-    <img src="../_static/images/DataFusion-Logo-Background-White.png" class="logo" alt="logo">
+    <img src="../_static/images/2x_bgwhite_original.png" class="logo" alt="logo">
   </a>
 </nav>
 
@@ -464,7 +615,7 @@
 -->
 <section id="working-with-exprs">
 <h1>Working with <code class="docutils literal notranslate"><span class="pre">Expr</span></code>s<a class="headerlink" href="#working-with-exprs" title="Link to this heading">¶</a></h1>
-<!-- https://github.com/apache/arrow-datafusion/issues/7304 -->
+<!-- https://github.com/apache/datafusion/issues/7304 -->
 <p><code class="docutils literal notranslate"><span class="pre">Expr</span></code> is short for “expression”. It is a core abstraction in DataFusion for representing a computation, and follows the standard “expression tree” abstraction found in most compilers and databases.</p>
 <p>For example, the SQL expression <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">+</span> <span class="pre">b</span></code> would be represented as an <code class="docutils literal notranslate"><span class="pre">Expr</span></code> with a <code class="docutils literal notranslate"><span class="pre">BinaryExpr</span></code> variant. A <code class="docutils literal notranslate"><span class="pre">BinaryExpr</span></code> has a left and right <code class="docutils literal notranslate"><span class="pre">Expr</span></code> and an operator.</p>
 <p>As another example, the SQL expression <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">+</span> <span class="pre">b</span> <span class="pre">*</span> <span class="pre">c</span></code> would be represented as an <code class="docutils literal notranslate"><span class="pre">Expr</span></code> with a <code class="docutils literal notranslate"><span class="pre">BinaryExpr</span></code> variant. The left <code class="docutils literal notranslate"><span class="pre">Expr</span></code> would be <code class="docutils literal notranslate"><span class="pre">a</span></code> and the right <code class="docutils literal notranslate"><span class="pre">Expr</span></code> would be another <code class="docutils literal notranslate"><span class="pre">BinaryExpr</span></code> with a left <code class="docutils literal notranslate"><span class="pre">Expr</span></code> of <code class="docutils literal notranslate"><span class="pre">b</span></code> and a right <code class="docutils literal notranslate"><span class="pre">Expr</span></code> of <code class="docutils literal notranslate"><span class="pre">c</span></code>. As a classic expression tree, this would look like:</p>
@@ -491,7 +642,7 @@
 <p>As the writer of a library, you can use <code class="docutils literal notranslate"><span class="pre">Expr</span></code>s to represent computations that you want to perform. This guide will walk you through how to make your own scalar UDF as an <code class="docutils literal notranslate"><span class="pre">Expr</span></code> and how to rewrite <code class="docutils literal notranslate"><span class="pre">Expr</span></code>s to inline the simple UDF.</p>
 <section id="creating-and-evaluating-exprs">
 <h2>Creating and Evaluating <code class="docutils literal notranslate"><span class="pre">Expr</span></code>s<a class="headerlink" href="#creating-and-evaluating-exprs" title="Link to this heading">¶</a></h2>
-<p>Please see <a class="reference external" href="https://github.com/apache/arrow-datafusion/blob/main/datafusion-examples/examples/expr_api.rs">expr_api.rs</a> for well commented code for creating, evaluating, simplifying, and analyzing <code class="docutils literal notranslate"><span class="pre">Expr</span></code>s.</p>
+<p>Please see <a class="reference external" href="https://github.com/apache/datafusion/blob/main/datafusion-examples/examples/expr_api.rs">expr_api.rs</a> for well commented code for creating, evaluating, simplifying, and analyzing <code class="docutils literal notranslate"><span class="pre">Expr</span></code>s.</p>
 </section>
 <section id="a-scalar-udf-example">
 <h2>A Scalar UDF Example<a class="headerlink" href="#a-scalar-udf-example" title="Link to this heading">¶</a></h2>
@@ -499,9 +650,9 @@
 <p>So assuming you’ve written that function, you can use it to create an <code class="docutils literal notranslate"><span class="pre">Expr</span></code>:</p>
 <div class="highlight-rust notranslate"><div class="highlight"><pre><span></span><span class="kd">let</span><span class="w"> </span><span class="n">add_one_udf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">create_udf</span><span class="p">(</span>
 <span class="w">    </span><span class="s">&quot;add_one&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="fm">vec!</span><span class="p">[</span><span class="n">DataType</span>::<span class="n">Int64</span><span class="p">],</span>
-<span class="w">    </span><span class="n">Arc</span>::<span class="n">new</span><span class="p">(</span><span class="n">DataType</span>::<span class="n">Int64</span><span class="p">),</span>
-<span class="w">    </span><span class="n">Volatility</span>::<span class="n">Immutable</span><span class="p">,</span>
+<span class="w">    </span><span class="fm">vec!</span><span class="p">[</span><span class="n">DataType</span><span class="p">::</span><span class="n">Int64</span><span class="p">],</span>
+<span class="w">    </span><span class="n">Arc</span><span class="p">::</span><span class="n">new</span><span class="p">(</span><span class="n">DataType</span><span class="p">::</span><span class="n">Int64</span><span class="p">),</span>
+<span class="w">    </span><span class="n">Volatility</span><span class="p">::</span><span class="n">Immutable</span><span class="p">,</span>
 <span class="w">    </span><span class="n">make_scalar_function</span><span class="p">(</span><span class="n">add_one</span><span class="p">),</span><span class="w">  </span><span class="c1">// &lt;-- the function we wrote</span>
 <span class="p">);</span>
 
@@ -516,7 +667,12 @@
 </section>
 <section id="rewriting-exprs">
 <h2>Rewriting <code class="docutils literal notranslate"><span class="pre">Expr</span></code>s<a class="headerlink" href="#rewriting-exprs" title="Link to this heading">¶</a></h2>
-<p><a class="reference external" href="https://github.com/apache/arrow-datafusion/blob/main/datafusion-examples/examples/rewrite_expr.rs">rewrite_expr.rs</a> contains example code for rewriting <code class="docutils literal notranslate"><span class="pre">Expr</span></code>s.</p>
+<p>There are several examples of rewriting and working with <code class="docutils literal notranslate"><span class="pre">Exprs</span></code>:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/apache/datafusion/blob/main/datafusion-examples/examples/expr_api.rs">expr_api.rs</a></p></li>
+<li><p><a class="reference external" href="https://github.com/apache/datafusion/blob/main/datafusion-examples/examples/analyzer_rule.rs">analyzer_rule.rs</a></p></li>
+<li><p><a class="reference external" href="https://github.com/apache/datafusion/blob/main/datafusion-examples/examples/optimizer_rule.rs">optimizer_rule.rs</a></p></li>
+</ul>
 <p>Rewriting Expressions is the process of taking an <code class="docutils literal notranslate"><span class="pre">Expr</span></code> and transforming it into another <code class="docutils literal notranslate"><span class="pre">Expr</span></code>. This is useful for a number of reasons, including:</p>
 <ul class="simple">
 <li><p>Simplifying <code class="docutils literal notranslate"><span class="pre">Expr</span></code>s to make them easier to evaluate</p></li>
@@ -526,17 +682,17 @@
 <p>In our example, we’ll use rewriting to update our <code class="docutils literal notranslate"><span class="pre">add_one</span></code> UDF, to be rewritten as a <code class="docutils literal notranslate"><span class="pre">BinaryExpr</span></code> with a <code class="docutils literal notranslate"><span class="pre">Literal</span></code> of 1. We’re effectively inlining the UDF.</p>
 <section id="rewriting-with-transform">
 <h3>Rewriting with <code class="docutils literal notranslate"><span class="pre">transform</span></code><a class="headerlink" href="#rewriting-with-transform" title="Link to this heading">¶</a></h3>
-<p>To implement the inlining, we’ll need to write a function that takes an <code class="docutils literal notranslate"><span class="pre">Expr</span></code> and returns a <code class="docutils literal notranslate"><span class="pre">Result&lt;Expr&gt;</span></code>. If the expression is <em>not</em> to be rewritten <code class="docutils literal notranslate"><span class="pre">Transformed::No</span></code> is used to wrap the original <code class="docutils literal notranslate"><span class="pre">Expr</span></code>. If the expression <em>is</em> to be rewritten, <code class="docutils literal notranslate"><span class="pre">Transformed::Yes</span></code> is used to wrap the new <code class="docutils literal notranslate"><span class="pre">Expr</span></code>.</p>
-<div class="highlight-rust notranslate"><div class="highlight"><pre><span></span><span class="k">fn</span> <span class="nf">rewrite_add_one</span><span class="p">(</span><span class="n">expr</span>: <span class="nc">Expr</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="nb">Result</span><span class="o">&lt;</span><span class="n">Expr</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<p>To implement the inlining, we’ll need to write a function that takes an <code class="docutils literal notranslate"><span class="pre">Expr</span></code> and returns a <code class="docutils literal notranslate"><span class="pre">Result&lt;Expr&gt;</span></code>. If the expression is <em>not</em> to be rewritten <code class="docutils literal notranslate"><span class="pre">Transformed::no</span></code> is used to wrap the original <code class="docutils literal notranslate"><span class="pre">Expr</span></code>. If the expression <em>is</em> to be rewritten, <code class="docutils literal notranslate"><span class="pre">Transformed::yes</span></code> is used to wrap the new <code class="docutils literal notranslate"><span class="pre">Expr</span></code>.</p>
+<div class="highlight-rust notranslate"><div class="highlight"><pre><span></span><span class="k">fn</span><span class="w"> </span><span class="nf">rewrite_add_one</span><span class="p">(</span><span class="n">expr</span><span class="p">:</span><span class="w"> </span><span class="nc">Expr</span><span class="p">)</span><span class="w"> </span><span class="p">-&gt;</span><span class="w"> </span><span class="nb">Result</span><span class="o">&lt;</span><span class="n">Expr</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">expr</span><span class="p">.</span><span class="n">transform</span><span class="p">(</span><span class="o">&amp;|</span><span class="n">expr</span><span class="o">|</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="nb">Ok</span><span class="p">(</span><span class="k">match</span><span class="w"> </span><span class="n">expr</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="n">Expr</span>::<span class="n">ScalarUDF</span><span class="p">(</span><span class="n">scalar_fun</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">scalar_fun</span><span class="p">.</span><span class="n">fun</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;add_one&quot;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">Expr</span><span class="p">::</span><span class="n">ScalarUDF</span><span class="p">(</span><span class="n">scalar_fun</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">scalar_fun</span><span class="p">.</span><span class="n">fun</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;add_one&quot;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span>
 <span class="w">                </span><span class="kd">let</span><span class="w"> </span><span class="n">input_arg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scalar_fun</span><span class="p">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">clone</span><span class="p">();</span>
 <span class="w">                </span><span class="kd">let</span><span class="w"> </span><span class="n">new_expression</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">input_arg</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">lit</span><span class="p">(</span><span class="mi">1</span><span class="k">i64</span><span class="p">);</span>
 
-<span class="w">                </span><span class="n">Transformed</span>::<span class="n">Yes</span><span class="p">(</span><span class="n">new_expression</span><span class="p">)</span>
+<span class="w">                </span><span class="n">Transformed</span><span class="p">::</span><span class="n">yes</span><span class="p">(</span><span class="n">new_expression</span><span class="p">)</span>
 <span class="w">            </span><span class="p">}</span>
-<span class="w">            </span><span class="n">_</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">Transformed</span>::<span class="n">No</span><span class="p">(</span><span class="n">expr</span><span class="p">),</span>
+<span class="w">            </span><span class="n">_</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">Transformed</span><span class="p">::</span><span class="n">no</span><span class="p">(</span><span class="n">expr</span><span class="p">),</span>
 <span class="w">        </span><span class="p">})</span>
 <span class="w">    </span><span class="p">})</span>
 <span class="p">}</span>
@@ -551,26 +707,26 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> - returns the name of the rule</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">try_optimize</span></code> - takes a <code class="docutils literal notranslate"><span class="pre">LogicalPlan</span></code> and returns an <code class="docutils literal notranslate"><span class="pre">Option&lt;LogicalPlan&gt;</span></code>. If the rule is able to optimize the plan, it returns <code class="docutils literal notranslate"><span class="pre">Some(LogicalPlan)</span></code> with the optimized plan. If the rule is not able to optimize the plan, it returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
 </ul>
-<div class="highlight-rust notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="nc">AddOneInliner</span><span class="w"> </span><span class="p">{}</span>
+<div class="highlight-rust notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">AddOneInliner</span><span class="w"> </span><span class="p">{}</span>
 
 <span class="k">impl</span><span class="w"> </span><span class="n">OptimizerRule</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">AddOneInliner</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">fn</span> <span class="nf">name</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="kp">&amp;</span><span class="kt">str</span> <span class="p">{</span>
+<span class="w">    </span><span class="k">fn</span><span class="w"> </span><span class="nf">name</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="p">-&gt;</span><span class="w"> </span><span class="kp">&amp;</span><span class="kt">str</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="s">&quot;add_one_inliner&quot;</span>
 <span class="w">    </span><span class="p">}</span>
 
-<span class="w">    </span><span class="k">fn</span> <span class="nf">try_optimize</span><span class="p">(</span>
+<span class="w">    </span><span class="k">fn</span><span class="w"> </span><span class="nf">try_optimize</span><span class="p">(</span>
 <span class="w">        </span><span class="o">&amp;</span><span class="bp">self</span><span class="p">,</span>
-<span class="w">        </span><span class="n">plan</span>: <span class="kp">&amp;</span><span class="nc">LogicalPlan</span><span class="p">,</span>
-<span class="w">        </span><span class="n">config</span>: <span class="kp">&amp;</span><span class="nc">dyn</span><span class="w"> </span><span class="n">OptimizerConfig</span><span class="p">,</span>
-<span class="w">    </span><span class="p">)</span><span class="w"> </span>-&gt; <span class="nb">Result</span><span class="o">&lt;</span><span class="nb">Option</span><span class="o">&lt;</span><span class="n">LogicalPlan</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">plan</span><span class="p">:</span><span class="w"> </span><span class="kp">&amp;</span><span class="nc">LogicalPlan</span><span class="p">,</span>
+<span class="w">        </span><span class="n">config</span><span class="p">:</span><span class="w"> </span><span class="kp">&amp;</span><span class="nc">dyn</span><span class="w"> </span><span class="n">OptimizerConfig</span><span class="p">,</span>
+<span class="w">    </span><span class="p">)</span><span class="w"> </span><span class="p">-&gt;</span><span class="w"> </span><span class="nb">Result</span><span class="o">&lt;</span><span class="nb">Option</span><span class="o">&lt;</span><span class="n">LogicalPlan</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// Map over the expressions and rewrite them</span>
 <span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="n">new_expressions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">plan</span>
 <span class="w">            </span><span class="p">.</span><span class="n">expressions</span><span class="p">()</span>
 <span class="w">            </span><span class="p">.</span><span class="n">into_iter</span><span class="p">()</span>
 <span class="w">            </span><span class="p">.</span><span class="n">map</span><span class="p">(</span><span class="o">|</span><span class="n">expr</span><span class="o">|</span><span class="w"> </span><span class="n">rewrite_add_one</span><span class="p">(</span><span class="n">expr</span><span class="p">))</span>
-<span class="w">            </span><span class="p">.</span><span class="n">collect</span>::<span class="o">&lt;</span><span class="nb">Result</span><span class="o">&lt;</span><span class="nb">Vec</span><span class="o">&lt;</span><span class="n">_</span><span class="o">&gt;&gt;&gt;</span><span class="p">()</span><span class="o">?</span><span class="p">;</span>
+<span class="w">            </span><span class="p">.</span><span class="n">collect</span><span class="p">::</span><span class="o">&lt;</span><span class="nb">Result</span><span class="o">&lt;</span><span class="nb">Vec</span><span class="o">&lt;</span><span class="n">_</span><span class="o">&gt;&gt;&gt;</span><span class="p">()</span><span class="o">?</span><span class="p">;</span>
 
-<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="n">inputs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">plan</span><span class="p">.</span><span class="n">inputs</span><span class="p">().</span><span class="n">into_iter</span><span class="p">().</span><span class="n">cloned</span><span class="p">().</span><span class="n">collect</span>::<span class="o">&lt;</span><span class="nb">Vec</span><span class="o">&lt;</span><span class="n">_</span><span class="o">&gt;&gt;</span><span class="p">();</span>
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="n">inputs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">plan</span><span class="p">.</span><span class="n">inputs</span><span class="p">().</span><span class="n">into_iter</span><span class="p">().</span><span class="n">cloned</span><span class="p">().</span><span class="n">collect</span><span class="p">::</span><span class="o">&lt;</span><span class="nb">Vec</span><span class="o">&lt;</span><span class="n">_</span><span class="o">&gt;&gt;</span><span class="p">();</span>
 
 <span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="n">plan</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">plan</span><span class="p">.</span><span class="n">with_new_exprs</span><span class="p">(</span><span class="o">&amp;</span><span class="n">new_expressions</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">inputs</span><span class="p">);</span>
 
@@ -586,12 +742,12 @@
 <section id="testing-the-rule">
 <h2>Testing the Rule<a class="headerlink" href="#testing-the-rule" title="Link to this heading">¶</a></h2>
 <p>Testing the rule is fairly simple, we can create a SessionState with our rule and then create a DataFrame and run a query. The logical plan will be optimized by our rule.</p>
-<div class="highlight-rust notranslate"><div class="highlight"><pre><span></span><span class="k">use</span><span class="w"> </span><span class="n">datafusion</span>::<span class="n">prelude</span>::<span class="o">*</span><span class="p">;</span>
+<div class="highlight-rust notranslate"><div class="highlight"><pre><span></span><span class="k">use</span><span class="w"> </span><span class="n">datafusion</span><span class="p">::</span><span class="n">prelude</span><span class="p">::</span><span class="o">*</span><span class="p">;</span>
 
-<span class="kd">let</span><span class="w"> </span><span class="n">rules</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Arc</span>::<span class="n">new</span><span class="p">(</span><span class="n">AddOneInliner</span><span class="w"> </span><span class="p">{});</span>
+<span class="kd">let</span><span class="w"> </span><span class="n">rules</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Arc</span><span class="p">::</span><span class="n">new</span><span class="p">(</span><span class="n">AddOneInliner</span><span class="w"> </span><span class="p">{});</span>
 <span class="kd">let</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="n">state</span><span class="p">().</span><span class="n">with_optimizer_rules</span><span class="p">(</span><span class="fm">vec!</span><span class="p">[</span><span class="n">rules</span><span class="p">]);</span>
 
-<span class="kd">let</span><span class="w"> </span><span class="n">ctx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SessionContext</span>::<span class="n">with_state</span><span class="p">(</span><span class="n">state</span><span class="p">);</span>
+<span class="kd">let</span><span class="w"> </span><span class="n">ctx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SessionContext</span><span class="p">::</span><span class="n">with_state</span><span class="p">(</span><span class="n">state</span><span class="p">);</span>
 <span class="n">ctx</span><span class="p">.</span><span class="n">register_udf</span><span class="p">(</span><span class="n">add_one</span><span class="p">);</span>
 
 <span class="kd">let</span><span class="w"> </span><span class="n">sql</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;SELECT add_one(1) AS added_one&quot;</span><span class="p">;</span>
@@ -610,18 +766,18 @@
 <section id="getting-the-data-type-of-the-expression">
 <h2>Getting the data type of the expression<a class="headerlink" href="#getting-the-data-type-of-the-expression" title="Link to this heading">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">arrow::datatypes::DataType</span></code> of the expression can be obtained by calling the <code class="docutils literal notranslate"><span class="pre">get_type</span></code> given something that implements <code class="docutils literal notranslate"><span class="pre">Expr::Schemable</span></code>, for example a <code class="docutils literal notranslate"><span class="pre">DFschema</span></code> object:</p>
-<div class="highlight-rust notranslate"><div class="highlight"><pre><span></span><span class="k">use</span><span class="w"> </span><span class="n">arrow_schema</span>::<span class="n">DataType</span><span class="p">;</span>
-<span class="k">use</span><span class="w"> </span><span class="n">datafusion</span>::<span class="n">common</span>::<span class="p">{</span><span class="n">DFField</span><span class="p">,</span><span class="w"> </span><span class="n">DFSchema</span><span class="p">};</span>
-<span class="k">use</span><span class="w"> </span><span class="n">datafusion</span>::<span class="n">logical_expr</span>::<span class="p">{</span><span class="n">col</span><span class="p">,</span><span class="w"> </span><span class="n">ExprSchemable</span><span class="p">};</span>
-<span class="k">use</span><span class="w"> </span><span class="n">std</span>::<span class="n">collections</span>::<span class="n">HashMap</span><span class="p">;</span>
+<div class="highlight-rust notranslate"><div class="highlight"><pre><span></span><span class="k">use</span><span class="w"> </span><span class="n">arrow_schema</span><span class="p">::</span><span class="n">DataType</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="n">datafusion</span><span class="p">::</span><span class="n">common</span><span class="p">::{</span><span class="n">DFField</span><span class="p">,</span><span class="w"> </span><span class="n">DFSchema</span><span class="p">};</span>
+<span class="k">use</span><span class="w"> </span><span class="n">datafusion</span><span class="p">::</span><span class="n">logical_expr</span><span class="p">::{</span><span class="n">col</span><span class="p">,</span><span class="w"> </span><span class="n">ExprSchemable</span><span class="p">};</span>
+<span class="k">use</span><span class="w"> </span><span class="n">std</span><span class="p">::</span><span class="n">collections</span><span class="p">::</span><span class="n">HashMap</span><span class="p">;</span>
 
 <span class="kd">let</span><span class="w"> </span><span class="n">expr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">col</span><span class="p">(</span><span class="s">&quot;c1&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">col</span><span class="p">(</span><span class="s">&quot;c2&quot;</span><span class="p">);</span>
-<span class="kd">let</span><span class="w"> </span><span class="n">schema</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DFSchema</span>::<span class="n">new_with_metadata</span><span class="p">(</span>
+<span class="kd">let</span><span class="w"> </span><span class="n">schema</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DFSchema</span><span class="p">::</span><span class="n">new_with_metadata</span><span class="p">(</span>
 <span class="w">    </span><span class="fm">vec!</span><span class="p">[</span>
-<span class="w">        </span><span class="n">DFField</span>::<span class="n">new_unqualified</span><span class="p">(</span><span class="s">&quot;c1&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">DataType</span>::<span class="n">Int32</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">),</span>
-<span class="w">        </span><span class="n">DFField</span>::<span class="n">new_unqualified</span><span class="p">(</span><span class="s">&quot;c2&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">DataType</span>::<span class="n">Float32</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">),</span>
+<span class="w">        </span><span class="n">DFField</span><span class="p">::</span><span class="n">new_unqualified</span><span class="p">(</span><span class="s">&quot;c1&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">DataType</span><span class="p">::</span><span class="n">Int32</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">),</span>
+<span class="w">        </span><span class="n">DFField</span><span class="p">::</span><span class="n">new_unqualified</span><span class="p">(</span><span class="s">&quot;c2&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">DataType</span><span class="p">::</span><span class="n">Float32</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">),</span>
 <span class="w">    </span><span class="p">],</span>
-<span class="w">    </span><span class="n">HashMap</span>::<span class="n">new</span><span class="p">(),</span>
+<span class="w">    </span><span class="n">HashMap</span><span class="p">::</span><span class="n">new</span><span class="p">(),</span>
 <span class="p">)</span>
 <span class="p">.</span><span class="n">unwrap</span><span class="p">();</span>
 <span class="fm">print!</span><span class="p">(</span><span class="s">&quot;type = {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">expr</span><span class="p">.</span><span class="n">get_type</span><span class="p">(</span><span class="o">&amp;</span><span class="n">schema</span><span class="p">).</span><span class="n">unwrap</span><span class="p">());</span>
@@ -680,12 +836,12 @@
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.2.6.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.1.3.<br>
 </p>
     </div>
     
     <div class="footer-item">
-      <p>Apache Arrow DataFusion, Arrow DataFusion, Apache, the Apache feather logo, and the Apache Arrow DataFusion project logo</p>
+      <p>Apache DataFusion, Apache, the Apache feather logo, and the Apache DataFusion project logo</p>
       <p>are either registered trademarks or trademarks of The Apache Software Foundation in the United States and other countries.</p>
     </div>
   </div>

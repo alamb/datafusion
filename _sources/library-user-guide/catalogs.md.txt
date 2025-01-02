@@ -19,7 +19,7 @@
 
 # Catalogs, Schemas, and Tables
 
-This section describes how to create and manage catalogs, schemas, and tables in DataFusion. For those wanting to dive into the code quickly please see the [example](https://github.com/apache/arrow-datafusion/blob/main/datafusion-examples/examples/catalog.rs).
+This section describes how to create and manage catalogs, schemas, and tables in DataFusion. For those wanting to dive into the code quickly please see the [example](https://github.com/apache/datafusion/blob/main/datafusion-examples/examples/catalog.rs).
 
 ## General Concepts
 
@@ -73,9 +73,9 @@ impl SchemaProvider for MemorySchemaProvider {
         table: Arc<dyn TableProvider>,
     ) -> Result<Option<Arc<dyn TableProvider>>> {
         if self.table_exist(name.as_str()) {
-            return Err(DataFusionError::Execution(format!(
+            return exec_err!(
                 "The table {name} already exists"
-            )));
+            );
         }
         Ok(self.tables.insert(name, table))
     }
