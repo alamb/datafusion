@@ -30,8 +30,8 @@ use arrow::datatypes::Schema;
 use arrow::record_batch::RecordBatch;
 use datafusion_common::Result;
 use datafusion_expr_common::columnar_value::ColumnarValue;
-use itertools::{izip, Itertools};
 use indexmap::IndexSet;
+use itertools::{izip, Itertools};
 
 /// Represents Sort operation for a column in a RecordBatch
 ///
