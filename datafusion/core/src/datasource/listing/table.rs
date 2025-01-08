@@ -161,12 +161,11 @@ impl ListingTableConfig {
 
         let mut format_options = HashMap::new();
 
-        let file_format = state
-            .get_file_format_factory(&file_extension)
-            .ok_or(config_datafusion_err!(
+        let factory = state.get_file_format_factory(&file_extension).ok_or(
+            config_datafusion_err!(
                 "No file_format found with extension {file_extension}"
-            ))?
-            .create(state, &format_options)?;
+            ),
+        )?;
 
         let listing_file_extension =
             if let Some(compression_type) = maybe_compression_type {
@@ -176,6 +175,8 @@ impl ListingTableConfig {
             } else {
                 file_extension
             };
+
+        let file_format = factory.create(state, &format_options)?;
 
         let listing_options = ListingOptions::new(file_format)
             .with_file_extension(listing_file_extension)
