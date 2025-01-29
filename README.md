@@ -17,7 +17,7 @@
   under the License.
 -->
 
-# Apache DataFusion
+# Apache DataFusion (alamb fork)
 
 [![Crates.io][crates-badge]][crates-url]
 [![Apache licensed][license-badge]][license-url]
