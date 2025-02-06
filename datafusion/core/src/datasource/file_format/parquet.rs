@@ -414,13 +414,15 @@ impl FileFormat for ParquetFormat {
             metadata_size_hint = Some(metadata);
         }
 
-        let source = Arc::new(ParquetSource::new(
-            Arc::clone(&conf.file_schema),
-            predicate,
-            metadata_size_hint,
-            self.options.clone(),
-        ));
-        conf = conf.with_source(source);
+        let mut source = ParquetSource::new(self.options.clone());
+
+        if let Some(predicate) = predicate {
+            source = source.with_predicate(Arc::clone(&conf.file_schema), predicate);
+        }
+        if let Some(metadata_size_hint) = metadata_size_hint {
+            source = source.with_metadata_size_hint(metadata_size_hint)
+        }
+        conf = conf.with_source(Arc::new(source));
         Ok(conf.new_exec())
     }
 

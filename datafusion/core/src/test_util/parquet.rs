@@ -155,7 +155,7 @@ impl TestParquetFile {
         maybe_filter: Option<Expr>,
     ) -> Result<Arc<dyn ExecutionPlan>> {
         let parquet_options = ctx.copied_table_options().parquet;
-        let source = Arc::new(ParquetSource::new_with_options(parquet_options.clone()));
+        let source = Arc::new(ParquetSource::new(parquet_options.clone()));
         let mut scan_config = FileScanConfig::new(
             self.object_store_url.clone(),
             Arc::clone(&self.schema),
@@ -181,11 +181,9 @@ impl TestParquetFile {
             let physical_filter_expr =
                 create_physical_expr(&filter, &df_schema, &ExecutionProps::default())?;
 
-            let source = Arc::new(ParquetSource::new(
+            let source = Arc::new(ParquetSource::new(parquet_options).with_predicate(
                 Arc::clone(&scan_config.file_schema),
-                Some(Arc::clone(&physical_filter_expr)),
-                None,
-                parquet_options,
+                Arc::clone(&physical_filter_expr),
             ));
             scan_config = scan_config.with_source(source);
             let parquet_exec = scan_config.new_exec();
@@ -206,7 +204,12 @@ impl TestParquetFile {
             let source = maybe_file.source();
             if let Some(maybe_parquet) = source.as_any().downcast_ref::<FileScanConfig>()
             {
-                if maybe_parquet.file_source().file_type().is_parquet() {
+                if maybe_parquet
+                    .file_source()
+                    .as_any()
+                    .downcast_ref::<ParquetSource>()
+                    .is_some()
+                {
                     return maybe_file.metrics();
                 }
             }

@@ -32,6 +32,8 @@ use datafusion_physical_plan::DisplayFormatType;
 use object_store::ObjectStore;
 
 /// Common behaviors that every file format needs to implement.
+///
+/// See initialization examples on `ParquetSource`, `CsvSource`
 pub trait FileSource: Send + Sync {
     /// Creates a `dyn FileOpener` based on given parameters
     fn create_file_opener(
@@ -54,51 +56,10 @@ pub trait FileSource: Send + Sync {
     fn metrics(&self) -> &ExecutionPlanMetricsSet;
     /// Return projected statistics
     fn statistics(&self) -> datafusion_common::Result<Statistics>;
-    /// Returns the file type such as Arrow, Avro, Parquet, ...
-    fn file_type(&self) -> FileType;
+    /// String representation of file source such as "csv", "json", "parquet"
+    fn file_type(&self) -> &str;
     /// Format FileType specific information
     fn fmt_extra(&self, _t: DisplayFormatType, _f: &mut Formatter) -> fmt::Result {
         Ok(())
-    }
-}
-
-/// Determines file types
-pub enum FileType {
-    /// Arrow File
-    Arrow,
-    /// Avro File
-    Avro,
-    /// CSV File
-    Csv,
-    /// JSON File
-    Json,
-    /// Parquet File
-    Parquet,
-}
-
-impl FileType {
-    pub(crate) fn to_str(&self) -> &str {
-        match self {
-            FileType::Arrow => "arrow",
-            FileType::Avro => "avro",
-            FileType::Csv => "csv",
-            FileType::Json => "json",
-            FileType::Parquet => "parquet",
-        }
-    }
-
-    /// Is the file type avro?
-    pub fn is_avro(&self) -> bool {
-        matches!(self, FileType::Avro)
-    }
-
-    /// Is the file type csv?
-    pub fn is_csv(&self) -> bool {
-        matches!(self, FileType::Csv)
-    }
-
-    /// Is the file type parquet?
-    pub fn is_parquet(&self) -> bool {
-        matches!(self, FileType::Parquet)
     }
 }

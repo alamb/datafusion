@@ -26,7 +26,6 @@ use std::sync::Arc;
 use arrow::array::{ArrayRef, Int32Array, RecordBatch, StringArray};
 use arrow::datatypes::SchemaRef;
 use datafusion::catalog::Session;
-use datafusion::common::config::TableParquetOptions;
 use datafusion::common::{
     internal_datafusion_err, DFSchema, DataFusionError, Result, ScalarValue,
 };
@@ -492,16 +491,12 @@ impl TableProvider for IndexTableProvider {
                 .with_file(indexed_file);
 
         let file_source = Arc::new(
-            ParquetSource::new(
-                Arc::clone(&schema),
+            ParquetSource::default()
                 // provide the predicate so the DataSourceExec can try and prune
                 // row groups internally
-                Some(predicate),
-                None,
-                TableParquetOptions::default(),
-            )
-            // provide the factory to create parquet reader without re-reading metadata
-            .with_parquet_file_reader_factory(Arc::new(reader_factory)),
+                .with_predicate(Arc::clone(&schema), predicate)
+                // provide the factory to create parquet reader without re-reading metadata
+                .with_parquet_file_reader_factory(Arc::new(reader_factory)),
         );
         let file_scan_config = FileScanConfig::new(object_store_url, schema, file_source)
             .with_limit(limit)

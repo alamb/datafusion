@@ -23,7 +23,6 @@ use arrow::datatypes::{Int32Type, SchemaRef};
 use arrow::util::pretty::pretty_format_batches;
 use async_trait::async_trait;
 use datafusion::catalog::Session;
-use datafusion::common::config::TableParquetOptions;
 use datafusion::common::{
     internal_datafusion_err, DFSchema, DataFusionError, Result, ScalarValue,
 };
@@ -242,12 +241,8 @@ impl TableProvider for IndexTableProvider {
         let files = self.index.get_files(predicate.clone())?;
 
         let object_store_url = ObjectStoreUrl::parse("file://")?;
-        let source = Arc::new(ParquetSource::new(
-            self.schema(),
-            Some(predicate),
-            None,
-            TableParquetOptions::default(),
-        ));
+        let source =
+            Arc::new(ParquetSource::default().with_predicate(self.schema(), predicate));
         let mut file_scan_config =
             FileScanConfig::new(object_store_url, self.schema(), source)
                 .with_projection(projection.cloned())
