@@ -22,7 +22,7 @@
       
   
     
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/pydata-sphinx-theme.css?v=1140d252" />
     <link rel="stylesheet" type="text/css" href="../_static/theme_overrides.css?v=c6d785ac" />
     
@@ -31,10 +31,9 @@
     <script src="../_static/documentation_options.js?v=8a448e45"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script async="true" defer="true" src="https://buttons.github.io/buttons.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="HOWTOs" href="howtos.html" />
+    <link rel="next" title="API health policy" href="api-health.html" />
     <link rel="prev" title="Architecture" href="architecture.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en">
@@ -152,6 +151,11 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../user-guide/features.html">
+   Features
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../user-guide/concepts-readings-events.html">
    Concepts, Readings, Events
   </a>
@@ -250,7 +254,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../user-guide/sql/operators.html">
-     Operators
+     Operators and Literals
     </a>
    </li>
    <li class="toctree-l2">
@@ -274,13 +278,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../user-guide/sql/sql_status.html">
-     Status
+    <a class="reference internal" href="../user-guide/sql/write_options.html">
+     Write Options
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../user-guide/sql/write_options.html">
-     Write Options
+    <a class="reference internal" href="../user-guide/sql/prepared_statements.html">
+     Prepared Statements
     </a>
    </li>
   </ul>
@@ -374,8 +378,8 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../library-user-guide/api-health.html">
-   API health policy
+  <a class="reference internal" href="../library-user-guide/upgrading.html">
+   Upgrade Guides
   </a>
  </li>
 </ul>
@@ -396,8 +400,8 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="getting_started.html">
-   Getting Started
+  <a class="reference internal" href="development_environment.html">
+   Development Environment
   </a>
  </li>
  <li class="toctree-l1">
@@ -408,6 +412,11 @@
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
    Testing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="api-health.html">
+   API health policy
   </a>
  </li>
  <li class="toctree-l1">
@@ -451,6 +460,16 @@
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="gsoc_application_guidelines.html">
+   GSoC Application Guidelines
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="gsoc_project_ideas.html">
+   GSoC Project Ideas
+  </a>
  </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
@@ -511,6 +530,11 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#sqllogictests-tests">
    sqllogictests Tests
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#extended-tests">
+   Extended Tests
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -638,6 +662,16 @@ The <a class="reference external" href="https://github.com/apache/datafusion/tre
 <p>DataFusion’s SQL implementation is tested using <a class="reference external" href="https://github.com/apache/datafusion/tree/main/datafusion/sqllogictest">sqllogictest</a> which are run like other tests using <code class="docutils literal notranslate"><span class="pre">cargo</span> <span class="pre">test</span> <span class="pre">--test</span> <span class="pre">sqllogictests</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">sqllogictests</span></code> tests may be less convenient for new contributors who are familiar with writing <code class="docutils literal notranslate"><span class="pre">.rs</span></code> tests as they require learning another tool. However, <code class="docutils literal notranslate"><span class="pre">sqllogictest</span></code> based tests are much easier to develop and maintain as they 1) do not require a slow recompile/link cycle and 2) can be automatically updated via <code class="docutils literal notranslate"><span class="pre">cargo</span> <span class="pre">test</span> <span class="pre">--test</span> <span class="pre">sqllogictests</span> <span class="pre">--</span> <span class="pre">--complete</span></code>.</p>
 <p>Like similar systems such as <a class="reference external" href="https://duckdb.org/dev/testing">DuckDB</a>, DataFusion has chosen to trade off a slightly higher barrier to contribution for longer term maintainability.</p>
+<p>DataFusion has integrated <a class="reference external" href="https://sqlite.org/sqllogictest/doc/trunk/about.wiki">sqlite’s test suite</a> as a supplemental test suite that is run whenever a PR is merged into DataFusion. To run it manually please refer to the <a class="reference external" href="https://github.com/apache/datafusion/blob/main/datafusion/sqllogictest/README.md#running-tests-sqlite">README</a> file for instructions.</p>
+</section>
+<section id="extended-tests">
+<h2>Extended Tests<a class="headerlink" href="#extended-tests" title="Link to this heading">¶</a></h2>
+<p>In addition to the standard CI test suite that is run on all PRs prior to merge,
+DataFusion has “extended” tests (defined in <a class="reference external" href="https://github.com/apache/datafusion/blob/main/.github/workflows/extended.yml">extended.yml</a>) that are run on each
+commit to <code class="docutils literal notranslate"><span class="pre">main</span></code>. These tests rarely fail but take significantly longer to run
+than the standard test suite and add important test coverage such as that the
+code works when there are hash collisions as well as running the relevant
+portions of the entire <a class="reference external" href="https://www.sqlite.org/sqllogictest/dir?ci=tip">sqlite test suite</a>.</p>
 </section>
 <section id="rust-integration-tests">
 <h2>Rust Integration Tests<a class="headerlink" href="#rust-integration-tests" title="Link to this heading">¶</a></h2>
@@ -732,10 +766,10 @@ tested in the same way using the <a class="reference external" href="https://doc
             <p class="prev-next-title">Architecture</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="howtos.html" title="next page">
+    <a class='right-next' id="next-link" href="api-health.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">HOWTOs</p>
+        <p class="prev-next-title">API health policy</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
@@ -761,7 +795,7 @@ tested in the same way using the <a class="reference external" href="https://doc
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.1.3.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.2.3.<br>
 </p>
     </div>
     

@@ -22,7 +22,7 @@
       
   
     
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/pydata-sphinx-theme.css?v=1140d252" />
     <link rel="stylesheet" type="text/css" href="../_static/theme_overrides.css?v=c6d785ac" />
     
@@ -31,7 +31,6 @@
     <script src="../_static/documentation_options.js?v=8a448e45"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script async="true" defer="true" src="https://buttons.github.io/buttons.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Example Usage" href="example-usage.html" />
@@ -152,6 +151,11 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="features.html">
+   Features
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="concepts-readings-events.html">
    Concepts, Readings, Events
   </a>
@@ -250,7 +254,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="sql/operators.html">
-     Operators
+     Operators and Literals
     </a>
    </li>
    <li class="toctree-l2">
@@ -274,13 +278,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="sql/sql_status.html">
-     Status
+    <a class="reference internal" href="sql/write_options.html">
+     Write Options
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="sql/write_options.html">
-     Write Options
+    <a class="reference internal" href="sql/prepared_statements.html">
+     Prepared Statements
     </a>
    </li>
   </ul>
@@ -374,8 +378,8 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../library-user-guide/api-health.html">
-   API health policy
+  <a class="reference internal" href="../library-user-guide/upgrading.html">
+   Upgrade Guides
   </a>
  </li>
 </ul>
@@ -396,8 +400,8 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../contributor-guide/getting_started.html">
-   Getting Started
+  <a class="reference internal" href="../contributor-guide/development_environment.html">
+   Development Environment
   </a>
  </li>
  <li class="toctree-l1">
@@ -408,6 +412,11 @@
  <li class="toctree-l1">
   <a class="reference internal" href="../contributor-guide/testing.html">
    Testing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../contributor-guide/api-health.html">
+   API health policy
   </a>
  </li>
  <li class="toctree-l1">
@@ -451,6 +460,16 @@
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../contributor-guide/gsoc_application_guidelines.html">
+   GSoC Application Guidelines
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../contributor-guide/gsoc_project_ideas.html">
+   GSoC Project Ideas
+  </a>
  </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
@@ -670,8 +689,10 @@ parellelized streaming execution plans, file format support, etc.</p>
 <li><p><a class="reference external" href="https://github.com/apache/datafusion-comet">Comet</a> Apache Spark native query execution plugin</p></li>
 <li><p><a class="reference external" href="https://github.com/cube-js/cube.js/tree/master/rust">Cube Store</a></p></li>
 <li><p><a class="reference external" href="https://github.com/dask-contrib/dask-sql">Dask SQL</a> Distributed SQL query engine in Python</p></li>
+<li><p><a class="reference external" href="https://github.com/datafusion-contrib/datafusion-dft">datafusion-dft</a> Batteries included CLI, TUI, and server implementations for DataFusion.</p></li>
 <li><p><a class="reference external" href="https://github.com/delta-io/delta-rs">delta-rs</a> Native Rust implementation of Delta Lake</p></li>
 <li><p><a class="reference external" href="https://github.com/wheretrue/exon">Exon</a> Analysis toolkit for life-science applications</p></li>
+<li><p><a class="reference external" href="https://funnel.io/">Funnel</a> Data Platform powering Marketing Intelligence applications.</p></li>
 <li><p><a class="reference external" href="https://github.com/GlareDB/glaredb">GlareDB</a> Fast SQL database for querying and analyzing distributed data.</p></li>
 <li><p><a class="reference external" href="https://github.com/GreptimeTeam/greptimedb">GreptimeDB</a> Open Source &amp; Cloud Native Distributed Time Series Database</p></li>
 <li><p><a class="reference external" href="https://github.com/apache/incubator-horaedb">HoraeDB</a> Distributed Time-Series Database</p></li>
@@ -682,20 +703,22 @@ parellelized streaming execution plans, file format support, etc.</p>
 <li><p><a class="reference external" href="https://github.com/openobserve/openobserve">OpenObserve</a> Distributed cloud native observability platform</p></li>
 <li><p><a class="reference external" href="https://github.com/paradedb/paradedb">ParadeDB</a> PostgreSQL for Search &amp; Analytics</p></li>
 <li><p><a class="reference external" href="https://github.com/parseablehq/parseable">Parseable</a> Log storage and observability platform</p></li>
+<li><p><a class="reference external" href="https://polygon.io/">Polygon.io</a> Stock Market API</p></li>
 <li><p><a class="reference external" href="https://github.com/timvw/qv">qv</a> Quickly view your data</p></li>
 <li><p><a class="reference external" href="https://github.com/restatedev">Restate</a> Easily build resilient applications using distributed durable async/await</p></li>
 <li><p><a class="reference external" href="https://github.com/roapi/roapi">ROAPI</a></p></li>
 <li><p><a class="reference external" href="https://github.com/lakehq/sail">Sail</a> Unifying stream, batch, and AI workloads with Apache Spark compatibility</p></li>
 <li><p><a class="reference external" href="https://github.com/splitgraph/seafowl">Seafowl</a> CDN-friendly analytical database</p></li>
+<li><p><a class="reference external" href="https://github.com/gchq/sleeper">Sleeper</a> Serverless, cloud-native, log-structured merge tree based, scalable key-value store</p></li>
 <li><p><a class="reference external" href="https://github.com/spiceai/spiceai">Spice.ai</a> Unified SQL query interface &amp; materialization engine</p></li>
 <li><p><a class="reference external" href="https://synnada.ai/">Synnada</a> Streaming-first framework for data products</p></li>
 <li><p><a class="reference external" href="https://vegafusion.io/">VegaFusion</a> Server-side acceleration for the <a class="reference external" href="https://vega.github.io/">Vega</a> visualization grammar</p></li>
+<li><p><a class="reference external" href="https://telemetry.sh/">Telemetry</a> Structured logging made easy</p></li>
 </ul>
 <p>Here are some less active projects that used DataFusion:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/datafusion-contrib/bdt">bdt</a> Boring Data Tool</p></li>
 <li><p><a class="reference external" href="https://github.com/cloudfuse-io/buzz-rust">Cloudfuse Buzz</a></p></li>
-<li><p><a class="reference external" href="https://github.com/datafusion-contrib/datafusion-tui">datafusion-tui</a> Text UI for DataFusion</p></li>
 <li><p><a class="reference external" href="https://github.com/flock-lab/flock">Flock</a></p></li>
 <li><p><a class="reference external" href="https://github.com/tensorbase/tensorbase">Tensorbase</a></p></li>
 </ul>
@@ -775,7 +798,7 @@ provide integrations with other systems, some of which are described below:</p>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.1.3.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.2.3.<br>
 </p>
     </div>
     
