@@ -20,7 +20,8 @@
     html_favicon_url = "https://raw.githubusercontent.com/apache/datafusion/19fe44cf2f30cbdd63d4a4f52c74055163c6cc38/docs/logos/standalone_logo/logo_original.svg"
 )]
 #![cfg_attr(docsrs, feature(doc_auto_cfg))]
-// Make cheap clones clear: https://github.com/apache/datafusion/issues/11143
+// Make sure fast / cheap clones on Arc are explicit:
+// https://github.com/apache/datafusion/issues/11143
 #![cfg_attr(not(test), deny(clippy::clone_on_ref_ptr))]
 #![warn(missing_docs, clippy::needless_borrow)]
 
@@ -28,6 +29,8 @@
 //! uses [Apache Arrow] as its in-memory format. DataFusion's target users are
 //! developers building fast and feature rich database and analytic systems,
 //! customized to particular workloads. See [use cases] for examples.
+//!
+//! A superfluous change
 //!
 //! "Out of the box," DataFusion offers [SQL] and [`Dataframe`] APIs,
 //! excellent [performance], built-in support for CSV, Parquet, JSON, and Avro,
@@ -699,7 +702,6 @@ pub const DATAFUSION_VERSION: &str = env!("CARGO_PKG_VERSION");
 extern crate core;
 extern crate sqlparser;
 
-pub mod catalog_common;
 pub mod dataframe;
 pub mod datasource;
 pub mod error;
