@@ -29,6 +29,8 @@
 //! developers building fast and feature rich database and analytic systems,
 //! customized to particular workloads. See [use cases] for examples.
 //!
+//! A superfluous change
+//!
 //! "Out of the box," DataFusion offers [SQL] and [`Dataframe`] APIs,
 //! excellent [performance], built-in support for CSV, Parquet, JSON, and Avro,
 //! extensive customization, and a great community.
