@@ -1238,6 +1238,9 @@ impl ExecutionPlan for SortExec {
     }
 
     fn statistics_by_partition(&self) -> Result<Vec<Statistics>> {
+        if !self.preserve_partitioning() {
+            return Ok(vec![self.statistics()?]);
+        }
         self.input
             .statistics_by_partition()?
             .into_iter()
