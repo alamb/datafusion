@@ -169,6 +169,7 @@ fn pushdown_filters(
     Ok(Some(ExecutionPlanFilterPushdownResult::new(node, support)))
 }
 
+<<<<<<< HEAD
 /// A physical optimizer rule that pushes down filters in the execution plan.
 /// For example, consider the following plan:
 ///
@@ -444,6 +445,8 @@ fn pushdown_filters(
 /// Now as we fill our `TopK` heap we can push down the state of the heap to the `DataSourceExec` node
 /// to avoid reading files / row groups / pages / rows that could not possibly be in the top 10.
 /// This is implemented in datafusion/physical-plan/src/sorts/sort_filters.rs.
+///
+// TODO potentially rename this to align with logical optimizer `PushdownFilter`
 #[derive(Debug)]
 pub struct FilterPushdown {}
 
