@@ -481,7 +481,7 @@ pub fn compute_all_files_statistics(
     let mut statistics = compute_summary_statistics(
         &file_groups_with_stats,
         file_schema.fields().len(),
-        |file_group| file_group.statistics(),
+        |file_group| file_group.statistics_ref(),
     );
 
     if inexact_stats {

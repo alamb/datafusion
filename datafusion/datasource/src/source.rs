@@ -35,6 +35,7 @@ use datafusion_common::{Constraints, Statistics};
 use datafusion_execution::{SendableRecordBatchStream, TaskContext};
 use datafusion_physical_expr::{EquivalenceProperties, Partitioning};
 use datafusion_physical_expr_common::sort_expr::LexOrdering;
+use datafusion_physical_plan::statistics::PartitionedStatistics;
 
 /// Common behaviors in Data Sources for both from Files and Memory.
 ///
@@ -175,9 +176,11 @@ impl ExecutionPlan for DataSourceExec {
         self.data_source.statistics()
     }
 
-    fn statistics_by_partition(&self) -> datafusion_common::Result<Vec<Statistics>> {
+    fn statistics_by_partition(
+        &self,
+    ) -> datafusion_common::Result<PartitionedStatistics> {
         let mut statistics = vec![
-            Statistics::new_unknown(&self.schema());
+            Arc::new(Statistics::new_unknown(&self.schema()));
             self.properties().partitioning.partition_count()
         ];
         if let Some(file_config) =
@@ -189,7 +192,7 @@ impl ExecutionPlan for DataSourceExec {
                 }
             }
         }
-        Ok(statistics)
+        Ok(PartitionedStatistics::new(statistics))
     }
 
     fn with_fetch(&self, limit: Option<usize>) -> Option<Arc<dyn ExecutionPlan>> {
