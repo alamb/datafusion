@@ -193,7 +193,7 @@ impl ExecutionPlan for CoalescePartitionsExec {
         Statistics::with_fetch(self.input.statistics()?, self.schema(), self.fetch, 0, 1)
     }
 
-    fn statistics_by_partition(&self) -> Result<Vec<Statistics>> {
+    fn statistics_by_partition(&self) -> Result<PartitionedStatistics> {
         Ok(vec![self.statistics()?])
     }
 
