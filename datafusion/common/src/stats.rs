@@ -415,19 +415,15 @@ impl Statistics {
         Ok(self)
     }
 
-    /// Summarize many statistics into a single `Statistics` instance.
-    pub fn summarize<'a, I>(items: I, column_count: usize) -> Statistics
+    /// Summarize zero or more statistics into a single `Statistics` instance.
+    pub fn merge_iter<'a, I>(items: I, schema: &Schema) -> Statistics
     where
         I: IntoIterator<Item = &'a Statistics>,
     {
         let mut items = items.into_iter();
 
         let Some(init) = items.next() else {
-            return Statistics {
-                column_statistics: vec![ColumnStatistics::default(); column_count],
-                num_rows: Precision::<usize>::Absent,
-                total_byte_size: Precision::<usize>::Absent,
-            };
+            return Statistics::new_unknown(schema);
         };
 
         items.fold(init.clone(), |acc: Statistics, item_stats: &Statistics| {

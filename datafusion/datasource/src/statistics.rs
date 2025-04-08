@@ -436,7 +436,7 @@ pub fn compute_file_group_statistics(
     let file_stats = file_group
         .iter()
         .filter_map(|file| file.statistics.as_ref().map(|stats| stats.as_ref()));
-    let statistics = Statistics::summarize(file_stats, file_schema.fields().len());
+    let statistics = Statistics::merge_iter(file_stats, &file_schema);
 
     Ok(file_group.with_statistics(Arc::new(statistics)))
 }
@@ -477,11 +477,11 @@ pub fn compute_all_files_statistics(
 
     // Then summary statistics across all file groups
 
-    let mut statistics = Statistics::summarize(
+    let mut statistics = Statistics::merge_iter(
         file_groups_with_stats
             .iter()
             .filter_map(|file_group| file_group.statistics_ref()),
-        file_schema.fields().len(),
+        &file_schema,
     );
 
     if inexact_stats {
@@ -552,7 +552,7 @@ mod tests {
         let items = vec![stats1, stats2];
 
         // Call compute_summary_statistics
-        let summary_stats = Statistics::summarize(&items, schema.fields().len());
+        let summary_stats = Statistics::merge_iter(&items, &schema);
 
         // Verify the results
         assert_eq!(summary_stats.num_rows, Precision::Exact(25)); // 10 + 15
@@ -626,7 +626,7 @@ mod tests {
 
         let items = vec![stats1, stats2];
 
-        let summary_stats = Statistics::summarize(&items, schema.fields().len());
+        let summary_stats = Statistics::merge_iter(&items, &schema);
 
         assert_eq!(summary_stats.num_rows, Precision::Inexact(25));
         assert_eq!(summary_stats.total_byte_size, Precision::Inexact(250));
@@ -655,7 +655,7 @@ mod tests {
         // Empty collection
         let items: Vec<Statistics> = vec![];
 
-        let summary_stats = Statistics::summarize(&items, schema.fields().len());
+        let summary_stats = Statistics::merge_iter(&items, &schema);
 
         // Verify default values for empty collection
         assert_eq!(summary_stats.num_rows, Precision::Absent);

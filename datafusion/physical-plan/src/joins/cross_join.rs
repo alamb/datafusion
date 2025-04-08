@@ -353,8 +353,7 @@ impl ExecutionPlan for CrossJoinExec {
         }
 
         // Summarize the `left_stats`
-        let statistics =
-            Statistics::summarize(left_stats.iter(), self.left.schema().fields().len());
+        let statistics = Statistics::merge_iter(left_stats.iter(), &self.left.schema());
 
         Ok(PartitionedStatistics::new(
             right_stats
