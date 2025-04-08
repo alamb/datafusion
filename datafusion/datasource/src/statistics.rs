@@ -32,13 +32,12 @@ use arrow::{
     compute::SortColumn,
     row::{Row, Rows},
 };
-use datafusion_common::stats::Precision;
+use datafusion_common::stats::{
+    add_row_stats, set_max_if_greater, set_min_if_lesser, Precision,
+};
 use datafusion_common::{plan_datafusion_err, plan_err, DataFusionError, Result};
 use datafusion_physical_expr::{expressions::Column, PhysicalSortExpr};
 use datafusion_physical_expr_common::sort_expr::LexOrdering;
-pub(crate) use datafusion_physical_plan::statistics::{
-    add_row_stats, compute_summary_statistics, set_max_if_greater, set_min_if_lesser,
-};
 use datafusion_physical_plan::{ColumnStatistics, Statistics};
 
 /// A normalized representation of file min/max statistics that allows for efficient sorting & comparison.
@@ -434,11 +433,10 @@ pub fn compute_file_group_statistics(
         return Ok(file_group);
     }
 
-    let statistics = compute_summary_statistics(
-        file_group.iter(),
-        file_schema.fields().len(),
-        |file| file.statistics.as_ref().map(|stats| stats.as_ref()),
-    );
+    let file_stats = file_group
+        .iter()
+        .filter_map(|file| file.statistics.as_ref().map(|stats| stats.as_ref()));
+    let statistics = Statistics::summarize(file_stats, file_schema.fields().len());
 
     Ok(file_group.with_statistics(Arc::new(statistics)))
 }
@@ -478,10 +476,12 @@ pub fn compute_all_files_statistics(
     }
 
     // Then summary statistics across all file groups
-    let mut statistics = compute_summary_statistics(
-        &file_groups_with_stats,
+
+    let mut statistics = Statistics::summarize(
+        file_groups_with_stats
+            .iter()
+            .filter_map(|file_group| file_group.statistics_ref()),
         file_schema.fields().len(),
-        |file_group| file_group.statistics_ref(),
     );
 
     if inexact_stats {
@@ -549,13 +549,10 @@ mod tests {
             ],
         };
 
-        let items = vec![Arc::new(stats1), Arc::new(stats2)];
+        let items = vec![stats1, stats2];
 
         // Call compute_summary_statistics
-        let summary_stats =
-            compute_summary_statistics(items, schema.fields().len(), |item| {
-                Some(item.as_ref())
-            });
+        let summary_stats = Statistics::summarize(&items, schema.fields().len());
 
         // Verify the results
         assert_eq!(summary_stats.num_rows, Precision::Exact(25)); // 10 + 15
@@ -627,12 +624,9 @@ mod tests {
             }],
         };
 
-        let items = vec![Arc::new(stats1), Arc::new(stats2)];
+        let items = vec![stats1, stats2];
 
-        let summary_stats =
-            compute_summary_statistics(items, schema.fields().len(), |item| {
-                Some(item.as_ref())
-            });
+        let summary_stats = Statistics::summarize(&items, schema.fields().len());
 
         assert_eq!(summary_stats.num_rows, Precision::Inexact(25));
         assert_eq!(summary_stats.total_byte_size, Precision::Inexact(250));
@@ -659,12 +653,9 @@ mod tests {
         )]));
 
         // Empty collection
-        let items: Vec<Arc<Statistics>> = vec![];
+        let items: Vec<Statistics> = vec![];
 
-        let summary_stats =
-            compute_summary_statistics(items, schema.fields().len(), |item| {
-                Some(item.as_ref())
-            });
+        let summary_stats = Statistics::summarize(&items, schema.fields().len());
 
         // Verify default values for empty collection
         assert_eq!(summary_stats.num_rows, Precision::Absent);

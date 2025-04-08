@@ -46,7 +46,7 @@ use datafusion_execution::memory_pool::{MemoryConsumer, MemoryReservation};
 use datafusion_execution::TaskContext;
 use datafusion_physical_expr::equivalence::join_equivalence_properties;
 
-use crate::statistics::{compute_summary_statistics, PartitionedStatistics};
+use crate::statistics::PartitionedStatistics;
 use async_trait::async_trait;
 use futures::{ready, Stream, StreamExt, TryStreamExt};
 
@@ -353,11 +353,8 @@ impl ExecutionPlan for CrossJoinExec {
         }
 
         // Summarize the `left_stats`
-        let statistics = compute_summary_statistics(
-            left_stats.iter(),
-            self.left.schema().fields().len(),
-            |stats| Some(stats),
-        );
+        let statistics =
+            Statistics::summarize(left_stats.iter(), self.left.schema().fields().len());
 
         Ok(PartitionedStatistics::new(
             right_stats
