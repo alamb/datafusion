@@ -420,47 +420,50 @@ impl Statistics {
     where
         I: IntoIterator<Item = &'a Statistics>,
     {
-        let mut col_stats_set = vec![ColumnStatistics::default(); column_count];
-        let mut num_rows = Precision::<usize>::Absent;
-        let mut total_byte_size = Precision::<usize>::Absent;
+        let mut items = items.into_iter();
 
-        for (idx, item_stats) in items.into_iter().enumerate() {
-            if idx == 0 {
-                // First item, set values directly
-                num_rows = item_stats.num_rows;
-                total_byte_size = item_stats.total_byte_size;
-                for (index, column_stats) in
-                    item_stats.column_statistics.iter().enumerate()
-                {
-                    col_stats_set[index].null_count = column_stats.null_count;
-                    col_stats_set[index].max_value = column_stats.max_value.clone();
-                    col_stats_set[index].min_value = column_stats.min_value.clone();
-                    col_stats_set[index].sum_value = column_stats.sum_value.clone();
-                }
-                continue;
-            }
+        let Some(init) = items.next() else {
+            return Statistics {
+                column_statistics: vec![ColumnStatistics::default(); column_count],
+                num_rows: Precision::<usize>::Absent,
+                total_byte_size: Precision::<usize>::Absent,
+            };
+        };
 
-            // Accumulate statistics for subsequent items
-            num_rows = add_row_stats(item_stats.num_rows, num_rows);
-            total_byte_size = add_row_stats(item_stats.total_byte_size, total_byte_size);
+        items.fold(init.clone(), |acc: Statistics, item_stats: &Statistics| {
+            acc.merge(item_stats)
+        })
+    }
 
-            for (item_col_stats, col_stats) in item_stats
-                .column_statistics
-                .iter()
-                .zip(col_stats_set.iter_mut())
-            {
-                col_stats.null_count =
-                    add_row_stats(item_col_stats.null_count, col_stats.null_count);
-                set_max_if_greater(&item_col_stats.max_value, &mut col_stats.max_value);
-                set_min_if_lesser(&item_col_stats.min_value, &mut col_stats.min_value);
-                col_stats.sum_value = item_col_stats.sum_value.add(&col_stats.sum_value);
-            }
+    /// Merge this Statistics value with another Statistics value.
+    pub fn merge(self, other: &Statistics) -> Self {
+        let Self {
+            mut num_rows,
+            mut total_byte_size,
+            mut column_statistics,
+        } = self;
+
+        // Accumulate statistics for subsequent items
+
+        num_rows = add_row_stats(other.num_rows, num_rows);
+        total_byte_size = add_row_stats(other.total_byte_size, total_byte_size);
+
+        for (item_col_stats, col_stats) in other
+            .column_statistics
+            .iter()
+            .zip(column_statistics.iter_mut())
+        {
+            col_stats.null_count =
+                add_row_stats(item_col_stats.null_count, col_stats.null_count);
+            set_max_if_greater(&item_col_stats.max_value, &mut col_stats.max_value);
+            set_min_if_lesser(&item_col_stats.min_value, &mut col_stats.min_value);
+            col_stats.sum_value = item_col_stats.sum_value.add(&col_stats.sum_value);
         }
 
         Statistics {
             num_rows,
             total_byte_size,
-            column_statistics: col_stats_set,
+            column_statistics,
         }
     }
 }
