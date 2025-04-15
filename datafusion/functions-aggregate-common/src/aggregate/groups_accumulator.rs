@@ -36,9 +36,7 @@ use datafusion_common::{
     arrow_datafusion_err, internal_err, DataFusionError, Result, ScalarValue,
 };
 use datafusion_expr_common::accumulator::Accumulator;
-use datafusion_expr_common::groups_accumulator::{
-    EmitTo, GroupsAccumulator, GroupsAccumulatorMetadata,
-};
+use datafusion_expr_common::groups_accumulator::{EmitTo, GroupsAccumulator};
 use datafusion_expr_common::ordering::InputOrderMode;
 
 /// An adapter that implements [`GroupsAccumulator`] for any [`Accumulator`]
@@ -423,16 +421,26 @@ impl GroupsAccumulatorAdapter {
 }
 
 impl GroupsAccumulator for GroupsAccumulatorAdapter {
-    fn register_metadata(&mut self, metadata: &GroupsAccumulatorMetadata) -> Result<()> {
+    fn group_order_sensitivity(&self) -> bool {
+        true
+    }
+
+    fn with_group_indices_order_mode(
+        mut self: Box<Self>,
+        group_indices_order_mode: &InputOrderMode,
+    ) -> Result<Box<dyn GroupsAccumulator>> {
         if !self.states.is_empty() {
             return internal_err!(
                 "Cannot register metadata after the accumulator already has states"
             );
         }
+        // Performance improvement would be to create a specialized adapter that is optimized for
+        // contiguous_group_indices to avoid the need to check this condition in every call
+        // to `update_batch` / `merge_batch`
         self.contiguous_group_indices =
-            matches!(metadata.group_indices_ordering, InputOrderMode::Sorted);
+            matches!(group_indices_order_mode, InputOrderMode::Sorted);
 
-        Ok(())
+        Ok(self)
     }
 
     fn update_batch(

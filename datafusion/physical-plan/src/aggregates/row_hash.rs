@@ -49,7 +49,6 @@ use datafusion_physical_expr::{GroupsAccumulatorAdapter, PhysicalSortExpr};
 
 use super::order::GroupOrdering;
 use super::AggregateExec;
-use datafusion_expr::groups_accumulator::GroupsAccumulatorMetadata;
 use datafusion_physical_expr::aggregate::AggregateFunctionExpr;
 use datafusion_physical_expr_common::sort_expr::LexOrdering;
 use futures::ready;
@@ -478,14 +477,10 @@ impl GroupedHashAggregateStream {
             }
         };
 
-        let group_accumulator_metadata = GroupsAccumulatorMetadata {
-            group_indices_ordering: agg.input_order_mode.clone(),
-        };
-
         // Instantiate the accumulators
         let accumulators: Vec<_> = aggregate_exprs
             .iter()
-            .map(|expr| create_group_accumulator(expr, &group_accumulator_metadata))
+            .map(|expr| create_group_accumulator(expr, &agg.input_order_mode))
             .collect::<Result<_>>()?;
 
         let group_schema = agg_group_by.group_schema(&agg.input().schema())?;
@@ -629,7 +624,7 @@ impl GroupedHashAggregateStream {
 /// [`GroupsAccumulatorAdapter`] if not.
 pub(crate) fn create_group_accumulator(
     agg_expr: &Arc<AggregateFunctionExpr>,
-    metadata: &GroupsAccumulatorMetadata,
+    input_order_mode: &InputOrderMode,
 ) -> Result<Box<dyn GroupsAccumulator>> {
     let mut group_accumulator: Box<dyn GroupsAccumulator> =
         if agg_expr.groups_accumulator_supported() {
@@ -645,7 +640,11 @@ pub(crate) fn create_group_accumulator(
             Box::new(GroupsAccumulatorAdapter::new(factory))
         };
 
-    group_accumulator.register_metadata(metadata)?;
+    group_accumulator = if group_accumulator.group_order_sensitivity() {
+        group_accumulator.with_group_indices_order_mode(input_order_mode)?
+    } else {
+        group_accumulator
+    };
 
     Ok(group_accumulator)
 }
@@ -1103,11 +1102,17 @@ impl GroupedHashAggregateStream {
                 );
             }
 
-            for acc in self.accumulators.iter_mut() {
-                acc.register_metadata(&GroupsAccumulatorMetadata {
-                    group_indices_ordering: InputOrderMode::Sorted,
-                })?
-            }
+            self.accumulators = self
+                .accumulators
+                .drain(..)
+                .map(|acc| {
+                    if acc.group_order_sensitivity() {
+                        acc.with_group_indices_order_mode(&InputOrderMode::Sorted)
+                    } else {
+                        Ok(acc)
+                    }
+                })
+                .collect::<Result<Vec<_>>>()?;
         }
 
         Ok(())

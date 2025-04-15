@@ -19,7 +19,7 @@
 
 use crate::ordering::InputOrderMode;
 use arrow::array::{ArrayRef, BooleanArray};
-use datafusion_common::{not_impl_err, Result};
+use datafusion_common::{exec_err, not_impl_err, Result};
 
 /// Describes how many rows should be emitted during grouping.
 #[derive(Debug, Clone, Copy)]
@@ -107,13 +107,42 @@ impl EmitTo {
 /// [`Accumulator`]: crate::accumulator::Accumulator
 /// [Aggregating Millions of Groups Fast blog]: https://arrow.apache.org/blog/2023/08/05/datafusion_fast_grouping/
 pub trait GroupsAccumulator: Send {
-    /// Called with metadata about the groups that will be processed.
+    /// Whether [`Self::with_group_indices_order_mode`] should be called.
     ///
-    /// This will be called either right after initialization or after [`Self::state`], [`Self::evaluate`] consumed all the groups.
+    /// this is when the accumulator would benefit from knowing the order of the group indices.
     ///
-    /// [`GroupsAccumulator`]: datafusion_expr_common::groups_accumulator::GroupsAccumulator
-    fn register_metadata(&mut self, _metadata: &GroupsAccumulatorMetadata) -> Result<()> {
-        Ok(())
+    fn group_order_sensitivity(&self) -> bool {
+        false
+    }
+
+    /// Called with the order mode for the group indices.
+    ///
+    /// This will only be called if [`Self::group_order_sensitivity`] is true and can be called either right after initialization
+    /// or after [`Self::state`], [`Self::evaluate`] consumed all the groups.
+    ///
+    /// For example if `group_indices_order_mode` equals to [`InputOrderMode::Sorted`] it means that if you get the following group indices in [`Self::update_batch`]/[`Self::merge_batch`]
+    /// ```text
+    /// [1, 1, 1, 1, 1, 2, 2, 3]
+    /// ```
+    ///
+    /// You can be sure that you will never get another group with index 1 or 2 (until call to [`Self::state`]/[`Self::evaluate`] which will shift the group indices).
+    /// However, you might get another group with index 3 in the future.
+    ///
+    /// Possible optimization you can do in your implementation when the input is sorted is:
+    /// 1. Only track the current group state
+    /// 2. Have a builder that is ready to be built by call to [`Self::state`]/[`Self::evaluate`]
+    ///
+    fn with_group_indices_order_mode(
+        self: Box<Self>,
+        _group_indices_order_mode: &InputOrderMode,
+    ) -> Result<Box<dyn GroupsAccumulator>> {
+        if self.group_order_sensitivity() {
+            exec_err!("Should implement with_ordered_groups for groups aggregator")
+        } else {
+            exec_err!(
+                "Should not call with_ordered_groups for non-sensitive groups aggregator"
+            )
+        }
     }
 
     /// Updates the accumulator's state from its arguments, encoded as
@@ -260,19 +289,4 @@ pub trait GroupsAccumulator: Send {
     /// This function is called once per batch, so it should be `O(n)` to
     /// compute, not `O(num_groups)`
     fn size(&self) -> usize;
-}
-
-/// Metadata for [`GroupsAccumulator`] with some execution time information so you can optimize your implementation.
-#[derive(Debug, Clone, PartialEq)]
-pub struct GroupsAccumulatorMetadata {
-    /// Thr ordering of the group indices
-    ///
-    /// For example if this equals to [`InputOrderMode::Sorted`] it means that if you get the following group indices in [`GroupsAccumulator::update_batch`]/[`GroupsAccumulator::merge_batch`]
-    /// ```text
-    /// [1, 1, 1, 1, 1, 2, 2, 3]
-    /// ```
-    ///
-    /// You can be sure that you will never get another group with index 1 or 2 (until call to [`GroupsAccumulator::state`]/[`GroupsAccumulator::evaluate`] which will shift the group indices).
-    /// However, you might get another group with index 3 in the future.
-    pub group_indices_ordering: InputOrderMode,
 }
