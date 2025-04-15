@@ -103,7 +103,7 @@ pub struct GroupsAccumulatorAdapter {
 
     /// Whether the group indices are contiguous.
     ///
-    /// See [GroupsAccumulatorMetadata::group_indices_ordering]
+    /// See [GroupsAccumulator::with_group_indices_order_mode]
     contiguous_group_indices: bool,
 
     /// Current memory usage, in bytes.
