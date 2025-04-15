@@ -137,10 +137,10 @@ pub trait GroupsAccumulator: Send {
         _group_indices_order_mode: &InputOrderMode,
     ) -> Result<Box<dyn GroupsAccumulator>> {
         if self.group_order_sensitivity() {
-            exec_err!("Should implement with_ordered_groups for groups aggregator")
+            not_impl_err!("with_group_indices_order_mode not implemented")
         } else {
             exec_err!(
-                "Should not call with_ordered_groups for non-sensitive groups aggregator"
+                "Should not call with_group_indices_order_mode when group_order_sensitivity returns false"
             )
         }
     }
