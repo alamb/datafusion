@@ -183,10 +183,10 @@ impl GroupsAccumulatorAdapter {
         group_indices: &[usize],
         opt_filter: Option<&BooleanArray>,
         total_num_groups: usize,
-        f: F,
+        f: &F,
     ) -> Result<()>
     where
-        F: Fn(&mut dyn Accumulator, &[ArrayRef]) -> Result<()> + Copy,
+        F: Fn(&mut dyn Accumulator, &[ArrayRef]) -> Result<()>,
     {
         self.make_accumulators_if_needed(total_num_groups)?;
 
@@ -249,10 +249,10 @@ impl GroupsAccumulatorAdapter {
         values: &[ArrayRef],
         group_indices: &[usize],
         opt_filter: Option<&BooleanArray>,
-        f: F,
+        f: &F,
     ) -> Result<(usize, usize)>
     where
-        F: Fn(&mut dyn Accumulator, &[ArrayRef]) -> Result<()> + Copy,
+        F: Fn(&mut dyn Accumulator, &[ArrayRef]) -> Result<()>,
     {
         // figure out which input rows correspond to which groups.
         // Note that self.state.indices starts empty for all groups
@@ -327,10 +327,10 @@ impl GroupsAccumulatorAdapter {
         values: &[ArrayRef],
         group_indices: &[usize],
         opt_filter: Option<&BooleanArray>,
-        f: F,
+        f: &F,
     ) -> Result<(usize, usize)>
     where
-        F: Fn(&mut dyn Accumulator, &[ArrayRef]) -> Result<()> + Copy,
+        F: Fn(&mut dyn Accumulator, &[ArrayRef]) -> Result<()>,
     {
         let mut current_group_index = group_indices[0];
         let mut start_idx = 0;
@@ -455,7 +455,7 @@ impl GroupsAccumulator for GroupsAccumulatorAdapter {
             group_indices,
             opt_filter,
             total_num_groups,
-            |accumulator, values_to_accumulate| {
+            &|accumulator, values_to_accumulate| {
                 accumulator.update_batch(values_to_accumulate)
             },
         )?;
@@ -530,7 +530,7 @@ impl GroupsAccumulator for GroupsAccumulatorAdapter {
             group_indices,
             opt_filter,
             total_num_groups,
-            |accumulator, values_to_accumulate| {
+            &|accumulator, values_to_accumulate| {
                 accumulator.merge_batch(values_to_accumulate)?;
                 Ok(())
             },
