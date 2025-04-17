@@ -640,11 +640,9 @@ pub(crate) fn create_group_accumulator(
             Box::new(GroupsAccumulatorAdapter::new(factory))
         };
 
-    group_accumulator = if group_accumulator.supports_with_group_indices_order_mode() {
-        group_accumulator.with_group_indices_order_mode(input_order_mode)?
-    } else {
-        group_accumulator
-    };
+    if group_accumulator.supports_with_group_indices_order_mode() {
+        group_accumulator.set_group_indices_order_mode(input_order_mode)?;
+    }
 
     Ok(group_accumulator)
 }
@@ -1102,17 +1100,13 @@ impl GroupedHashAggregateStream {
                 );
             }
 
-            self.accumulators = self
-                .accumulators
-                .drain(..)
-                .map(|acc| {
-                    if acc.supports_with_group_indices_order_mode() {
-                        acc.with_group_indices_order_mode(&InputOrderMode::Sorted)
-                    } else {
-                        Ok(acc)
-                    }
-                })
-                .collect::<Result<Vec<_>>>()?;
+            self.accumulators.iter_mut().try_for_each(|acc| {
+                if acc.supports_with_group_indices_order_mode() {
+                    acc.set_group_indices_order_mode(&InputOrderMode::Sorted)
+                } else {
+                    Ok(())
+                }
+            })?;
         }
 
         Ok(())

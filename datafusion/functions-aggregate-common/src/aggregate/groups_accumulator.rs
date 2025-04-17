@@ -103,7 +103,7 @@ pub struct GroupsAccumulatorAdapter {
 
     /// Whether the group indices are contiguous.
     ///
-    /// See [GroupsAccumulator::with_group_indices_order_mode]
+    /// See [GroupsAccumulator::set_group_indices_order_mode]
     contiguous_group_indices: bool,
 
     /// Current memory usage, in bytes.
@@ -427,10 +427,10 @@ impl GroupsAccumulator for GroupsAccumulatorAdapter {
         true
     }
 
-    fn with_group_indices_order_mode(
-        mut self: Box<Self>,
+    fn set_group_indices_order_mode(
+        &mut self,
         group_indices_order_mode: &InputOrderMode,
-    ) -> Result<Box<dyn GroupsAccumulator>> {
+    ) -> Result<()> {
         if !self.states.is_empty() {
             return internal_err!(
                 "Cannot register metadata after the accumulator already has states"
@@ -442,7 +442,7 @@ impl GroupsAccumulator for GroupsAccumulatorAdapter {
         self.contiguous_group_indices =
             matches!(group_indices_order_mode, InputOrderMode::Sorted);
 
-        Ok(self)
+        Ok(())
     }
 
     fn update_batch(

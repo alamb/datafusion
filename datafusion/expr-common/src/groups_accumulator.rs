@@ -107,7 +107,7 @@ impl EmitTo {
 /// [`Accumulator`]: crate::accumulator::Accumulator
 /// [Aggregating Millions of Groups Fast blog]: https://arrow.apache.org/blog/2023/08/05/datafusion_fast_grouping/
 pub trait GroupsAccumulator: Send {
-    /// Whether [`Self::with_group_indices_order_mode`] should be called.
+    /// Whether [`Self::set_group_indices_order_mode`] should be called.
     ///
     /// this is when the accumulator would benefit from knowing the order of the group indices.
     ///
@@ -132,10 +132,10 @@ pub trait GroupsAccumulator: Send {
     /// 1. Only track the current group state
     /// 2. Have a builder that is ready to be built by call to [`Self::state`]/[`Self::evaluate`]
     ///
-    fn with_group_indices_order_mode(
-        self: Box<Self>,
+    fn set_group_indices_order_mode(
+        &mut self,
         _group_indices_order_mode: &InputOrderMode,
-    ) -> Result<Box<dyn GroupsAccumulator>> {
+    ) -> Result<()> {
         if self.supports_with_group_indices_order_mode() {
             not_impl_err!("with_group_indices_order_mode not implemented")
         } else {
