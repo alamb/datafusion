@@ -111,13 +111,13 @@ pub trait GroupsAccumulator: Send {
     ///
     /// this is when the accumulator would benefit from knowing the order of the group indices.
     ///
-    fn group_order_sensitivity(&self) -> bool {
+    fn supports_with_group_indices_order_mode(&self) -> bool {
         false
     }
 
     /// Called with the order mode for the group indices.
     ///
-    /// This will only be called if [`Self::group_order_sensitivity`] is true and can be called either right after initialization
+    /// This will only be called if [`Self::supports_with_group_indices_order_mode`] is true and can be called either right after initialization
     /// or after [`Self::state`], [`Self::evaluate`] consumed all the groups.
     ///
     /// For example if `group_indices_order_mode` equals to [`InputOrderMode::Sorted`] it means that if you get the following group indices in [`Self::update_batch`]/[`Self::merge_batch`]
@@ -136,7 +136,7 @@ pub trait GroupsAccumulator: Send {
         self: Box<Self>,
         _group_indices_order_mode: &InputOrderMode,
     ) -> Result<Box<dyn GroupsAccumulator>> {
-        if self.group_order_sensitivity() {
+        if self.supports_with_group_indices_order_mode() {
             not_impl_err!("with_group_indices_order_mode not implemented")
         } else {
             exec_err!(

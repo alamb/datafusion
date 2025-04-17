@@ -220,7 +220,7 @@ impl GroupsAccumulatorAdapter {
     /// invokes f(accumulator, values) for each group that has values
     /// in group_indices.
     ///
-    /// if the group indices are contiguous we avoiding
+    /// Returns (usize, usize) which is (accumulators memory before invocation, accumulators memory after invocation)
     ///
     /// This function first reorders the input and filter so that
     /// values for each group_index are contiguous and then invokes f
@@ -322,6 +322,8 @@ impl GroupsAccumulatorAdapter {
     /// This function is the same as [`Self::invoke_per_accumulator_on_non_ordered_group_indices`] but avoid reordering of the
     /// input as we know that each group_index is contiguous
     ///
+    /// Returns (usize, usize) which is (accumulators memory before invocation, accumulators memory after invocation)
+    ///
     fn invoke_per_accumulator_on_contiguous_group_indices<F>(
         &mut self,
         values: &[ArrayRef],
@@ -421,7 +423,7 @@ impl GroupsAccumulatorAdapter {
 }
 
 impl GroupsAccumulator for GroupsAccumulatorAdapter {
-    fn group_order_sensitivity(&self) -> bool {
+    fn supports_with_group_indices_order_mode(&self) -> bool {
         true
     }
 

@@ -640,7 +640,7 @@ pub(crate) fn create_group_accumulator(
             Box::new(GroupsAccumulatorAdapter::new(factory))
         };
 
-    group_accumulator = if group_accumulator.group_order_sensitivity() {
+    group_accumulator = if group_accumulator.supports_with_group_indices_order_mode() {
         group_accumulator.with_group_indices_order_mode(input_order_mode)?
     } else {
         group_accumulator
@@ -1106,7 +1106,7 @@ impl GroupedHashAggregateStream {
                 .accumulators
                 .drain(..)
                 .map(|acc| {
-                    if acc.group_order_sensitivity() {
+                    if acc.supports_with_group_indices_order_mode() {
                         acc.with_group_indices_order_mode(&InputOrderMode::Sorted)
                     } else {
                         Ok(acc)
