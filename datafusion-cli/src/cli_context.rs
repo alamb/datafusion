@@ -26,10 +26,7 @@ use datafusion::{
     error::DataFusionError,
     execution::{
         context::SessionState,
-        memory_pool::{
-            MemoryConsumer, MemoryLimit, MemoryPool, MemoryReservation,
-            TrackConsumersPool, TrackedPool,
-        },
+        memory_pool::{MemoryPool, TrackConsumersPool, TrackedPool},
         runtime_env::RuntimeEnvBuilder,
         session_state::SessionStateBuilder,
         TaskContext,
@@ -40,43 +37,6 @@ use datafusion::{
 use object_store::ObjectStore;
 
 use crate::object_storage::{AwsOptions, GcpOptions};
-
-#[derive(Debug)]
-struct SharedMemoryPool(Arc<dyn MemoryPool>);
-
-impl MemoryPool for SharedMemoryPool {
-    fn register(&self, consumer: &MemoryConsumer) {
-        self.0.register(consumer)
-    }
-
-    fn unregister(&self, consumer: &MemoryConsumer) {
-        self.0.unregister(consumer)
-    }
-
-    fn grow(&self, reservation: &MemoryReservation, additional: usize) {
-        self.0.grow(reservation, additional)
-    }
-
-    fn shrink(&self, reservation: &MemoryReservation, shrink: usize) {
-        self.0.shrink(reservation, shrink)
-    }
-
-    fn try_grow(
-        &self,
-        reservation: &MemoryReservation,
-        additional: usize,
-    ) -> datafusion::error::Result<()> {
-        self.0.try_grow(reservation, additional)
-    }
-
-    fn reserved(&self) -> usize {
-        self.0.reserved()
-    }
-
-    fn memory_limit(&self) -> MemoryLimit {
-        self.0.memory_limit()
-    }
-}
 
 #[async_trait::async_trait]
 /// The CLI session context trait provides a way to have a session context that can be used with datafusion's CLI code.
@@ -238,7 +198,7 @@ impl CliSessionContext for ReplSessionContext {
                 return;
             }
             let tracked = Arc::new(TrackConsumersPool::new(
-                SharedMemoryPool(self.base_memory_pool.clone()),
+                Arc::clone(&self.base_memory_pool),
                 NonZeroUsize::new(self.top_memory_consumers).unwrap(),
             ));
             let runtime = self.ctx.runtime_env();
