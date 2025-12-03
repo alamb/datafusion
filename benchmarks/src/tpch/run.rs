@@ -89,7 +89,7 @@ pub struct RunOpt {
 
     /// If true then hash join used, if false then sort merge join
     /// True by default.
-    #[structopt(short = "j", long = "prefer_hash_join", default_value = "true")]
+    #[structopt(short = "j", long = "prefer_hash_join", default_value = "false")]
     prefer_hash_join: BoolDefaultTrue,
 
     /// If true then Piecewise Merge Join can be used, if false then it will opt for Nested Loop Join
