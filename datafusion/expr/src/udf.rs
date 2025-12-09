@@ -226,6 +226,17 @@ impl ScalarUDF {
         self.inner.simplify(args, info)
     }
 
+    /// Return a preimage
+    ///
+    /// See [`ScalarUDFImpl::preimage`] for more details.
+    pub fn preimage(
+        &self,
+        args: &[Expr],
+        info: &dyn SimplifyInfo,
+    ) -> Result<Option<Interval>> {
+        self.inner.preimage(args, info)
+    }
+
     #[deprecated(since = "50.0.0", note = "Use `return_field_from_args` instead.")]
     pub fn is_nullable(&self, args: &[Expr], schema: &dyn ExprSchema) -> bool {
         #[allow(deprecated)]
@@ -707,20 +718,19 @@ pub trait ScalarUDFImpl: Debug + DynEq + DynHash + Send + Sync {
     /// - `date_part(YEAR, expr)`
     ///
     /// # Arguments:
-    /// * `lit_value`:  The literal `&ScalarValue` used in comparison
-    /// * `target_type`: The datatype of the column expression inside the function
+    /// * `args`:  the arguments passed to the function
     ///
     /// # Returns
     ///
-    /// Returns an `Interval` of the appropriate target type if a
+    /// Returns an [`Interval`] of the appropriate target type if a
     /// preimage cast is supported for the given function/operator combination;
-    /// otherwise returns `None`.
+    /// otherwise returns Ok(`None`).
     fn preimage(
         &self,
-        _lit_value: &ScalarValue,
-        _target_type: &DataType,
-    ) -> Option<Interval> {
-        None
+        _args: &[Expr],
+        _info: &dyn SimplifyInfo,
+    ) -> Result<Option<Interval>> {
+        Ok(None)
     }
 
     /// Returns true if some of this `exprs` subexpressions may not be evaluated
@@ -953,12 +963,8 @@ impl ScalarUDFImpl for AliasedScalarUDFImpl {
         self.inner.simplify(args, info)
     }
 
-    fn preimage(
-        &self,
-        lit_value: &ScalarValue,
-        target_type: &DataType,
-    ) -> Option<Interval> {
-        self.inner.preimage(lit_value, target_type)
+    fn preimage(&self, args: &[Expr]) -> Result<Option<Interval>> {
+        self.inner.preimage(args)
     }
 
     fn conditional_arguments<'a>(

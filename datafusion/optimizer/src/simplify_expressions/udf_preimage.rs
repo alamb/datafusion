@@ -23,43 +23,42 @@ use datafusion_expr::{
     and, expr::ScalarFunction, lit, or, simplify::SimplifyInfo, BinaryExpr, Expr,
     Operator, ScalarUDFImpl,
 };
-use datafusion_functions::datetime::date_part::DatePartFunc;
+use datafusion_expr_common::interval_arithmetic::Interval;
 
-pub(super) fn preimage_in_comparison_for_binary(
+/// Rewrites a binary expression using its "preimage"
+///
+/// Specifically it rewrites expressions of the form `<expr> OP x` (e.g. `<expr> =
+/// x`) where `<expr>` is known to have a pre-image (aka the entire single
+/// range for which it is valid)
+///
+/// This rewrite is described in the [ClickHouse Paper] and is particularly
+/// useful for simplifying expressions `date_part` or equivalent functions. The
+/// idea is that if you have an expression like `date_part(YEAR, k) = 2024` and you
+/// can find a [preimage] for `date_part(YEAR, k)`, which is the range of dates
+/// covering the entire year of 2024. Thus, you can rewrite the expression to `k
+/// >= '2024-01-01' AND k < '2025-01-01' which is often more optimizable.
+///
+/// [ClickHouse Paper]:  https://www.vldb.org/pvldb/vol17/p3731-schulze.pdf
+/// [preimage]: https://en.wikipedia.org/wiki/Image_(mathematics)#Inverse_image
+///
+pub(super) fn rewrite_with_preimage(
     info: &dyn SimplifyInfo,
-    udf_expr: Expr,
-    literal: Expr,
+    preimage_interval: Interval,
     op: Operator,
+    expr: Box<Expr>,
 ) -> Result<Transformed<Expr>> {
-    let (func, args, lit_value) = match (udf_expr, literal) {
-        (
-            Expr::ScalarFunction(ScalarFunction { func, args }),
-            Expr::Literal(lit_value, _),
-        ) => (func, args, lit_value),
-        _ => return internal_err!("Expect scalar function expr and literal"),
-    };
-    let expr = Box::new(args[1].clone());
-
-    let Ok(expr_type) = info.get_data_type(&expr) else {
-        return internal_err!("Can't get the data type of the expr {:?}", &expr);
-    };
-
-    let preimage_interval = match func.name() {
-        "date_part" => DatePartFunc::new()
-            .preimage(&lit_value, &expr_type)
-            .expect("Preimage interval should be created"),
-        _ => return internal_err!("Preimage is not supported for {:?}", func.name()),
-    };
-
-    let lower = lit(preimage_interval.lower().clone());
-    let upper = lit(preimage_interval.upper().clone());
+    let (lower, upper) = preimage_interval.into_bounds();
+    let (lower, upper) = (lit(lower), lit(upper));
 
     let rewritten_expr = match op {
+        // <expr> < x   ==>  <expr> < upper
+        // <expr> >= x  ==>  <expr> >= lower
         Operator::Lt | Operator::GtEq => Expr::BinaryExpr(BinaryExpr {
             left: expr,
             op,
             right: Box::new(lower),
         }),
+        // <expr> > x   ==>  <expr> >= lower
         Operator::Gt => Expr::BinaryExpr(BinaryExpr {
             left: expr,
             op: Operator::GtEq,
@@ -136,54 +135,6 @@ pub(super) fn preimage_in_comparison_for_binary(
     Ok(Transformed::yes(rewritten_expr))
 }
 
-pub(super) fn is_scalar_udf_expr_and_support_preimage_in_comparison_for_binary<
-    S: SimplifyInfo,
->(
-    info: &S,
-    expr: &Expr,
-    op: Operator,
-    literal: &Expr,
-) -> bool {
-    let (func, args, lit_value) = match (expr, op, literal) {
-        (
-            Expr::ScalarFunction(ScalarFunction { func, args }),
-            Operator::Eq
-            | Operator::NotEq
-            | Operator::Gt
-            | Operator::Lt
-            | Operator::GtEq
-            | Operator::LtEq
-            | Operator::IsDistinctFrom
-            | Operator::IsNotDistinctFrom,
-            Expr::Literal(lit_value, _),
-        ) => (func, args, lit_value),
-        _ => return false,
-    };
-
-    match func.name() {
-        "date_part" => {
-            let left_expr = Box::new(args[1].clone());
-            let Some(ScalarValue::Utf8(Some(part))) = args[0].as_literal() else {
-                return false;
-            };
-            match IntervalUnit::from_str(part) {
-                Ok(IntervalUnit::Year) => {}
-                _ => return false,
-            };
-            let Ok(expr_type) = info.get_data_type(&left_expr) else {
-                return false;
-            };
-            let Ok(_lit_type) = info.get_data_type(literal) else {
-                return false;
-            };
-            DatePartFunc::new()
-                .preimage(lit_value, &expr_type)
-                .is_some()
-        }
-        _ => false,
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use crate::simplify_expressions::ExprSimplifier;
@@ -194,7 +145,7 @@ mod tests {
     use datafusion_expr::{
         and, execution_props::ExecutionProps, lit, simplify::SimplifyContext, Expr,
     };
-    use datafusion_functions::datetime::expr_fn;
+
     use std::{collections::HashMap, sync::Arc};
 
     #[test]

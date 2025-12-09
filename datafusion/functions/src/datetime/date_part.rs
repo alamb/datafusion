@@ -42,11 +42,12 @@ use datafusion_common::{
     types::logical_string,
     utils::take_function_args,
 };
-use datafusion_expr::interval_arithmetic;
 use datafusion_expr::{
     ColumnarValue, Documentation, ReturnFieldArgs, ScalarUDFImpl, Signature,
     TypeSignature, Volatility,
 };
+use datafusion_expr::{Expr, interval_arithmetic};
+use datafusion_expr::simplify::SimplifyInfo;
 use datafusion_expr_common::signature::{Coercion, TypeSignatureClass};
 use datafusion_macros::user_doc;
 
@@ -237,27 +238,44 @@ impl ScalarUDFImpl for DatePartFunc {
     // date_part(col, YEAR) = 2024 => col >= '2024-01-01' and col < '2025-01-01'
     // But for anything less than YEAR simplifying is not possible without specifying the bigger interval
     // date_part(col, MONTH) = 1 => col = '2023-01-01' or col = '2024-01-01' or ... or col = '3000-01-01'
-    fn preimage(
-        &self,
-        lit_value: &ScalarValue,
-        target_type: &DataType,
-    ) -> Option<interval_arithmetic::Interval> {
-        let year = match lit_value {
-            ScalarValue::Int32(Some(y)) => *y,
-            _ => return None,
-        };
-        // Can only extract year from Date32/64 and Timestamp
-        match target_type {
-            Date32 | Date64 | Timestamp(_, _) => {}
-            _ => return None,
+    fn preimage(&self, args: &[Expr],        info: &dyn SimplifyInfo,
+    ) -> Result<Option<interval_arithmetic::Interval>> {
+        let [part, arg] = take_function_args(self.name(), args)?;
+
+        // Get the interval unit from the part argument
+        let interval_unit = part
+            .as_literal()
+            .and_then(|sv| sv.try_as_str().flatten())
+            .and_then(part_normalization)
+            .and_then(|s| IntervalUnit::from_str(s).ok());
+
+        // only support extracting year
+        if interval_unit != Some(IntervalUnit::Year) {
+            return Ok(None);
         };
 
-        let start_time = NaiveDate::from_ymd_opt(year, 1, 1)?;
-        let end_time = start_time.with_year(year + 1)?;
-        let lower = date_to_scalar(start_time, target_type)?;
-        let upper = date_to_scalar(end_time, target_type)?;
+        // Check if the argument is a literal (e.g. date_part(YEAR, col) = 2024)
+        let Some(argument_literal) = arg
+            .as_literal() else {
+            return Ok(None);
+        };
 
-        interval_arithmetic::Interval::try_new(lower, upper).ok()
+         let year = match lit_value {
+             ScalarValue::Int32(Some(y)) => *y,
+             _ => return None,
+         };
+         // Can only extract year from Date32/64 and Timestamp
+         match target_type {
+             Date32 | Date64 | Timestamp(_, _) => {}
+             _ => return None,
+         };
+
+         let start_time = NaiveDate::from_ymd_opt(year, 1, 1)?;
+         let end_time = start_time.with_year(year + 1)?;
+         let lower = date_to_scalar(start_time, target_type)?;
+         let upper = date_to_scalar(end_time, target_type)?;
+
+         interval_arithmetic::Interval::try_new(lower, upper).ok()
     }
 
     fn aliases(&self) -> &[String] {
