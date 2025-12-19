@@ -69,6 +69,7 @@ jobs:
             --exclude '/.git/' \
             ../docs/build/html/ \
             ./
+          cp ../docs/htaccess .
           cp ../.asf.yaml .
           touch .nojekyll
           git status --porcelain
