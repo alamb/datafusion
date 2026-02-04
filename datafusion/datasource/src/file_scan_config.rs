@@ -18,6 +18,7 @@
 //! [`FileScanConfig`] to configure scanning of possibly partitioned
 //! file sources.
 
+use log::info;
 use crate::file_groups::FileGroup;
 use crate::{
     PartitionedFile, display::FileGroupsDisplay, file::FileSource,
@@ -662,12 +663,14 @@ impl DataSource for FileScanConfig {
     }
 
     fn eq_properties(&self) -> EquivalenceProperties {
+        info!("AAAA Computing equivalence properties for FileScanConfig");
         let schema = self.file_source.table_schema().table_schema();
         let mut eq_properties = EquivalenceProperties::new_with_orderings(
             Arc::clone(schema),
             self.output_ordering.clone(),
         )
         .with_constraints(self.constraints.clone());
+        info!("AAAA Initial equivalence properties: {eq_properties}");
 
         if let Some(filter) = self.file_source.filter() {
             // We need to remap column indexes to match the projected schema since that's what the equivalence properties deal with.
@@ -680,14 +683,20 @@ impl DataSource for FileScanConfig {
                     panic!("Failed to add filter equivalence info: {e}");
                 }
             }
+            info!("AAAA Filtered equivalence properties: {eq_properties}");
         }
 
         if let Some(projection) = self.file_source.projection() {
+            info!("AAAA Projecting equivalence properties with projection: {projection}");
+
             match (
                 projection.project_schema(schema),
                 projection.projection_mapping(schema),
             ) {
                 (Ok(output_schema), Ok(mapping)) => {
+                    info!("AAAA Projected schema: {output_schema:?}");
+                    info!("AAAA Projection mapping: {mapping:?}");
+
                     eq_properties =
                         eq_properties.project(&mapping, Arc::new(output_schema));
                 }
@@ -697,8 +706,10 @@ impl DataSource for FileScanConfig {
                     panic!("Failed to project equivalence properties: {e}");
                 }
             }
+            info!("AAAA projectioned equivalence properties: {eq_properties}");
         }
 
+        info!("AAAA final equivalence properties: {eq_properties}");
         eq_properties
     }
 
@@ -1143,6 +1154,9 @@ impl FileScanConfig {
         // (we're only reversing row groups, not guaranteeing perfect ordering)
         if !is_exact {
             new_config.output_ordering = vec![];
+            info!(
+                "AAAA FileScanConfig rebuild_with_source: cleared output_ordering for inexact"
+            );
         }
 
         Ok(Arc::new(new_config))
