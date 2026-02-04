@@ -2467,6 +2467,7 @@ dependencies = [
  "datafusion-pruning",
  "insta",
  "itertools 0.14.0",
+ "log",
  "recursive",
  "tokio",
 ]

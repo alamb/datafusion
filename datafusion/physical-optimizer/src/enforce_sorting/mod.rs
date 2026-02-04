@@ -38,6 +38,8 @@
 pub mod replace_with_order_preserving_variants;
 pub mod sort_pushdown;
 
+use datafusion_physical_plan::displayable;
+use log::info;
 use std::sync::Arc;
 
 use crate::PhysicalOptimizerRule;
@@ -558,13 +560,23 @@ fn analyze_immediate_sort_removal(
         return Ok(Transformed::no(node));
     };
     let sort_input = sort_exec.input();
+    info!("AAL: Considering sort removal for\n{}", displayable(sort_exec).indent(false));
+
+    info!("AAL:    Sort input ordering: {:?}", sort_input.output_ordering());
     // Check if the sort is unnecessary:
     let properties = sort_exec.properties();
     if let Some(ordering) = properties.output_ordering().cloned() {
+        info!("AAL:    sort output ordering: {ordering:?}");
+
         let eqp = sort_input.equivalence_properties();
+        info!("AAL:    sort input eqp: {eqp:?}");
         if !eqp.ordering_satisfy(ordering)? {
+            info!("AAL:    sort input does not satisfy");
             return Ok(Transformed::no(node));
+        } else {
+            info!("AAL:    sort input satisfies");
         }
+
     }
     node.plan = if !sort_exec.preserve_partitioning()
         && sort_input.output_partitioning().partition_count() > 1
