@@ -566,10 +566,12 @@ fn analyze_immediate_sort_removal(
     // Check if the sort is unnecessary:
     let properties = sort_exec.properties();
     if let Some(ordering) = properties.output_ordering().cloned() {
-        info!("AAL:    sort output ordering: {ordering:?}");
+        info!("AAL:    sort output ordering: {ordering}");
+        //info!("AAL:    sort output ordering: {ordering:?}");
 
         let eqp = sort_input.equivalence_properties();
-        info!("AAL:    sort input eqp: {eqp:?}");
+        info!("AAL:    sort input eqp: {eqp}");
+        //info!("AAL:    sort input eqp: {eqp:?}");
         if !eqp.ordering_satisfy(ordering)? {
             info!("AAL:    sort input does not satisfy");
             return Ok(Transformed::no(node));
