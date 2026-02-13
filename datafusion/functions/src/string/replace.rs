@@ -18,7 +18,7 @@
 use std::any::Any;
 use std::sync::Arc;
 
-use arrow::array::{ArrayRef, GenericStringBuilder, OffsetSizeTrait};
+use arrow::array::{Array, ArrayRef, GenericStringBuilder, OffsetSizeTrait};
 use arrow::datatypes::DataType;
 
 use crate::utils::{make_scalar_function, utf8_to_str_type};
@@ -165,6 +165,8 @@ fn replace_view(args: &[ArrayRef]) -> Result<ArrayRef> {
     let from_array = as_string_view_array(&args[1])?;
     let to_array = as_string_view_array(&args[2])?;
 
+    // TODO: We'd like to preallocate the capacity of `builder`, but
+    // `StringViewArray` doesn't expose total data size.
     let mut builder = GenericStringBuilder::<i32>::new();
     let mut buffer = String::new();
 
@@ -193,7 +195,10 @@ fn replace<T: OffsetSizeTrait>(args: &[ArrayRef]) -> Result<ArrayRef> {
     let from_array = as_generic_string_array::<T>(&args[1])?;
     let to_array = as_generic_string_array::<T>(&args[2])?;
 
-    let mut builder = GenericStringBuilder::<T>::new();
+    let mut builder = GenericStringBuilder::<T>::with_capacity(
+        string_array.len(),
+        string_array.values().len(),
+    );
     let mut buffer = String::new();
 
     for ((string, from), to) in string_array
