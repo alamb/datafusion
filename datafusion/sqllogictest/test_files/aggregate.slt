@@ -9013,6 +9013,12 @@ SELECT MIN(CAST("EventDate" AS BIGINT)), MAX(CAST("EventDate" AS BIGINT)) FROM h
 ----
 15901 15901
 
+# Check match expressions too
+query RR
+SELECT MIN(sin(CAST("EventDate" AS DOUBLE))), MAX(sin(CAST("EventDate" AS DOUBLE))) FROM hits_raw;
+----
+-0.985378287893 -0.985378287893
+
 statement ok
 SET datafusion.execution.target_partitions = 4;
 
