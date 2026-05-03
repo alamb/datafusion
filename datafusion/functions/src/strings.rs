@@ -21,8 +21,9 @@ use std::mem::size_of;
 use datafusion_common::{Result, exec_datafusion_err, internal_err};
 
 use arrow::array::{
-    Array, ArrayAccessor, ArrayDataBuilder, BinaryArray, ByteView, GenericStringArray,
-    LargeStringArray, OffsetSizeTrait, StringArray, StringViewArray, make_view,
+    Array, ArrayAccessor, ArrayBuilder, ArrayDataBuilder, BinaryArray, ByteView,
+    GenericStringArray, LargeStringArray, OffsetSizeTrait, StringArray, StringViewArray,
+    StringViewBuilder, make_view,
 };
 use arrow::buffer::{Buffer, MutableBuffer, NullBuffer, ScalarBuffer};
 use arrow::datatypes::DataType;
@@ -527,110 +528,47 @@ impl<O: OffsetSizeTrait> GenericStringArrayBuilder<O> {
     }
 }
 
-/// Starting size for the long-string data block; matches Arrow's
-/// `GenericByteViewBuilder` default.
-const STARTING_BLOCK_SIZE: u32 = 8 * 1024;
-/// Maximum size each long-string data block grows to; matches Arrow's
-/// `GenericByteViewBuilder` default.
-const MAX_BLOCK_SIZE: u32 = 2 * 1024 * 1024;
-
 /// Builder for a [`StringViewArray`] that defers null tracking to `finish`.
 ///
-/// Modeled on Arrow's [`arrow::array::builder::StringViewBuilder`] but
-/// without per-row [`arrow::array::builder::NullBufferBuilder`] maintenance.
-/// Short strings (≤ 12 bytes) are inlined into the view itself; long strings
-/// are appended into an in-progress data block. When the in-progress block
-/// fills up it is flushed into `completed` and a new block — double the size
-/// of the last, capped at [`MAX_BLOCK_SIZE`] — is started.
+/// This optimizes the special case for String functions where an input NULL -->
+/// an output NULL.
+///
+/// This wrapper delegates all string-view layout details to
+/// [`StringViewBuilder`], but  intentionally does not expose null-appending
+/// APIs: callers append either a real value or an empty placeholder row, then
+/// pass the final null buffer to `finish`.
 pub(crate) struct StringViewArrayBuilder {
-    views: Vec<u128>,
-    in_progress: Vec<u8>,
-    completed: Vec<Buffer>,
-    /// Current block-size target; doubles each time a block is flushed, up to
-    /// [`MAX_BLOCK_SIZE`].
-    block_size: u32,
+    inner: StringViewBuilder,
     placeholder_count: usize,
 }
 
 impl StringViewArrayBuilder {
     pub fn with_capacity(item_capacity: usize) -> Self {
         Self {
-            views: Vec::with_capacity(item_capacity),
-            in_progress: Vec::new(),
-            completed: Vec::new(),
-            block_size: STARTING_BLOCK_SIZE,
+            inner: StringViewBuilder::with_capacity(item_capacity),
             placeholder_count: 0,
         }
-    }
-
-    /// Doubles the block-size target (capped at [`MAX_BLOCK_SIZE`]) and
-    /// returns the new size. The first call returns `2 * STARTING_BLOCK_SIZE`.
-    fn next_block_size(&mut self) -> u32 {
-        if self.block_size < MAX_BLOCK_SIZE {
-            self.block_size = self.block_size.saturating_mul(2);
-        }
-        self.block_size
     }
 
     /// Append `value` as the next row.
     ///
     /// # Panics
     ///
-    /// Panics if the value length, the in-progress buffer offset, or the
-    /// number of completed buffers exceeds `i32::MAX`. The ByteView spec
-    /// uses signed 32-bit integers for these fields; exceeding `i32::MAX`
-    /// would produce an array that does not round-trip through Arrow IPC
-    /// (see <https://github.com/apache/arrow-rs/issues/6172>).
+    /// Panics if Arrow's [`StringViewBuilder`] cannot encode the value.
     #[inline]
     pub fn append_value(&mut self, value: &str) {
-        let v = value.as_bytes();
-        let length: u32 =
-            i32::try_from(v.len()).expect("value length exceeds i32::MAX") as u32;
-        if length <= 12 {
-            self.views.push(make_view(v, 0, 0));
-            return;
-        }
-
-        let required_cap = self.in_progress.len() + length as usize;
-        if self.in_progress.capacity() < required_cap {
-            self.flush_in_progress();
-            let to_reserve = (length as usize).max(self.next_block_size() as usize);
-            self.in_progress.reserve(to_reserve);
-        }
-
-        let buffer_index: u32 = i32::try_from(self.completed.len())
-            .expect("buffer count exceeds i32::MAX")
-            as u32;
-        let offset: u32 = i32::try_from(self.in_progress.len())
-            .expect("offset exceeds i32::MAX") as u32;
-        self.in_progress.extend_from_slice(v);
-
-        // Build the ByteView inline rather than going through `make_view`,
-        // which is marked as `[inline(never)]`.
-        let view = ByteView {
-            length,
-            // SAFETY: length > 12 here, so v has at least 4 bytes.
-            prefix: u32::from_le_bytes(v[0..4].try_into().unwrap()),
-            buffer_index,
-            offset,
-        };
-        self.views.push(view.into());
+        self.inner.append_value(value);
     }
 
     /// Append an empty placeholder row. The corresponding slot must be
     /// masked as null by the null buffer passed to `finish`.
     #[inline]
     pub fn append_placeholder(&mut self) {
-        // Zero-length inline view — `length` field is 0, no buffer ref.
-        self.views.push(0);
+        // Use an empty non-null value only to advance Arrow's builder and
+        // produce a valid zero-length view. The caller-supplied null buffer in
+        // `finish` replaces Arrow's internal all-valid null state.
+        self.inner.append_value("");
         self.placeholder_count += 1;
-    }
-
-    fn flush_in_progress(&mut self) {
-        if !self.in_progress.is_empty() {
-            let block = std::mem::take(&mut self.in_progress);
-            self.completed.push(Buffer::from_vec(block));
-        }
     }
 
     /// Finalize into a [`StringViewArray`] using the caller-supplied null
@@ -641,13 +579,14 @@ impl StringViewArrayBuilder {
     /// Returns an error when `null_buffer.len()` does not match the number of
     /// appended rows.
     pub fn finish(mut self, null_buffer: Option<NullBuffer>) -> Result<StringViewArray> {
+        let row_count = self.inner.len();
         if let Some(ref n) = null_buffer
-            && n.len() != self.views.len()
+            && n.len() != row_count
         {
             return internal_err!(
                 "Null buffer length ({}) must match row count ({})",
                 n.len(),
-                self.views.len()
+                row_count
             );
         }
         let null_count = null_buffer.as_ref().map_or(0, |n| n.null_count());
@@ -656,18 +595,13 @@ impl StringViewArrayBuilder {
             "{} placeholder rows but null buffer has {null_count} nulls",
             self.placeholder_count,
         );
-        self.flush_in_progress();
-        // SAFETY: every long-string view references bytes we wrote ourselves
-        // into `self.completed`, with prefixes derived from those same bytes.
-        // Inline views were built from valid `&str`. Placeholder views are
-        // zero-length with no buffer reference.
-        let array = unsafe {
-            StringViewArray::new_unchecked(
-                ScalarBuffer::from(self.views),
-                self.completed,
-                null_buffer,
-            )
-        };
+
+        let (views, buffers, _) = self.inner.finish().into_parts();
+        // SAFETY: `views` and `buffers` come directly from Arrow's
+        // `StringViewBuilder::finish`, so the only changed component is the
+        // null buffer. Its length was checked above to match the row count.
+        let array =
+            unsafe { StringViewArray::new_unchecked(views, buffers, null_buffer) };
         Ok(array)
     }
 }
