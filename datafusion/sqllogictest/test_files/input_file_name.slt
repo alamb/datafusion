@@ -124,5 +124,33 @@ physical_plan
 04)------RepartitionExec: partitioning=RoundRobinBatch(4), input_partitions=2
 05)--------DataSourceExec: file_groups={2 groups: [[WORKSPACE_ROOT/datafusion/sqllogictest/test_files/scratch/input_file_name/parquet/first.parquet], [WORKSPACE_ROOT/datafusion/sqllogictest/test_files/scratch/input_file_name/parquet/second.parquet]]}, projection=[input_file_name() as __datafusion_extracted_1, column1], file_type=parquet, predicate=input_file_name() LIKE %first.parquet
 
+# Same query, but with parquet filter pushdown enabled.
+#
+# BUG: `input_file_name()` is a source-dependent function that cannot be
+# evaluated inside a parquet `RowFilter`. Unlike `file_row_index()` (which is
+# excluded from pushdown, see file_row_index.slt), `input_file_name()` is not
+# excluded, so with `pushdown_filters` enabled the predicate is pushed into the
+# scan and the query fails with:
+#
+#   Error evaluating filter predicate: input_file_name() is source dependent
+#   and cannot be evaluated directly
+#
+# It should instead return rows 10, 20, 30 (as it does with pushdown disabled
+# above). This is why enabling `pushdown_filters` by default is unsafe today.
+statement ok
+set datafusion.execution.parquet.pushdown_filters = true;
+
+query I
+SELECT column1 FROM pq_table
+WHERE input_file_name() LIKE '%first.parquet'
+ORDER BY column1
+----
+10
+20
+30
+
+statement ok
+reset datafusion.execution.parquet.pushdown_filters;
+
 statement ok
 DROP TABLE pq_table;
