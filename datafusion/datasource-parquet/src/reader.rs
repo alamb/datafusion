@@ -27,10 +27,12 @@ use datafusion_execution::cache::cache_manager::FileMetadata;
 use datafusion_execution::cache::cache_manager::FileMetadataCache;
 use datafusion_physical_plan::metrics::ExecutionPlanMetricsSet;
 use futures::FutureExt;
+use futures::TryFutureExt;
 use futures::future::BoxFuture;
-use object_store::ObjectStore;
+use object_store::{ObjectStore, ObjectStoreExt};
 use parquet::arrow::arrow_reader::ArrowReaderOptions;
-use parquet::arrow::async_reader::{AsyncFileReader, ParquetObjectReader};
+use parquet::arrow::async_reader::AsyncFileReader;
+use parquet::errors::ParquetError;
 use parquet::file::metadata::ParquetMetaData;
 use std::any::Any;
 use std::fmt::Debug;
@@ -88,15 +90,16 @@ impl DefaultParquetFileReaderFactory {
 
 /// Implements [`AsyncFileReader`] for a parquet file in object storage.
 ///
-/// This implementation uses the [`ParquetObjectReader`] to read data from the
-/// object store on demand, as required, tracking the number of bytes read.
+/// This implementation reads data directly from the underlying [`ObjectStore`]
+/// on demand, as required, tracking the number of bytes read.
 ///
 /// This implementation does not coalesce I/O operations or cache bytes. Such
 /// optimizations can be done either at the object store level or by providing a
 /// custom implementation of [`ParquetFileReaderFactory`].
 pub struct ParquetFileReader {
     pub file_metrics: ParquetFileMetrics,
-    pub inner: ParquetObjectReader,
+    pub store: Arc<dyn ObjectStore>,
+    pub metadata_size_hint: Option<usize>,
     pub partitioned_file: PartitionedFile,
 }
 
@@ -107,7 +110,10 @@ impl AsyncFileReader for ParquetFileReader {
     ) -> BoxFuture<'_, parquet::errors::Result<Bytes>> {
         let bytes_scanned = range.end - range.start;
         self.file_metrics.bytes_scanned.add(bytes_scanned as usize);
-        self.inner.get_bytes(range)
+        self.store
+            .get_range(&self.partitioned_file.object_meta.location, range)
+            .map_err(|e| ParquetError::External(Box::new(e)))
+            .boxed()
     }
 
     fn get_byte_ranges(
@@ -119,14 +125,46 @@ impl AsyncFileReader for ParquetFileReader {
     {
         let total: u64 = ranges.iter().map(|r| r.end - r.start).sum();
         self.file_metrics.bytes_scanned.add(total as usize);
-        self.inner.get_byte_ranges(ranges)
+        async move {
+            self.store
+                .get_ranges(&self.partitioned_file.object_meta.location, &ranges)
+                .await
+                .map_err(|e| ParquetError::External(Box::new(e)))
+        }
+        .boxed()
     }
 
     fn get_metadata<'a>(
         &'a mut self,
         options: Option<&'a ArrowReaderOptions>,
     ) -> BoxFuture<'a, parquet::errors::Result<Arc<ParquetMetaData>>> {
-        self.inner.get_metadata(options)
+        let object_meta = self.partitioned_file.object_meta.clone();
+
+        async move {
+            #[cfg(feature = "parquet_encryption")]
+            let file_decryption_properties = options
+                .and_then(|o| o.file_decryption_properties())
+                .map(Arc::clone);
+
+            #[cfg(not(feature = "parquet_encryption"))]
+            let file_decryption_properties = None;
+
+            let page_index_policy = options.map(|o| o.column_index_policy());
+
+            DFParquetMetadata::new(&self.store, &object_meta)
+                .with_decryption_properties(file_decryption_properties)
+                .with_metadata_size_hint(self.metadata_size_hint)
+                .with_page_index_policy(page_index_policy)
+                .fetch_metadata()
+                .await
+                .map_err(|e| {
+                    ParquetError::General(format!(
+                        "Failed to fetch metadata for file {}: {e}",
+                        object_meta.location,
+                    ))
+                })
+        }
+        .boxed()
     }
 }
 
@@ -155,20 +193,11 @@ impl ParquetFileReaderFactory for DefaultParquetFileReaderFactory {
             partitioned_file.object_meta.location.as_ref(),
             metrics,
         );
-        let store = Arc::clone(&self.store);
-        let mut inner = ParquetObjectReader::new(
-            store,
-            partitioned_file.object_meta.location.clone(),
-        )
-        .with_file_size(partitioned_file.object_meta.size);
-
-        if let Some(hint) = metadata_size_hint {
-            inner = inner.with_footer_size_hint(hint)
-        };
 
         Ok(Box::new(ParquetFileReader {
-            inner,
             file_metrics,
+            store: Arc::clone(&self.store),
+            metadata_size_hint,
             partitioned_file,
         }))
     }
@@ -211,22 +240,10 @@ impl ParquetFileReaderFactory for CachedParquetFileReaderFactory {
             partitioned_file.object_meta.location.as_ref(),
             metrics,
         );
-        let store = Arc::clone(&self.store);
-
-        let mut inner = ParquetObjectReader::new(
-            store,
-            partitioned_file.object_meta.location.clone(),
-        )
-        .with_file_size(partitioned_file.object_meta.size);
-
-        if let Some(hint) = metadata_size_hint {
-            inner = inner.with_footer_size_hint(hint)
-        };
 
         Ok(Box::new(CachedParquetFileReader::new(
             file_metrics,
             Arc::clone(&self.store),
-            inner,
             partitioned_file,
             Arc::clone(&self.metadata_cache),
             metadata_size_hint,
@@ -240,7 +257,6 @@ impl ParquetFileReaderFactory for CachedParquetFileReaderFactory {
 pub struct CachedParquetFileReader {
     pub file_metrics: ParquetFileMetrics,
     store: Arc<dyn ObjectStore>,
-    pub inner: ParquetObjectReader,
     partitioned_file: PartitionedFile,
     metadata_cache: Arc<FileMetadataCache>,
     metadata_size_hint: Option<usize>,
@@ -250,7 +266,6 @@ impl CachedParquetFileReader {
     pub fn new(
         file_metrics: ParquetFileMetrics,
         store: Arc<dyn ObjectStore>,
-        inner: ParquetObjectReader,
         partitioned_file: PartitionedFile,
         metadata_cache: Arc<FileMetadataCache>,
         metadata_size_hint: Option<usize>,
@@ -258,7 +273,6 @@ impl CachedParquetFileReader {
         Self {
             file_metrics,
             store,
-            inner,
             partitioned_file,
             metadata_cache,
             metadata_size_hint,
@@ -273,7 +287,10 @@ impl AsyncFileReader for CachedParquetFileReader {
     ) -> BoxFuture<'_, parquet::errors::Result<Bytes>> {
         let bytes_scanned = range.end - range.start;
         self.file_metrics.bytes_scanned.add(bytes_scanned as usize);
-        self.inner.get_bytes(range)
+        self.store
+            .get_range(&self.partitioned_file.object_meta.location, range)
+            .map_err(|e| ParquetError::External(Box::new(e)))
+            .boxed()
     }
 
     fn get_byte_ranges(
@@ -285,7 +302,13 @@ impl AsyncFileReader for CachedParquetFileReader {
     {
         let total: u64 = ranges.iter().map(|r| r.end - r.start).sum();
         self.file_metrics.bytes_scanned.add(total as usize);
-        self.inner.get_byte_ranges(ranges)
+        async move {
+            self.store
+                .get_ranges(&self.partitioned_file.object_meta.location, &ranges)
+                .await
+                .map_err(|e| ParquetError::External(Box::new(e)))
+        }
+        .boxed()
     }
 
     fn get_metadata<'a>(
@@ -314,7 +337,7 @@ impl AsyncFileReader for CachedParquetFileReader {
                 .fetch_metadata()
                 .await
                 .map_err(|e| {
-                    parquet::errors::ParquetError::General(format!(
+                    ParquetError::General(format!(
                         "Failed to fetch metadata for file {}: {e}",
                         object_meta.location,
                     ))
