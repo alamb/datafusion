@@ -202,9 +202,10 @@ impl ParquetFileReaderFactory for InMemoryParquetFileReaderFactory {
 
         assert_eq!(EXPECTED_USER_DEFINED_METADATA, &metadata[..]);
 
+        let file_name = Arc::from(partitioned_file.object_meta.location.as_ref());
         let parquet_file_metrics = ParquetFileMetrics::new(
             partition_index,
-            partitioned_file.object_meta.location.as_ref(),
+            file_name,
             metrics,
         );
 

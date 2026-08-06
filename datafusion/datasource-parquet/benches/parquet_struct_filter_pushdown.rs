@@ -205,8 +205,9 @@ fn scan(
     let metadata = builder.metadata().clone();
     let file_schema = builder.schema();
 
+    let file_name: Arc<str> = path.display().to_string().into();
     let metrics = ExecutionPlanMetricsSet::new();
-    let file_metrics = ParquetFileMetrics::new(0, &path.display().to_string(), &metrics);
+    let file_metrics = ParquetFileMetrics::new(0, file_name, &metrics);
 
     let mut filter_applied = false;
     let builder = if pushdown {

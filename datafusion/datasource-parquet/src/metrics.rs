@@ -107,12 +107,12 @@ impl ParquetFileMetrics {
     /// Create new metrics
     pub fn new(
         partition: usize,
-        filename: &str,
+        filename: Arc<str>,
         metrics: &ExecutionPlanMetricsSet,
     ) -> Self {
         // Share the filename label across all per-file metrics to avoid
         // allocating the same filename string for each metric.
-        let filename_label = Label::new("filename", Arc::<str>::from(filename));
+        let filename_label = Label::new("filename", Arc::clone(&filename));
         let builder = MetricBuilder::new(metrics).with_label(filename_label);
 
         // -----------------------
@@ -207,7 +207,7 @@ impl ParquetFileMetrics {
             .gauge("predicate_cache_records", partition);
 
         let row_groups_pruned_dynamic_filter = MetricBuilder::new(metrics)
-            .with_new_label("filename", filename.to_string())
+            .with_label(Label::new("filename", filename))
             .with_type(MetricType::Summary)
             .counter("row_groups_pruned_dynamic_filter", partition);
 

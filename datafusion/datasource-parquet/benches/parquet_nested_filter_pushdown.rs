@@ -112,7 +112,8 @@ fn scan_with_predicate(
     let projection = ProjectionMask::all();
 
     let metrics = ExecutionPlanMetricsSet::new();
-    let file_metrics = ParquetFileMetrics::new(0, &path.display().to_string(), &metrics);
+    let file_name: Arc<str> = path.display().to_string().into();
+    let file_metrics = ParquetFileMetrics::new(0, file_name, &metrics);
 
     let builder = if pushdown {
         if let Some(row_filter) =

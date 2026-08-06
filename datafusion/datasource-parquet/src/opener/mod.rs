@@ -425,7 +425,7 @@ struct PreparedParquetOpen {
     partitioned_file: PartitionedFile,
     file_range: Option<datafusion_datasource::FileRange>,
     extensions: datafusion_datasource::FileExtensions,
-    file_name: String,
+    file_name: Arc<str>,
     file_metrics: ParquetFileMetrics,
     baseline_metrics: BaselineMetrics,
     file_pruner: Option<FilePruner>,
@@ -733,9 +733,9 @@ impl ParquetMorselizer {
     ) -> Result<PreparedParquetOpen> {
         let file_range = partitioned_file.range.clone();
         let extensions = partitioned_file.extensions.clone();
-        let file_name = partitioned_file.object_meta.location.to_string();
+        let file_name = Arc::from(partitioned_file.object_meta.location.as_ref());
         let file_metrics =
-            ParquetFileMetrics::new(self.partition_index, &file_name, &self.metrics);
+            ParquetFileMetrics::new(self.partition_index, Arc::clone(&file_name), &self.metrics);
         let baseline_metrics = BaselineMetrics::new(&self.metrics, self.partition_index);
 
         let metadata_size_hint = partitioned_file

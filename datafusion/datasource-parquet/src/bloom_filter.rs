@@ -642,8 +642,9 @@ mod tests {
             .expect("put parquet file into in memory object store");
 
         let metrics = ExecutionPlanMetricsSet::new();
+        let file_name = Arc::from(object_meta.location.as_ref());
         let file_metrics =
-            ParquetFileMetrics::new(0, object_meta.location.as_ref(), &metrics);
+            ParquetFileMetrics::new(0, file_name, &metrics);
         let store: Arc<dyn ObjectStore> = Arc::new(in_memory);
         let inner =
             ParquetObjectReader::new(Arc::clone(&store), object_meta.location.clone())

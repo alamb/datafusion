@@ -94,9 +94,10 @@ impl ParquetFileReaderFactory for DefaultParquetFileReaderFactory {
         metadata_size_hint: Option<usize>,
         metrics: &ExecutionPlanMetricsSet,
     ) -> datafusion_common::Result<Box<dyn AsyncFileReader + Send>> {
+        let file_name = Arc::from(partitioned_file.object_meta.location.as_ref());
         let file_metrics = ParquetFileMetrics::new(
             partition_index,
-            partitioned_file.object_meta.location.as_ref(),
+            file_name,
             metrics,
         );
         let store = Arc::clone(&self.store);
@@ -153,9 +154,10 @@ impl ParquetFileReaderFactory for CachedParquetFileReaderFactory {
         metadata_size_hint: Option<usize>,
         metrics: &ExecutionPlanMetricsSet,
     ) -> datafusion_common::Result<Box<dyn AsyncFileReader + Send>> {
+        let file_name = Arc::from(partitioned_file.object_meta.location.as_ref());
         let file_metrics = ParquetFileMetrics::new(
             partition_index,
-            partitioned_file.object_meta.location.as_ref(),
+            file_name,
             metrics,
         );
         let store = Arc::clone(&self.store);
