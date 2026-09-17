@@ -407,23 +407,23 @@ debug-assertions = false
 strip = "debuginfo"
 incremental = false
 
-# Pin arrow-rs to 60.0.0 + https://github.com/apache/arrow-rs/pull/10852 (branch alamb/adaptive-selector-60.0.0)
+# Pin arrow-rs to 60.0.0 + https://github.com/apache/arrow-rs/pull/10852 (branch alamb/adaptive-selector2-60.0.0)
 [patch.crates-io]
-arrow = { git = "https://github.com/alamb/arrow-rs.git", rev = "d407900825790ab8a16a9553bdaa4bd736cc671c" }
-arrow-arith = { git = "https://github.com/alamb/arrow-rs.git", rev = "d407900825790ab8a16a9553bdaa4bd736cc671c" }
-arrow-array = { git = "https://github.com/alamb/arrow-rs.git", rev = "d407900825790ab8a16a9553bdaa4bd736cc671c" }
-arrow-avro = { git = "https://github.com/alamb/arrow-rs.git", rev = "d407900825790ab8a16a9553bdaa4bd736cc671c" }
-arrow-buffer = { git = "https://github.com/alamb/arrow-rs.git", rev = "d407900825790ab8a16a9553bdaa4bd736cc671c" }
-arrow-cast = { git = "https://github.com/alamb/arrow-rs.git", rev = "d407900825790ab8a16a9553bdaa4bd736cc671c" }
-arrow-cmp = { git = "https://github.com/alamb/arrow-rs.git", rev = "d407900825790ab8a16a9553bdaa4bd736cc671c" }
-arrow-csv = { git = "https://github.com/alamb/arrow-rs.git", rev = "d407900825790ab8a16a9553bdaa4bd736cc671c" }
-arrow-data = { git = "https://github.com/alamb/arrow-rs.git", rev = "d407900825790ab8a16a9553bdaa4bd736cc671c" }
-arrow-ipc = { git = "https://github.com/alamb/arrow-rs.git", rev = "d407900825790ab8a16a9553bdaa4bd736cc671c" }
-arrow-json = { git = "https://github.com/alamb/arrow-rs.git", rev = "d407900825790ab8a16a9553bdaa4bd736cc671c" }
-arrow-ord = { git = "https://github.com/alamb/arrow-rs.git", rev = "d407900825790ab8a16a9553bdaa4bd736cc671c" }
-arrow-row = { git = "https://github.com/alamb/arrow-rs.git", rev = "d407900825790ab8a16a9553bdaa4bd736cc671c" }
-arrow-schema = { git = "https://github.com/alamb/arrow-rs.git", rev = "d407900825790ab8a16a9553bdaa4bd736cc671c" }
-arrow-select = { git = "https://github.com/alamb/arrow-rs.git", rev = "d407900825790ab8a16a9553bdaa4bd736cc671c" }
-arrow-string = { git = "https://github.com/alamb/arrow-rs.git", rev = "d407900825790ab8a16a9553bdaa4bd736cc671c" }
-arrow-flight = { git = "https://github.com/alamb/arrow-rs.git", rev = "d407900825790ab8a16a9553bdaa4bd736cc671c" }
-parquet = { git = "https://github.com/alamb/arrow-rs.git", rev = "d407900825790ab8a16a9553bdaa4bd736cc671c" }
+arrow = { git = "https://github.com/alamb/arrow-rs.git", rev = "e901d833f72465e477697d8402e39e8b2db1f672" }
+arrow-arith = { git = "https://github.com/alamb/arrow-rs.git", rev = "e901d833f72465e477697d8402e39e8b2db1f672" }
+arrow-array = { git = "https://github.com/alamb/arrow-rs.git", rev = "e901d833f72465e477697d8402e39e8b2db1f672" }
+arrow-avro = { git = "https://github.com/alamb/arrow-rs.git", rev = "e901d833f72465e477697d8402e39e8b2db1f672" }
+arrow-buffer = { git = "https://github.com/alamb/arrow-rs.git", rev = "e901d833f72465e477697d8402e39e8b2db1f672" }
+arrow-cast = { git = "https://github.com/alamb/arrow-rs.git", rev = "e901d833f72465e477697d8402e39e8b2db1f672" }
+arrow-cmp = { git = "https://github.com/alamb/arrow-rs.git", rev = "e901d833f72465e477697d8402e39e8b2db1f672" }
+arrow-csv = { git = "https://github.com/alamb/arrow-rs.git", rev = "e901d833f72465e477697d8402e39e8b2db1f672" }
+arrow-data = { git = "https://github.com/alamb/arrow-rs.git", rev = "e901d833f72465e477697d8402e39e8b2db1f672" }
+arrow-ipc = { git = "https://github.com/alamb/arrow-rs.git", rev = "e901d833f72465e477697d8402e39e8b2db1f672" }
+arrow-json = { git = "https://github.com/alamb/arrow-rs.git", rev = "e901d833f72465e477697d8402e39e8b2db1f672" }
+arrow-ord = { git = "https://github.com/alamb/arrow-rs.git", rev = "e901d833f72465e477697d8402e39e8b2db1f672" }
+arrow-row = { git = "https://github.com/alamb/arrow-rs.git", rev = "e901d833f72465e477697d8402e39e8b2db1f672" }
+arrow-schema = { git = "https://github.com/alamb/arrow-rs.git", rev = "e901d833f72465e477697d8402e39e8b2db1f672" }
+arrow-select = { git = "https://github.com/alamb/arrow-rs.git", rev = "e901d833f72465e477697d8402e39e8b2db1f672" }
+arrow-string = { git = "https://github.com/alamb/arrow-rs.git", rev = "e901d833f72465e477697d8402e39e8b2db1f672" }
+arrow-flight = { git = "https://github.com/alamb/arrow-rs.git", rev = "e901d833f72465e477697d8402e39e8b2db1f672" }
+parquet = { git = "https://github.com/alamb/arrow-rs.git", rev = "e901d833f72465e477697d8402e39e8b2db1f672" }
