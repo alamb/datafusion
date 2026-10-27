@@ -26,8 +26,7 @@ on:
 
 name: Deploy DataFusion site
 
-# docs_versions.yaml pushes to the same branch; run the publishing workflows
-# one at a time.
+# run the publishing workflows one at a time.
 concurrency:
   group: publish-asf-site
   cancel-in-progress: false
