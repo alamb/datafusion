@@ -326,7 +326,7 @@ workflow builds the documentation for each release and
 pushes the result to the `asf-site` branch.
 
 To preview a release locally before opening the PR, build the current site
-and then the release with `docs/scripts/build_versions.sh <version>` and serve 
+and then the release with `docs/scripts/build_versions.sh <version>` and serve
 `docs/build/html` over HTTP:
 
 ```shell
