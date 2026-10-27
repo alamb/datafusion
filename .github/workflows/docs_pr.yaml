@@ -51,8 +51,6 @@ jobs:
         with:
           submodules: true
           fetch-depth: 1
-      - name: Setup Rust toolchain
-        uses: ./.github/actions/setup-rustup
       - name: Setup docs builder
         uses: ./.github/actions/setup-docs-builder
       - name: Build docs html and check for warnings

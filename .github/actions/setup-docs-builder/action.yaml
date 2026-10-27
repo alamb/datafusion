@@ -16,10 +16,12 @@
 # under the License.
 
 name: Prepare Docs Builder
-description: 'Install the tools needed to build the documentation in docs/: uv and the Python dependencies, Graphviz, and cargo-depgraph'
+description: 'Install the tools needed to build the documentation in docs/: Rust (for cargo-depgraph), uv and the Python dependencies, Graphviz, and cargo-depgraph'
 runs:
   using: "composite"
   steps:
+    - name: Setup Rust toolchain
+      uses: ./.github/actions/setup-rustup
     - name: Setup uv
       uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e  # v10.3.2
     - name: Install Python dependencies
