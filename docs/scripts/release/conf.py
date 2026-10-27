@@ -34,6 +34,8 @@ the release process builds docs with the following command from a main
 checkout:
 
 sphinx-build -c docs/scripts/release
+
+See docs/scripts/build_versions.sh for building past releases
 """
 
 import os
@@ -52,6 +54,10 @@ html_logo = str(source / html_logo)
 html_favicon = str(source / html_favicon)
 
 version = release = os.environ["DATAFUSION_DOCS_VERSION"]
+# Older tags do not define this (see docs/source/conf.py on main).
+docs_base_path = os.environ.get("DATAFUSION_DOCS_BASE_PATH") or "/"
+if not docs_base_path.endswith("/"):
+    docs_base_path += "/"
 html_baseurl = f"https://datafusion.apache.org/versions/{version}/"
 sitemap_url_scheme = "{link}"
 if "sphinx_sitemap" not in extensions:

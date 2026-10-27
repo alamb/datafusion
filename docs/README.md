@@ -89,6 +89,11 @@ which serves content based on the configuration in
 [.asf.yaml](https://github.com/apache/datafusion/blob/main/.asf.yaml),
 which specifies the target as https://datafusion.apache.org/.
 
+The documentation for previously released versions is served under
+`/versions/<version>/`. See the
+[release instructions](../dev/release/README.md#publish-the-versioned-documentation)
+for how it is published.
+
 ### Testing the site on a fork
 
 The same workflow runs on forks: a push to `main` builds the site and pushes
