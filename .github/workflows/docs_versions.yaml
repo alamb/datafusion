@@ -31,6 +31,10 @@ on:
       - docs/scripts/build_versions.sh
       - docs/scripts/release/conf.py
       - docs/source/_static/versions.json
+      # The versioned docs are built with the Python environment (and so the
+      # Sphinx theme version) of main, not of the tag
+      - docs/pyproject.toml
+      - uv.lock
 
 name: Deploy DataFusion versioned docs
 
