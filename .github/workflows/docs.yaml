@@ -58,6 +58,11 @@ jobs:
           tool: cargo-depgraph@1.6
 
       - name: Build docs
+        env:
+          # Path the site is served under; unset (i.e. "/") for
+          # https://datafusion.apache.org/. Forks publishing to GitHub Pages
+          # set this repository variable to "/<repo-name>/" (see docs/README.md).
+          DATAFUSION_DOCS_BASE_PATH: ${{ vars.DATAFUSION_DOCS_BASE_PATH }}
         run: |
           set -x
           cd docs

@@ -62,7 +62,7 @@ html_theme_options = {
     "navbar_end": ["version-switcher", "theme-switcher"],
     "check_switcher": False,
     "switcher": {
-        "json_url": "/_static/versions.json",
+        "json_url": f"{docs_base_path}_static/versions.json",
         "version_match": version,
     },
 }
