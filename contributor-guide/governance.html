@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 
@@ -27,43 +26,53 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../_static/theme_overrides.css?v=0b9a6302" />
+    <link rel="stylesheet" type="text/css" href="../_static/theme_overrides.css?v=d08b24aa" />
   
   <!-- So that users can add custom icons -->
-  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
     <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'contributor-guide/governance';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://datafusion.apache.org/contributor-guide/governance.html" />
+    <link rel="icon" href="../_static/favicon.svg"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Inviting New Committers and PMC Members" href="inviting.html" />
     <link rel="prev" title="Roadmap and Improvement Proposals" href="roadmap.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -89,9 +98,9 @@
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -131,7 +140,7 @@
         <div class="navbar-item navbar-persistent--container">
           
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -141,11 +150,18 @@
       
         <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
       
     </div>
     
@@ -154,7 +170,7 @@
   
     <div class="navbar-persistent--mobile">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -163,7 +179,7 @@
   
 
   
-    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
       <span class="fa-solid fa-outdent"></span>
     </button>
   
@@ -191,11 +207,18 @@
         
           <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
         
       </div>
     
@@ -230,6 +253,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../user-guide/features.html">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guide/concepts-readings-events.html">Concepts, Readings, Events</a></li>
 
+
 <li class="toctree-l1"><a class="reference internal" href="../user-guide/crate-configuration.html">Crate Configuration</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../user-guide/cli/index.html">DataFusion CLI</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../user-guide/cli/overview.html">Overview</a></li>
@@ -248,6 +272,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../user-guide/expressions.html">Expression API</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../user-guide/sql/index.html">SQL Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../user-guide/sql/data_types.html">Data Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../user-guide/sql/struct_coercion.html">Struct Type Coercion and Field Mapping</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../user-guide/sql/select.html">SELECT syntax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../user-guide/sql/subqueries.html">Subqueries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../user-guide/sql/ddl.html">DDL</a></li>
@@ -269,6 +294,7 @@
 
 
 <li class="toctree-l1"><a class="reference internal" href="../user-guide/explain-usage.html">Reading Explain Plans</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user-guide/parquet-content-defined-chunking.html">Parquet Content-Defined Chunking</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guide/metrics.html">Metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user-guide/faq.html">Frequently Asked Questions</a></li>
 
@@ -276,9 +302,25 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Library User Guide</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../library-user-guide/index.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../library-user-guide/upgrading.html">Upgrade Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library-user-guide/securing-datafusion.html">Securing DataFusion</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../library-user-guide/upgrading/index.html">Upgrade Guides</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../library-user-guide/upgrading/56.0.0.html">DataFusion 56.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../library-user-guide/upgrading/55.0.0.html">DataFusion 55.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../library-user-guide/upgrading/54.0.0.html">DataFusion 54.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../library-user-guide/upgrading/53.0.0.html">DataFusion 53.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../library-user-guide/upgrading/52.0.0.html">DataFusion 52.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../library-user-guide/upgrading/51.0.0.html">DataFusion 51.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../library-user-guide/upgrading/50.0.0.html">DataFusion 50.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../library-user-guide/upgrading/49.0.0.html">DataFusion 49.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../library-user-guide/upgrading/48.0.1.html">DataFusion 48.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../library-user-guide/upgrading/48.0.0.html">DataFusion 48.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../library-user-guide/upgrading/47.0.0.html">DataFusion 47.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../library-user-guide/upgrading/46.0.0.html">DataFusion 46.0.0</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="../library-user-guide/extensions.html">Extensions List</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../library-user-guide/using-the-sql-api.html">Using the SQL API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library-user-guide/extending-sql.html">Extending SQL Syntax</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../library-user-guide/working-with-exprs.html">Working with <code class="docutils literal notranslate"><span class="pre">Expr</span></code>s</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../library-user-guide/using-the-dataframe-api.html">Using the DataFrame API</a></li>
 
@@ -291,22 +333,26 @@
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../library-user-guide/custom-table-providers.html">Custom Table Provider</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../library-user-guide/table-constraints.html">Table Constraint Enforcement</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../library-user-guide/extending-operators.html">Extending DataFusion’s operators: custom LogicalPlan and Execution Plans</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library-user-guide/extending-operators.html">Extending Operators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../library-user-guide/profiling.html">Profiling Cookbook</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../library-user-guide/query-optimizer.html">DataFusion Query Optimizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library-user-guide/query-optimizer.html">Query Optimizer</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contributor Guide</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Introduction</a></li>
 
-<li class="toctree-l1"><a class="reference internal" href="communication.html">Communication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ai-policy.html">AI Policy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pr_review.html">Reviewing Pull Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="communication.html">Community Communication</a></li>
 <li class="toctree-l1"><a class="reference internal" href="development_environment.html">Development Environment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture/dependency-graph.html">Workspace Dependency Graph</a></li>
 <li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api-health.html">API health policy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="howtos.html">HOWTOs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_management.html">Release Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap and Improvement Proposals</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Governance</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">Governance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="inviting.html">Inviting New Committers and PMC Members</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="specification/index.html">Specifications</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="specification/invariants.html">Invariants</a></li>
@@ -323,6 +369,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference external" href="https://datafusion.apache.org/ballista/">DataFusion Ballista</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://datafusion.apache.org/comet/">DataFusion Comet</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://datafusion.apache.org/java/">DataFusion Java</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://datafusion.apache.org/python/">DataFusion Python</a></li>
 </ul>
 
@@ -419,7 +466,10 @@ to the project.</p>
 
 The following table can be updated by running the following script:
 
-docs/scripts/update_committer_list.py
+```bash
+python3 docs/scripts/update_committer_list.py
+ci/scripts/doc_prettier_check.sh --write --allow-dirty
+```
 
 Notes:
 
@@ -444,124 +494,148 @@ Notes:
 <td><p>InfluxData</p></td>
 <td><p>PMC Chair</p></td>
 </tr>
-<tr class="row-odd"><td><p>Andrew Grove</p></td>
+<tr class="row-odd"><td><p>Adrian Garcia Badaracco</p></td>
+<td><p>adriangb</p></td>
+<td><p><a class="reference external" href="https://github.com/adriangb">adriangb</a></p></td>
+<td><p>Pydantic</p></td>
+<td><p>PMC</p></td>
+</tr>
+<tr class="row-even"><td><p>Andrew Grove</p></td>
 <td><p>agrove</p></td>
 <td><p><a class="reference external" href="https://github.com/andygrove">andygrove</a></p></td>
 <td><p>Apple</p></td>
 <td><p>PMC</p></td>
 </tr>
-<tr class="row-even"><td><p>Mustafa Akur</p></td>
+<tr class="row-odd"><td><p>Mustafa Akur</p></td>
 <td><p>akurmustafa</p></td>
 <td><p><a class="reference external" href="https://github.com/akurmustafa">akurmustafa</a></p></td>
 <td><p>OHSU</p></td>
 <td><p>PMC</p></td>
 </tr>
-<tr class="row-odd"><td><p>Berkay Şahin</p></td>
+<tr class="row-even"><td><p>Berkay Şahin</p></td>
 <td><p>berkay</p></td>
 <td><p><a class="reference external" href="https://github.com/berkaysynnada">berkaysynnada</a></p></td>
 <td><p>Synnada</p></td>
 <td><p>PMC</p></td>
 </tr>
-<tr class="row-even"><td><p>Oleksandr Voievodin</p></td>
+<tr class="row-odd"><td><p>Oleksandr Voievodin</p></td>
 <td><p>comphead</p></td>
 <td><p><a class="reference external" href="https://github.com/comphead">comphead</a></p></td>
 <td><p>Apple</p></td>
 <td><p>PMC</p></td>
 </tr>
-<tr class="row-odd"><td><p>Daniël Heres</p></td>
+<tr class="row-even"><td><p>Daniël Heres</p></td>
 <td><p>dheres</p></td>
 <td><p><a class="reference external" href="https://github.com/Dandandan">Dandandan</a></p></td>
 <td><p></p></td>
 <td><p>PMC</p></td>
 </tr>
-<tr class="row-even"><td><p>QP Hou</p></td>
+<tr class="row-odd"><td><p>QP Hou</p></td>
 <td><p>houqp</p></td>
 <td><p><a class="reference external" href="https://github.com/houqp">houqp</a></p></td>
 <td><p></p></td>
 <td><p>PMC</p></td>
 </tr>
-<tr class="row-odd"><td><p>Jie Wen</p></td>
+<tr class="row-even"><td><p>Jie Wen</p></td>
 <td><p>jakevin</p></td>
 <td><p><a class="reference external" href="https://github.com/jackwener">jackwener</a></p></td>
 <td><p></p></td>
 <td><p>PMC</p></td>
 </tr>
-<tr class="row-even"><td><p>Jay Zhan</p></td>
+<tr class="row-odd"><td><p>Jay Zhan</p></td>
 <td><p>jayzhan</p></td>
 <td><p><a class="reference external" href="https://github.com/jayzhan211">jayzhan211</a></p></td>
 <td><p></p></td>
 <td><p>PMC</p></td>
 </tr>
-<tr class="row-odd"><td><p>Jeffrey Vo</p></td>
+<tr class="row-even"><td><p>Jeffrey Vo</p></td>
 <td><p>jeffreyvo</p></td>
 <td><p><a class="reference external" href="https://github.com/Jefffrey">Jefffrey</a></p></td>
 <td><p></p></td>
 <td><p>PMC</p></td>
 </tr>
-<tr class="row-even"><td><p>Jonah Gao</p></td>
+<tr class="row-odd"><td><p>Jonah Gao</p></td>
 <td><p>jonah</p></td>
 <td><p><a class="reference external" href="https://github.com/jonahgao">jonahgao</a></p></td>
 <td><p></p></td>
 <td><p>PMC</p></td>
 </tr>
-<tr class="row-odd"><td><p>Kun Liu</p></td>
+<tr class="row-even"><td><p>Kun Liu</p></td>
 <td><p>liukun</p></td>
 <td><p><a class="reference external" href="https://github.com/liukun4515">liukun4515</a></p></td>
 <td><p></p></td>
 <td><p>PMC</p></td>
 </tr>
-<tr class="row-even"><td><p>Mehmet Ozan Kabak</p></td>
+<tr class="row-odd"><td><p>Matt Butrovich</p></td>
+<td><p>mbutrovich</p></td>
+<td><p><a class="reference external" href="https://github.com/mbutrovich">mbutrovich</a></p></td>
+<td><p>Apple</p></td>
+<td><p>PMC</p></td>
+</tr>
+<tr class="row-even"><td><p>Marko Milenković</p></td>
+<td><p>milenkovicm</p></td>
+<td><p><a class="reference external" href="https://github.com/milenkovicm">milenkovicm</a></p></td>
+<td><p></p></td>
+<td><p>PMC</p></td>
+</tr>
+<tr class="row-odd"><td><p>Mehmet Ozan Kabak</p></td>
 <td><p>ozankabak</p></td>
 <td><p><a class="reference external" href="https://github.com/ozankabak">ozankabak</a></p></td>
 <td><p>Synnada, Inc</p></td>
 <td><p>PMC</p></td>
 </tr>
-<tr class="row-odd"><td><p>Tim Saucer</p></td>
+<tr class="row-even"><td><p>Tim Saucer</p></td>
 <td><p>timsaucer</p></td>
 <td><p><a class="reference external" href="https://github.com/timsaucer">timsaucer</a></p></td>
 <td><p></p></td>
 <td><p>PMC</p></td>
 </tr>
-<tr class="row-even"><td><p>L. C. Hsieh</p></td>
+<tr class="row-odd"><td><p>L. C. Hsieh</p></td>
 <td><p>viirya</p></td>
 <td><p><a class="reference external" href="https://github.com/viirya">viirya</a></p></td>
 <td><p>Databricks</p></td>
 <td><p>PMC</p></td>
 </tr>
-<tr class="row-odd"><td><p>Ruihang Xia</p></td>
+<tr class="row-even"><td><p>Ruihang Xia</p></td>
 <td><p>wayne</p></td>
 <td><p><a class="reference external" href="https://github.com/waynexia">waynexia</a></p></td>
 <td><p>Greptime</p></td>
 <td><p>PMC</p></td>
 </tr>
-<tr class="row-even"><td><p>Wes McKinney</p></td>
+<tr class="row-odd"><td><p>Wes McKinney</p></td>
 <td><p>wesm</p></td>
 <td><p><a class="reference external" href="https://github.com/wesm">wesm</a></p></td>
 <td><p>Posit</p></td>
 <td><p>PMC</p></td>
 </tr>
-<tr class="row-odd"><td><p>Will Jones</p></td>
+<tr class="row-even"><td><p>Will Jones</p></td>
 <td><p>wjones127</p></td>
 <td><p><a class="reference external" href="https://github.com/wjones127">wjones127</a></p></td>
 <td><p>LanceDB</p></td>
 <td><p>PMC</p></td>
 </tr>
-<tr class="row-even"><td><p>Xudong Wang</p></td>
+<tr class="row-odd"><td><p>Xudong Wang</p></td>
 <td><p>xudong963</p></td>
 <td><p><a class="reference external" href="https://github.com/xudong963">xudong963</a></p></td>
-<td><p>Polygon.io</p></td>
+<td><p>Massive</p></td>
 <td><p>PMC</p></td>
 </tr>
-<tr class="row-odd"><td><p>Yongting You</p></td>
+<tr class="row-even"><td><p>Yongting You</p></td>
 <td><p>ytyou</p></td>
 <td><p><a class="reference external" href="https://github.com/2010YOUY01">2010YOUY01</a></p></td>
 <td><p>Independent</p></td>
 <td><p>PMC</p></td>
 </tr>
-<tr class="row-even"><td><p>Adrian Garcia Badaracco</p></td>
-<td><p>adriangb</p></td>
-<td><p><a class="reference external" href="https://github.com/adriangb">adriangb</a></p></td>
-<td><p>Pydantic</p></td>
+<tr class="row-odd"><td><p>Qi Zhu</p></td>
+<td><p>zhuqi</p></td>
+<td><p><a class="reference external" href="https://github.com/zhuqi-lucas">zhuqi-lucas</a></p></td>
+<td><p>Massive</p></td>
+<td><p>PMC</p></td>
+</tr>
+<tr class="row-even"><td><p>Adam Gutglick</p></td>
+<td><p>adamgs</p></td>
+<td><p><a class="reference external" href="https://github.com/AdamGS">AdamGS</a></p></td>
+<td><p></p></td>
 <td><p>Committer</p></td>
 </tr>
 <tr class="row-odd"><td><p>Brent Gardner</p></td>
@@ -570,69 +644,81 @@ Notes:
 <td><p>Coralogix</p></td>
 <td><p>Committer</p></td>
 </tr>
-<tr class="row-even"><td><p>Dmitrii Blaginin</p></td>
+<tr class="row-even"><td><p>Bhargava Vadlamani</p></td>
+<td><p>bhargava</p></td>
+<td><p><a class="reference external" href="https://github.com/coderfender">coderfender</a></p></td>
+<td><p></p></td>
+<td><p>Committer</p></td>
+</tr>
+<tr class="row-odd"><td><p>Dmitrii Blaginin</p></td>
 <td><p>blaginin</p></td>
 <td><p><a class="reference external" href="https://github.com/blaginin">blaginin</a></p></td>
 <td><p>SpiralDB</p></td>
 <td><p>Committer</p></td>
 </tr>
-<tr class="row-odd"><td><p>Piotr Findeisen</p></td>
+<tr class="row-even"><td><p>Piotr Findeisen</p></td>
 <td><p>findepi</p></td>
 <td><p><a class="reference external" href="https://github.com/findepi">findepi</a></p></td>
-<td><p>dbt Labs</p></td>
+<td><p></p></td>
 <td><p>Committer</p></td>
 </tr>
-<tr class="row-even"><td><p>Gabriel Musat</p></td>
+<tr class="row-odd"><td><p>Gabriel Musat</p></td>
 <td><p>gabotechs</p></td>
 <td><p><a class="reference external" href="https://github.com/gabotechs">gabotechs</a></p></td>
 <td><p>DataDog</p></td>
 <td><p>Committer</p></td>
 </tr>
-<tr class="row-odd"><td><p>Jax Liu</p></td>
+<tr class="row-even"><td><p>Jax Liu</p></td>
 <td><p>goldmedal</p></td>
 <td><p><a class="reference external" href="https://github.com/goldmedal">goldmedal</a></p></td>
 <td><p>Canner</p></td>
 <td><p>Committer</p></td>
 </tr>
-<tr class="row-even"><td><p>Huaxin Gao</p></td>
+<tr class="row-odd"><td><p>Huaxin Gao</p></td>
 <td><p>huaxingao</p></td>
 <td><p><a class="reference external" href="https://github.com/huaxingao">huaxingao</a></p></td>
 <td><p></p></td>
 <td><p>Committer</p></td>
 </tr>
-<tr class="row-odd"><td><p>Ifeanyi Ubah</p></td>
+<tr class="row-even"><td><p>Ifeanyi Ubah</p></td>
 <td><p>iffyio</p></td>
 <td><p><a class="reference external" href="https://github.com/iffyio">iffyio</a></p></td>
 <td><p>Validio</p></td>
 <td><p>Committer</p></td>
 </tr>
-<tr class="row-even"><td><p>Liu Jiayu</p></td>
+<tr class="row-odd"><td><p>Liu Jiayu</p></td>
 <td><p>jiayuliu</p></td>
 <td><p><a class="reference external" href="https://github.com/jimexist">jimexist</a></p></td>
 <td><p></p></td>
 <td><p>Committer</p></td>
 </tr>
-<tr class="row-odd"><td><p>Ruiqiu Cao</p></td>
+<tr class="row-even"><td><p>Ruiqiu Cao</p></td>
 <td><p>kamille</p></td>
 <td><p><a class="reference external" href="https://github.com/Rachelint">Rachelint</a></p></td>
 <td><p>Tencent</p></td>
 <td><p>Committer</p></td>
 </tr>
-<tr class="row-even"><td><p>Kazuyuki Tanimura</p></td>
+<tr class="row-odd"><td><p>Kazuyuki Tanimura</p></td>
 <td><p>kazuyukitanimura</p></td>
 <td><p><a class="reference external" href="https://github.com/kazuyukitanimura">kazuyukitanimura</a></p></td>
 <td><p></p></td>
 <td><p>Committer</p></td>
 </tr>
-<tr class="row-odd"><td><p>Eduard Karacharov</p></td>
+<tr class="row-even"><td><p>Eduard Karacharov</p></td>
 <td><p>korowa</p></td>
 <td><p><a class="reference external" href="https://github.com/korowa">korowa</a></p></td>
 <td><p></p></td>
 <td><p>Committer</p></td>
 </tr>
-<tr class="row-even"><td><p>Siew Kam Onn</p></td>
+<tr class="row-odd"><td><p>Siew Kam Onn</p></td>
 <td><p>kosiew</p></td>
 <td><p><a class="reference external" href="https://github.com/kosiew">kosiew</a></p></td>
+<td><p></p></td>
+<td><p>Committer</p></td>
+</tr>
+<tr class="row-even"><td><p>Kumar Ujjawal</p></td>
+<td><p>kumarujjawal</p></td>
+<td><p><a class="reference external" href="https://github.com/kumarUjjawal">kumarUjjawal</a></p></td>
 <td><p></p></td>
 <td><p>Committer</p></td>
 </tr>
@@ -642,40 +728,52 @@ Notes:
 <td><p>diit.cn</p></td>
 <td><p>Committer</p></td>
 </tr>
-<tr class="row-even"><td><p>Matt Butrovich</p></td>
-<td><p>mbutrovich</p></td>
-<td><p><a class="reference external" href="https://github.com/mbutrovich">mbutrovich</a></p></td>
-<td><p>Apple</p></td>
+<tr class="row-even"><td><p>Luca Cappelletti</p></td>
+<td><p>lucacappelletti</p></td>
+<td><p><a class="reference external" href="https://github.com/LucaCappelletti94">LucaCappelletti94</a></p></td>
+<td><p></p></td>
 <td><p>Committer</p></td>
 </tr>
-<tr class="row-odd"><td><p>Metehan Yildirim</p></td>
+<tr class="row-odd"><td><p>Manu Zhang</p></td>
+<td><p>mauzhang</p></td>
+<td><p><a class="reference external" href="https://github.com/manuzhang">manuzhang</a></p></td>
+<td><p></p></td>
+<td><p>Committer</p></td>
+</tr>
+<tr class="row-even"><td><p>Metehan Yildirim</p></td>
 <td><p>mete</p></td>
 <td><p><a class="reference external" href="https://github.com/metegenez">metegenez</a></p></td>
 <td><p></p></td>
 <td><p>Committer</p></td>
 </tr>
-<tr class="row-even"><td><p>Marko Milenković</p></td>
-<td><p>milenkovicm</p></td>
-<td><p><a class="reference external" href="https://github.com/milenkovicm">milenkovicm</a></p></td>
+<tr class="row-odd"><td><p>Martin Tzvetanov Grigorov</p></td>
+<td><p>mgrigorov</p></td>
+<td><p><a class="reference external" href="https://github.com/martin-g">martin-g</a></p></td>
 <td><p></p></td>
 <td><p>Committer</p></td>
 </tr>
-<tr class="row-odd"><td><p>Wang Mingming</p></td>
+<tr class="row-even"><td><p>Wang Mingming</p></td>
 <td><p>mingmwang</p></td>
 <td><p><a class="reference external" href="https://github.com/mingmwang">mingmwang</a></p></td>
 <td><p></p></td>
 <td><p>Committer</p></td>
 </tr>
-<tr class="row-even"><td><p>Michael Ward</p></td>
+<tr class="row-odd"><td><p>Michael Ward</p></td>
 <td><p>mjward</p></td>
 <td><p><a class="reference external" href="https://github.com/Michael-J-Ward">Michael-J-Ward </a></p></td>
 <td><p></p></td>
 <td><p>Committer</p></td>
 </tr>
-<tr class="row-odd"><td><p>Marco Neumann</p></td>
+<tr class="row-even"><td><p>Marco Neumann</p></td>
 <td><p>mneumann</p></td>
 <td><p><a class="reference external" href="https://github.com/crepererum">crepererum</a></p></td>
 <td><p>InfluxData</p></td>
+<td><p>Committer</p></td>
+</tr>
+<tr class="row-odd"><td><p>Neil Conway</p></td>
+<td><p>neilc</p></td>
+<td><p><a class="reference external" href="https://github.com/neilconway">neilconway</a></p></td>
+<td><p></p></td>
 <td><p>Committer</p></td>
 </tr>
 <tr class="row-even"><td><p>Zhong Yanghong</p></td>
@@ -684,10 +782,22 @@ Notes:
 <td><p></p></td>
 <td><p>Committer</p></td>
 </tr>
-<tr class="row-odd"><td><p>Paddy Horan</p></td>
+<tr class="row-odd"><td><p>Nuno Faria</p></td>
+<td><p>nunofaria</p></td>
+<td><p><a class="reference external" href="https://github.com/nuno-faria">nuno-faria</a></p></td>
+<td><p></p></td>
+<td><p>Committer</p></td>
+</tr>
+<tr class="row-even"><td><p>Paddy Horan</p></td>
 <td><p>paddyhoran</p></td>
 <td><p><a class="reference external" href="https://github.com/paddyhoran">paddyhoran</a></p></td>
 <td><p>Assured Allies</p></td>
+<td><p>Committer</p></td>
+</tr>
+<tr class="row-odd"><td><p>Dewey Dunnington</p></td>
+<td><p>paleolimbot</p></td>
+<td><p><a class="reference external" href="https://github.com/paleolimbot">paleolimbot</a></p></td>
+<td><p></p></td>
 <td><p>Committer</p></td>
 </tr>
 <tr class="row-even"><td><p>Parth Chandra</p></td>
@@ -754,12 +864,6 @@ Notes:
 <td><p>yjshen</p></td>
 <td><p><a class="reference external" href="https://github.com/yjshen">yjshen</a></p></td>
 <td><p>DataPelago</p></td>
-<td><p>Committer</p></td>
-</tr>
-<tr class="row-odd"><td><p>Qi Zhu</p></td>
-<td><p>zhuqi</p></td>
-<td><p><a class="reference external" href="https://github.com/zhuqi-lucas">zhuqi-lucas</a></p></td>
-<td><p>Polygon.io</p></td>
 <td><p>Committer</p></td>
 </tr>
 </tbody>
@@ -862,8 +966,8 @@ direction, typically over the course of a year or more.</p>
     class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> On this page
   </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#people">People</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#roles">Roles</a></li>
@@ -889,13 +993,13 @@ direction, typically over the course of a year or more.</p>
 </div>
 
   <div class="sidebar-secondary-item">
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/contributor-guide/governance.md.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div></div>
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/contributor-guide/governance.md.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
 
 </div></div>
               
@@ -910,8 +1014,8 @@ direction, typically over the course of a year or more.</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
 
 <!-- Based on pydata_sphinx_theme/footer.html -->
 <footer class="footer mt-5 mt-md-0">

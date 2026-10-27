@@ -131,7 +131,7 @@ physical plan in Figure 1 in tree format will look like
 Each node in the tree/plan ends with `Exec` and is sometimes also called an `operator` or `ExecutionPlan` where data is
 processed, transformed and sent up.
 
-1. First, data in parquet the `hits.parquet` file us read in parallel using 16 cores in 16 "partitions" (more on this later) from `DataSourceExec`, which applies a first pass at filtering during the scan.
+1. First, data in parquet the `hits.parquet` file is read in parallel using 16 cores in 16 "partitions" (more on this later) from `DataSourceExec`, which applies a first pass at filtering during the scan.
 2. Next, the output is filtered using `FilterExec` to ensure only rows where `starts_with(URL, 'http://domcheloveplanet.ru/')` evaluates to true are passed on
 3. The `CoalesceBatchesExec` then ensures that the data is grouped into larger batches for processing
 4. The `ProjectionExec` then projects the data to rename the `WatchID` and `ClientIP` columns to `wid` and `ip` respectively.
@@ -159,7 +159,7 @@ next section)
 ## More Debugging Information: `EXPLAIN VERBOSE`
 
 If the plan has to read too many files, not all of them will be shown in the
-`EXPLAIN`. To see them, use `EXPLAIN VEBOSE`. Like `EXPLAIN`, `EXPLAIN VERBOSE`
+`EXPLAIN`. To see them, use `EXPLAIN VERBOSE`. Like `EXPLAIN`, `EXPLAIN VERBOSE`
 does not run the query. Instead it shows the full explain plan, with information
 that is omitted from the default explain, as well as all intermediate physical
 plans DataFusion generates before returning. This mode can be very helpful for
@@ -169,7 +169,7 @@ debugging to see why and when DataFusion added and removed operators from a plan
 
 During execution, DataFusion operators collect detailed metrics. You can access
 them programmatically via [`ExecutionPlan::metrics`] as well as with the
-`EXPLAIN ANALYZE` command. For example here is the same query query as
+`EXPLAIN ANALYZE` command. For example here is the same query as
 above but with `EXPLAIN ANALYZE` (note the output is edited for clarity)
 
 [`executionplan::metrics`]: https://docs.rs/datafusion/latest/datafusion/physical_plan/trait.ExecutionPlan.html#method.metrics
@@ -207,6 +207,7 @@ Again, reading from bottom up:
 - `DataSourceExec`
   - `output_rows=99997497`: A total 99.9M rows were produced
   - `bytes_scanned=3703192723`: Of the 14GB file, 3.7GB were actually read (due to projection pushdown)
+  - `bytes_processed=14779976446`: All 14GB were accounted for: the 3.7GB read, plus the bytes of row groups that pruning ruled out. Comparing this against the total size of the files in the plan tells you how far along a scan is
   - `time_elapsed_opening=308.203002ms`: It took 300ms to open the file and prepare to read it
   - `time_elapsed_scanning_total=8.350342183s`: It took 8.3 seconds of CPU time (across 16 cores) to actually decode the parquet data
 - `FilterExec`
@@ -225,9 +226,14 @@ Again, reading from bottom up:
 
 When predicate pushdown is enabled, `DataSourceExec` with `ParquetSource` gains the following metrics:
 
+- `output_rows_skew`: output skew score derived from per-partition `output_rows`. `0%` is perfectly balanced, `100%` is maximally skewed, and `N/A` means no output rows were produced.
 - `page_index_rows_pruned`: number of rows evaluated by page index filters. The metric reports both how many rows were considered in total and how many matched (were not pruned).
+- `page_index_pages_pruned`: number of pages evaluated by page index filters. The metric reports both how many pages were considered in total and how many matched (were not pruned).
+- `page_index_pages_skipped_by_fully_matched`: number of pages for which page-index pruning was skipped because row-group statistics proved the containing row group was fully matched. These pages are still scanned.
 - `row_groups_pruned_bloom_filter`: number of row groups evaluated by Bloom Filters, reporting both total checked groups and groups that matched.
 - `row_groups_pruned_statistics`: number of row groups evaluated by row-group statistics (min/max), reporting both total checked groups and groups that matched.
+- `limit_pruned_row_groups`: number of row groups pruned by the limit.
+- `limit_pruned_rows`: number of rows skipped by limit pruning when fully matched page ranges contain enough rows to satisfy the limit.
 - `pushdown_rows_matched`: rows that were tested by any of the above filters, and passed all of them.
 - `pushdown_rows_pruned`: rows that were tested by any of the above filters, and did not pass at least one of them.
 - `predicate_evaluation_errors`: number of times evaluating the filter expression failed (expected to be zero in normal operation)
@@ -236,6 +242,61 @@ When predicate pushdown is enabled, `DataSourceExec` with `ParquetSource` gains 
 - `statistics_eval_time`: time spent parsing and evaluating row group-level statistics
 - `row_pushdown_eval_time`: time spent evaluating row-level filters
 - `page_index_eval_time`: time required to evaluate the page index filters
+
+`output_rows_skew` is also reported by operators that execute in multiple
+partitions: `RepartitionExec`, `HashJoinExec`, `AggregateExec`,
+`BoundedWindowAggExec` and `WindowAggExec`. It shows how evenly their output
+rows are spread across partitions, which helps spot data skew (for example, a
+hot join or grouping key). With a single partition the skew is always `0%`.
+
+## Postgres-style `EXPLAIN (...)` options
+
+In addition to the legacy keyword form (`EXPLAIN ANALYZE VERBOSE FORMAT tree SELECT ...`),
+DataFusion accepts a Postgres-style option list on dialects whose
+[`supports_explain_with_utility_options`](https://docs.rs/sqlparser/latest/sqlparser/dialect/trait.Dialect.html#method.supports_explain_with_utility_options)
+returns `true`. This includes the default `GenericDialect`, `PostgreSqlDialect`, and
+`DuckDbDialect`, among others.
+
+```sql
+EXPLAIN (ANALYZE, VERBOSE, METRICS 'rows,bytes', LEVEL dev)
+SELECT ... ;
+```
+
+The recognized options are:
+
+| Option    | Argument          | Effect                                                                                                                               |
+| --------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `ANALYZE` | boolean, optional | Execute the plan and collect metrics. Defaults to `TRUE` when bare. Equivalent to the `ANALYZE` keyword.                             |
+| `VERBOSE` | boolean, optional | Show per-partition metrics and additional detail. Equivalent to the `VERBOSE` keyword.                                               |
+| `FORMAT`  | identifier/string | One of `indent`, `tree`, `pgjson`, `graphviz`. Equivalent to the `FORMAT <format>` clause.                                           |
+| `METRICS` | string            | Filter `ANALYZE` metrics by category. Accepts `'all'`, `'none'`, or any comma-separated subset of `rows,bytes,timing,uncategorized`. |
+| `LEVEL`   | identifier/string | `summary` or `dev`. Controls metric verbosity for `ANALYZE`.                                                                         |
+| `TIMING`  | boolean           | Sugar over `METRICS`: toggles inclusion of the `timing` category.                                                                    |
+| `SUMMARY` | boolean           | Sugar over `LEVEL`: `TRUE` → `summary`, `FALSE` → `dev`.                                                                             |
+| `COSTS`   | boolean           | Include statistics in plain `EXPLAIN` output (equivalent to `SET datafusion.explain.show_statistics`). Not valid with `ANALYZE`.     |
+
+Boolean arguments can be written bare (`ANALYZE` → `true`), as `TRUE`/`FALSE`,
+`ON`/`OFF`, or `0`/`1`.
+
+When combined with `ANALYZE`, `FORMAT` supports `indent` (the default) and
+`pgjson`; `tree` and `graphviz` are rejected. The `pgjson` form emits the
+physical plan with live metrics, which is handy for plan visualizers — see
+[`pgjson` format with `ANALYZE`](sql/explain.md#pgjson-format-with-analyze):
+
+```sql
+EXPLAIN (ANALYZE, FORMAT pgjson) SELECT ...;
+```
+
+The statement-level options take precedence over session config, so you can leave
+the session defaults alone and override just for the current query:
+
+```sql
+EXPLAIN (ANALYZE, LEVEL dev, METRICS 'rows,bytes') SELECT ...;
+```
+
+Postgres options that DataFusion does not model (`BUFFERS`, `WAL`, `SETTINGS`,
+`GENERIC_PLAN`, `MEMORY`) return a clear error rather than being silently
+accepted — use `METRICS` to filter what appears in the output.
 
 ## Partitions and Execution
 
@@ -312,7 +373,7 @@ For this query, let's again read the plan from the bottom to the top:
   - `gby=[UserID@0 as UserID]`: Represents `GROUP BY` in the [physical plan] and groups together the same values of `UserID`.
   - `aggr=[count(*)]`: Applies the `COUNT` aggregate on all rows for each group.
 - `RepartitionExec`
-  - `partitioning=Hash([UserID@0], 10)`: Divides the input into into 10 (new) output partitions based on the value of `hash(UserID)`. You can read more about this in the [partitioning] documentation.
+  - `partitioning=Hash([UserID@0], 10)`: Divides the input into 10 (new) output partitions based on the value of `hash(UserID)`. You can read more about this in the [partitioning] documentation.
   - `input_partitions=10`: Number of input partitions.
 - `CoalesceBatchesExec`
   - `target_batch_size=8192`: Combines smaller batches in to larger batches. In this case approximately 8192 rows in each batch.

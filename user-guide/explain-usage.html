@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 
@@ -27,43 +26,53 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../_static/theme_overrides.css?v=0b9a6302" />
+    <link rel="stylesheet" type="text/css" href="../_static/theme_overrides.css?v=d08b24aa" />
   
   <!-- So that users can add custom icons -->
-  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
     <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'user-guide/explain-usage';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://datafusion.apache.org/user-guide/explain-usage.html" />
+    <link rel="icon" href="../_static/favicon.svg"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Metrics" href="metrics.html" />
+    <link rel="next" title="Parquet Content-Defined Chunking" href="parquet-content-defined-chunking.html" />
     <link rel="prev" title="Configuration Settings" href="configs.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -89,9 +98,9 @@
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -131,7 +140,7 @@
         <div class="navbar-item navbar-persistent--container">
           
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -141,11 +150,18 @@
       
         <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
       
     </div>
     
@@ -154,7 +170,7 @@
   
     <div class="navbar-persistent--mobile">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -163,7 +179,7 @@
   
 
   
-    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
       <span class="fa-solid fa-outdent"></span>
     </button>
   
@@ -191,11 +207,18 @@
         
           <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
         
       </div>
     
@@ -230,6 +253,7 @@
 <li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="concepts-readings-events.html">Concepts, Readings, Events</a></li>
 
+
 <li class="toctree-l1"><a class="reference internal" href="crate-configuration.html">Crate Configuration</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="cli/index.html">DataFusion CLI</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="cli/overview.html">Overview</a></li>
@@ -248,6 +272,7 @@
 <li class="toctree-l1"><a class="reference internal" href="expressions.html">Expression API</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="sql/index.html">SQL Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="sql/data_types.html">Data Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sql/struct_coercion.html">Struct Type Coercion and Field Mapping</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sql/select.html">SELECT syntax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sql/subqueries.html">Subqueries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sql/ddl.html">DDL</a></li>
@@ -268,7 +293,8 @@
 
 
 
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Reading Explain Plans</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">Reading Explain Plans</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parquet-content-defined-chunking.html">Parquet Content-Defined Chunking</a></li>
 <li class="toctree-l1"><a class="reference internal" href="metrics.html">Metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
 
@@ -276,9 +302,25 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Library User Guide</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../library-user-guide/index.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../library-user-guide/upgrading.html">Upgrade Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library-user-guide/securing-datafusion.html">Securing DataFusion</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../library-user-guide/upgrading/index.html">Upgrade Guides</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../library-user-guide/upgrading/56.0.0.html">DataFusion 56.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../library-user-guide/upgrading/55.0.0.html">DataFusion 55.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../library-user-guide/upgrading/54.0.0.html">DataFusion 54.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../library-user-guide/upgrading/53.0.0.html">DataFusion 53.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../library-user-guide/upgrading/52.0.0.html">DataFusion 52.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../library-user-guide/upgrading/51.0.0.html">DataFusion 51.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../library-user-guide/upgrading/50.0.0.html">DataFusion 50.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../library-user-guide/upgrading/49.0.0.html">DataFusion 49.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../library-user-guide/upgrading/48.0.1.html">DataFusion 48.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../library-user-guide/upgrading/48.0.0.html">DataFusion 48.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../library-user-guide/upgrading/47.0.0.html">DataFusion 47.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../library-user-guide/upgrading/46.0.0.html">DataFusion 46.0.0</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="../library-user-guide/extensions.html">Extensions List</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../library-user-guide/using-the-sql-api.html">Using the SQL API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library-user-guide/extending-sql.html">Extending SQL Syntax</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../library-user-guide/working-with-exprs.html">Working with <code class="docutils literal notranslate"><span class="pre">Expr</span></code>s</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../library-user-guide/using-the-dataframe-api.html">Using the DataFrame API</a></li>
 
@@ -291,20 +333,24 @@
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../library-user-guide/custom-table-providers.html">Custom Table Provider</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../library-user-guide/table-constraints.html">Table Constraint Enforcement</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../library-user-guide/extending-operators.html">Extending DataFusion’s operators: custom LogicalPlan and Execution Plans</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library-user-guide/extending-operators.html">Extending Operators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../library-user-guide/profiling.html">Profiling Cookbook</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../library-user-guide/query-optimizer.html">DataFusion Query Optimizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library-user-guide/query-optimizer.html">Query Optimizer</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contributor Guide</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../contributor-guide/index.html">Introduction</a></li>
 
-<li class="toctree-l1"><a class="reference internal" href="../contributor-guide/communication.html">Communication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributor-guide/ai-policy.html">AI Policy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributor-guide/pr_review.html">Reviewing Pull Requests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributor-guide/communication.html">Community Communication</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributor-guide/development_environment.html">Development Environment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributor-guide/architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributor-guide/architecture/dependency-graph.html">Workspace Dependency Graph</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributor-guide/testing.html">Testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributor-guide/api-health.html">API health policy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributor-guide/howtos.html">HOWTOs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributor-guide/release_management.html">Release Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributor-guide/roadmap.html">Roadmap and Improvement Proposals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributor-guide/governance.html">Governance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributor-guide/inviting.html">Inviting New Committers and PMC Members</a></li>
@@ -323,6 +369,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference external" href="https://datafusion.apache.org/ballista/">DataFusion Ballista</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://datafusion.apache.org/comet/">DataFusion Comet</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://datafusion.apache.org/java/">DataFusion Java</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://datafusion.apache.org/python/">DataFusion Python</a></li>
 </ul>
 
@@ -505,7 +552,7 @@ physical plan in Figure 1 in tree format will look like</p>
 <p>Each node in the tree/plan ends with <code class="docutils literal notranslate"><span class="pre">Exec</span></code> and is sometimes also called an <code class="docutils literal notranslate"><span class="pre">operator</span></code> or <code class="docutils literal notranslate"><span class="pre">ExecutionPlan</span></code> where data is
 processed, transformed and sent up.</p>
 <ol class="arabic simple">
-<li><p>First, data in parquet the <code class="docutils literal notranslate"><span class="pre">hits.parquet</span></code> file us read in parallel using 16 cores in 16 “partitions” (more on this later) from <code class="docutils literal notranslate"><span class="pre">DataSourceExec</span></code>, which applies a first pass at filtering during the scan.</p></li>
+<li><p>First, data in parquet the <code class="docutils literal notranslate"><span class="pre">hits.parquet</span></code> file is read in parallel using 16 cores in 16 “partitions” (more on this later) from <code class="docutils literal notranslate"><span class="pre">DataSourceExec</span></code>, which applies a first pass at filtering during the scan.</p></li>
 <li><p>Next, the output is filtered using <code class="docutils literal notranslate"><span class="pre">FilterExec</span></code> to ensure only rows where <code class="docutils literal notranslate"><span class="pre">starts_with(URL,</span> <span class="pre">'http://domcheloveplanet.ru/')</span></code> evaluates to true are passed on</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">CoalesceBatchesExec</span></code> then ensures that the data is grouped into larger batches for processing</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">ProjectionExec</span></code> then projects the data to rename the <code class="docutils literal notranslate"><span class="pre">WatchID</span></code> and <code class="docutils literal notranslate"><span class="pre">ClientIP</span></code> columns to <code class="docutils literal notranslate"><span class="pre">wid</span></code> and <code class="docutils literal notranslate"><span class="pre">ip</span></code> respectively.</p></li>
@@ -533,7 +580,7 @@ next section)</p>
 <section id="more-debugging-information-explain-verbose">
 <h2>More Debugging Information: <code class="docutils literal notranslate"><span class="pre">EXPLAIN</span> <span class="pre">VERBOSE</span></code><a class="headerlink" href="#more-debugging-information-explain-verbose" title="Link to this heading">#</a></h2>
 <p>If the plan has to read too many files, not all of them will be shown in the
-<code class="docutils literal notranslate"><span class="pre">EXPLAIN</span></code>. To see them, use <code class="docutils literal notranslate"><span class="pre">EXPLAIN</span> <span class="pre">VEBOSE</span></code>. Like <code class="docutils literal notranslate"><span class="pre">EXPLAIN</span></code>, <code class="docutils literal notranslate"><span class="pre">EXPLAIN</span> <span class="pre">VERBOSE</span></code>
+<code class="docutils literal notranslate"><span class="pre">EXPLAIN</span></code>. To see them, use <code class="docutils literal notranslate"><span class="pre">EXPLAIN</span> <span class="pre">VERBOSE</span></code>. Like <code class="docutils literal notranslate"><span class="pre">EXPLAIN</span></code>, <code class="docutils literal notranslate"><span class="pre">EXPLAIN</span> <span class="pre">VERBOSE</span></code>
 does not run the query. Instead it shows the full explain plan, with information
 that is omitted from the default explain, as well as all intermediate physical
 plans DataFusion generates before returning. This mode can be very helpful for
@@ -543,7 +590,7 @@ debugging to see why and when DataFusion added and removed operators from a plan
 <h2>Execution Counters: <code class="docutils literal notranslate"><span class="pre">EXPLAIN</span> <span class="pre">ANALYZE</span></code><a class="headerlink" href="#execution-counters-explain-analyze" title="Link to this heading">#</a></h2>
 <p>During execution, DataFusion operators collect detailed metrics. You can access
 them programmatically via <a class="reference external" href="https://docs.rs/datafusion/latest/datafusion/physical_plan/trait.ExecutionPlan.html#method.metrics"><code class="docutils literal notranslate"><span class="pre">ExecutionPlan::metrics</span></code></a> as well as with the
-<code class="docutils literal notranslate"><span class="pre">EXPLAIN</span> <span class="pre">ANALYZE</span></code> command. For example here is the same query query as
+<code class="docutils literal notranslate"><span class="pre">EXPLAIN</span> <span class="pre">ANALYZE</span></code> command. For example here is the same query as
 above but with <code class="docutils literal notranslate"><span class="pre">EXPLAIN</span> <span class="pre">ANALYZE</span></code> (note the output is edited for clarity)</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="w"> </span><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">ANALYZE</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="ss">&quot;WatchID&quot;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">wid</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;hits.parquet&quot;</span><span class="p">.</span><span class="ss">&quot;ClientIP&quot;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ip</span>
 <span class="k">FROM</span><span class="w"> </span><span class="s1">&#39;hits.parquet&#39;</span>
@@ -576,6 +623,7 @@ by all 16 cores.</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">output_rows=99997497</span></code>: A total 99.9M rows were produced</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">bytes_scanned=3703192723</span></code>: Of the 14GB file, 3.7GB were actually read (due to projection pushdown)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bytes_processed=14779976446</span></code>: All 14GB were accounted for: the 3.7GB read, plus the bytes of row groups that pruning ruled out. Comparing this against the total size of the files in the plan tells you how far along a scan is</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">time_elapsed_opening=308.203002ms</span></code>: It took 300ms to open the file and prepare to read it</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">time_elapsed_scanning_total=8.350342183s</span></code>: It took 8.3 seconds of CPU time (across 16 cores) to actually decode the parquet data</p></li>
 </ul>
@@ -611,9 +659,14 @@ by all 16 cores.</p>
 </ul>
 <p>When predicate pushdown is enabled, <code class="docutils literal notranslate"><span class="pre">DataSourceExec</span></code> with <code class="docutils literal notranslate"><span class="pre">ParquetSource</span></code> gains the following metrics:</p>
 <ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">output_rows_skew</span></code>: output skew score derived from per-partition <code class="docutils literal notranslate"><span class="pre">output_rows</span></code>. <code class="docutils literal notranslate"><span class="pre">0%</span></code> is perfectly balanced, <code class="docutils literal notranslate"><span class="pre">100%</span></code> is maximally skewed, and <code class="docutils literal notranslate"><span class="pre">N/A</span></code> means no output rows were produced.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">page_index_rows_pruned</span></code>: number of rows evaluated by page index filters. The metric reports both how many rows were considered in total and how many matched (were not pruned).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">page_index_pages_pruned</span></code>: number of pages evaluated by page index filters. The metric reports both how many pages were considered in total and how many matched (were not pruned).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">page_index_pages_skipped_by_fully_matched</span></code>: number of pages for which page-index pruning was skipped because row-group statistics proved the containing row group was fully matched. These pages are still scanned.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">row_groups_pruned_bloom_filter</span></code>: number of row groups evaluated by Bloom Filters, reporting both total checked groups and groups that matched.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">row_groups_pruned_statistics</span></code>: number of row groups evaluated by row-group statistics (min/max), reporting both total checked groups and groups that matched.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">limit_pruned_row_groups</span></code>: number of row groups pruned by the limit.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">limit_pruned_rows</span></code>: number of rows skipped by limit pruning when fully matched page ranges contain enough rows to satisfy the limit.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">pushdown_rows_matched</span></code>: rows that were tested by any of the above filters, and passed all of them.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">pushdown_rows_pruned</span></code>: rows that were tested by any of the above filters, and did not pass at least one of them.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">predicate_evaluation_errors</span></code>: number of times evaluating the filter expression failed (expected to be zero in normal operation)</p></li>
@@ -623,6 +676,84 @@ by all 16 cores.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">row_pushdown_eval_time</span></code>: time spent evaluating row-level filters</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">page_index_eval_time</span></code>: time required to evaluate the page index filters</p></li>
 </ul>
+<p><code class="docutils literal notranslate"><span class="pre">output_rows_skew</span></code> is also reported by operators that execute in multiple
+partitions: <code class="docutils literal notranslate"><span class="pre">RepartitionExec</span></code>, <code class="docutils literal notranslate"><span class="pre">HashJoinExec</span></code>, <code class="docutils literal notranslate"><span class="pre">AggregateExec</span></code>,
+<code class="docutils literal notranslate"><span class="pre">BoundedWindowAggExec</span></code> and <code class="docutils literal notranslate"><span class="pre">WindowAggExec</span></code>. It shows how evenly their output
+rows are spread across partitions, which helps spot data skew (for example, a
+hot join or grouping key). With a single partition the skew is always <code class="docutils literal notranslate"><span class="pre">0%</span></code>.</p>
+</section>
+<section id="postgres-style-explain-options">
+<h2>Postgres-style <code class="docutils literal notranslate"><span class="pre">EXPLAIN</span> <span class="pre">(...)</span></code> options<a class="headerlink" href="#postgres-style-explain-options" title="Link to this heading">#</a></h2>
+<p>In addition to the legacy keyword form (<code class="docutils literal notranslate"><span class="pre">EXPLAIN</span> <span class="pre">ANALYZE</span> <span class="pre">VERBOSE</span> <span class="pre">FORMAT</span> <span class="pre">tree</span> <span class="pre">SELECT</span> <span class="pre">...</span></code>),
+DataFusion accepts a Postgres-style option list on dialects whose
+<a class="reference external" href="https://docs.rs/sqlparser/latest/sqlparser/dialect/trait.Dialect.html#method.supports_explain_with_utility_options"><code class="docutils literal notranslate"><span class="pre">supports_explain_with_utility_options</span></code></a>
+returns <code class="docutils literal notranslate"><span class="pre">true</span></code>. This includes the default <code class="docutils literal notranslate"><span class="pre">GenericDialect</span></code>, <code class="docutils literal notranslate"><span class="pre">PostgreSqlDialect</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">DuckDbDialect</span></code>, among others.</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="p">(</span><span class="k">ANALYZE</span><span class="p">,</span><span class="w"> </span><span class="k">VERBOSE</span><span class="p">,</span><span class="w"> </span><span class="n">METRICS</span><span class="w"> </span><span class="s1">&#39;rows,bytes&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">LEVEL</span><span class="w"> </span><span class="n">dev</span><span class="p">)</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The recognized options are:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Option</p></th>
+<th class="head"><p>Argument</p></th>
+<th class="head"><p>Effect</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ANALYZE</span></code></p></td>
+<td><p>boolean, optional</p></td>
+<td><p>Execute the plan and collect metrics. Defaults to <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> when bare. Equivalent to the <code class="docutils literal notranslate"><span class="pre">ANALYZE</span></code> keyword.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">VERBOSE</span></code></p></td>
+<td><p>boolean, optional</p></td>
+<td><p>Show per-partition metrics and additional detail. Equivalent to the <code class="docutils literal notranslate"><span class="pre">VERBOSE</span></code> keyword.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FORMAT</span></code></p></td>
+<td><p>identifier/string</p></td>
+<td><p>One of <code class="docutils literal notranslate"><span class="pre">indent</span></code>, <code class="docutils literal notranslate"><span class="pre">tree</span></code>, <code class="docutils literal notranslate"><span class="pre">pgjson</span></code>, <code class="docutils literal notranslate"><span class="pre">graphviz</span></code>. Equivalent to the <code class="docutils literal notranslate"><span class="pre">FORMAT</span> <span class="pre">&lt;format&gt;</span></code> clause.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">METRICS</span></code></p></td>
+<td><p>string</p></td>
+<td><p>Filter <code class="docutils literal notranslate"><span class="pre">ANALYZE</span></code> metrics by category. Accepts <code class="docutils literal notranslate"><span class="pre">'all'</span></code>, <code class="docutils literal notranslate"><span class="pre">'none'</span></code>, or any comma-separated subset of <code class="docutils literal notranslate"><span class="pre">rows,bytes,timing,uncategorized</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LEVEL</span></code></p></td>
+<td><p>identifier/string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">summary</span></code> or <code class="docutils literal notranslate"><span class="pre">dev</span></code>. Controls metric verbosity for <code class="docutils literal notranslate"><span class="pre">ANALYZE</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">TIMING</span></code></p></td>
+<td><p>boolean</p></td>
+<td><p>Sugar over <code class="docutils literal notranslate"><span class="pre">METRICS</span></code>: toggles inclusion of the <code class="docutils literal notranslate"><span class="pre">timing</span></code> category.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SUMMARY</span></code></p></td>
+<td><p>boolean</p></td>
+<td><p>Sugar over <code class="docutils literal notranslate"><span class="pre">LEVEL</span></code>: <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> → <code class="docutils literal notranslate"><span class="pre">summary</span></code>, <code class="docutils literal notranslate"><span class="pre">FALSE</span></code> → <code class="docutils literal notranslate"><span class="pre">dev</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">COSTS</span></code></p></td>
+<td><p>boolean</p></td>
+<td><p>Include statistics in plain <code class="docutils literal notranslate"><span class="pre">EXPLAIN</span></code> output (equivalent to <code class="docutils literal notranslate"><span class="pre">SET</span> <span class="pre">datafusion.explain.show_statistics</span></code>). Not valid with <code class="docutils literal notranslate"><span class="pre">ANALYZE</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Boolean arguments can be written bare (<code class="docutils literal notranslate"><span class="pre">ANALYZE</span></code> → <code class="docutils literal notranslate"><span class="pre">true</span></code>), as <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>/<code class="docutils literal notranslate"><span class="pre">FALSE</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ON</span></code>/<code class="docutils literal notranslate"><span class="pre">OFF</span></code>, or <code class="docutils literal notranslate"><span class="pre">0</span></code>/<code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
+<p>When combined with <code class="docutils literal notranslate"><span class="pre">ANALYZE</span></code>, <code class="docutils literal notranslate"><span class="pre">FORMAT</span></code> supports <code class="docutils literal notranslate"><span class="pre">indent</span></code> (the default) and
+<code class="docutils literal notranslate"><span class="pre">pgjson</span></code>; <code class="docutils literal notranslate"><span class="pre">tree</span></code> and <code class="docutils literal notranslate"><span class="pre">graphviz</span></code> are rejected. The <code class="docutils literal notranslate"><span class="pre">pgjson</span></code> form emits the
+physical plan with live metrics, which is handy for plan visualizers — see
+<a class="reference internal" href="sql/explain.html#pgjson-format-with-analyze"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">pgjson</span></code> format with <code class="docutils literal notranslate"><span class="pre">ANALYZE</span></code></span></a>:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="p">(</span><span class="k">ANALYZE</span><span class="p">,</span><span class="w"> </span><span class="n">FORMAT</span><span class="w"> </span><span class="n">pgjson</span><span class="p">)</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="p">...;</span>
+</pre></div>
+</div>
+<p>The statement-level options take precedence over session config, so you can leave
+the session defaults alone and override just for the current query:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="p">(</span><span class="k">ANALYZE</span><span class="p">,</span><span class="w"> </span><span class="k">LEVEL</span><span class="w"> </span><span class="n">dev</span><span class="p">,</span><span class="w"> </span><span class="n">METRICS</span><span class="w"> </span><span class="s1">&#39;rows,bytes&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="p">...;</span>
+</pre></div>
+</div>
+<p>Postgres options that DataFusion does not model (<code class="docutils literal notranslate"><span class="pre">BUFFERS</span></code>, <code class="docutils literal notranslate"><span class="pre">WAL</span></code>, <code class="docutils literal notranslate"><span class="pre">SETTINGS</span></code>,
+<code class="docutils literal notranslate"><span class="pre">GENERIC_PLAN</span></code>, <code class="docutils literal notranslate"><span class="pre">MEMORY</span></code>) return a clear error rather than being silently
+accepted — use <code class="docutils literal notranslate"><span class="pre">METRICS</span></code> to filter what appears in the output.</p>
 </section>
 <section id="partitions-and-execution">
 <h2>Partitions and Execution<a class="headerlink" href="#partitions-and-execution" title="Link to this heading">#</a></h2>
@@ -710,7 +841,7 @@ number of hits:</p>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">RepartitionExec</span></code></p>
 <ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">partitioning=Hash([UserID&#64;0],</span> <span class="pre">10)</span></code>: Divides the input into into 10 (new) output partitions based on the value of <code class="docutils literal notranslate"><span class="pre">hash(UserID)</span></code>. You can read more about this in the <a class="reference external" href="https://docs.rs/datafusion/latest/datafusion/physical_plan/repartition/struct.RepartitionExec.html">partitioning</a> documentation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">partitioning=Hash([UserID&#64;0],</span> <span class="pre">10)</span></code>: Divides the input into 10 (new) output partitions based on the value of <code class="docutils literal notranslate"><span class="pre">hash(UserID)</span></code>. You can read more about this in the <a class="reference external" href="https://docs.rs/datafusion/latest/datafusion/physical_plan/repartition/struct.RepartitionExec.html">partitioning</a> documentation.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">input_partitions=10</span></code>: Number of input partitions.</p></li>
 </ul>
 </li>
@@ -804,11 +935,11 @@ Elapsed<span class="w"> </span><span class="m">0</span>.062<span class="w"> </sp
       </div>
     </a>
     <a class="right-next"
-       href="metrics.html"
+       href="parquet-content-defined-chunking.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Metrics</p>
+        <p class="prev-next-title">Parquet Content-Defined Chunking</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -829,14 +960,15 @@ Elapsed<span class="w"> </span><span class="m">0</span>.062<span class="w"> </sp
     class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> On this page
   </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-select-and-filter">Example: Select and filter</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#query-plans-are-trees">Query plans are trees</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-large-query-plans">Understanding large query plans</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#more-debugging-information-explain-verbose">More Debugging Information: <code class="docutils literal notranslate"><span class="pre">EXPLAIN</span> <span class="pre">VERBOSE</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#execution-counters-explain-analyze">Execution Counters: <code class="docutils literal notranslate"><span class="pre">EXPLAIN</span> <span class="pre">ANALYZE</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#postgres-style-explain-options">Postgres-style <code class="docutils literal notranslate"><span class="pre">EXPLAIN</span> <span class="pre">(...)</span></code> options</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#partitions-and-execution">Partitions and Execution</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-an-aggregate-query">Example of an Aggregate Query</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-in-this-example">Data in this Example</a></li>
@@ -862,13 +994,13 @@ Elapsed<span class="w"> </span><span class="m">0</span>.062<span class="w"> </sp
 </div>
 
   <div class="sidebar-secondary-item">
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/user-guide/explain-usage.md.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div></div>
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/user-guide/explain-usage.md.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
 
 </div></div>
               
@@ -883,8 +1015,8 @@ Elapsed<span class="w"> </span><span class="m">0</span>.062<span class="w"> </sp
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
 
 <!-- Based on pydata_sphinx_theme/footer.html -->
 <footer class="footer mt-5 mt-md-0">
