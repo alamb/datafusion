@@ -89,13 +89,9 @@ which serves content based on the configuration in
 [.asf.yaml](https://github.com/apache/datafusion/blob/main/.asf.yaml),
 which specifies the target as https://datafusion.apache.org/.
 
-The documentation for released versions, served under `/versions/<version>/`,
-is built from the release tags listed in `source/_static/versions.json` (the
-version picker manifest) by a second
-[github workflow](https://github.com/apache/datafusion/blob/main/.github/workflows/docs_versions.yaml)
-whenever that file changes. `scripts/build_versions.sh` builds the same
-versions locally; see the
-[release instructions](../dev/release/README.md#publish-the-versioned-documentation).
+The documentation for previously released versions is served under `/versions/<version>/`
+see the [release instructions](../dev/release/README.md#publish-the-versioned-documentation)
+for more details.
 
 ### Testing the site on a fork
 

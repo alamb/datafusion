@@ -315,40 +315,15 @@ git push apache 55.2.0
 
 #### Publish the versioned documentation
 
-The documentation for each release is published under
-`https://datafusion.apache.org/versions/<version>/` by the
-[Deploy DataFusion versioned docs](../../.github/workflows/docs_versions.yaml)
-workflow. It rebuilds every release listed in the version picker manifest,
-`docs/source/_static/versions.json`, whenever that file changes on `main`.
-
 Open a PR against `main` that adds the release to
 `docs/source/_static/versions.json`. Put the new release directly after the
 `Development (main)` entry and move `"preferred": true` to it, so that it is
-treated as the current stable release. The release tag must already be pushed,
-as the workflow builds the documentation from the tag.
+treated as the current stable release. 
 
-Once the PR is merged, the workflow builds the documentation from each tag
-using the configuration overlay in `docs/scripts/release/conf.py` (which adds
-the version picker and fixes up links for the `versions/<version>/` location)
-and pushes the result to the `asf-site` branch. The release is live at
-`https://datafusion.apache.org/versions/<version>/` when the workflow
-completes.
+Once the PR is merged, a workflow builds the documentation for past releases and
+pushes the result to the `asf-site` branch and
+`https://datafusion.apache.org/versions/<version>/` .
 
-To preview the result before opening the PR, build the current site and then
-the release with the same script the workflow uses, and serve the tree over
-HTTP (the version picker does not work when the pages are opened directly as
-files):
-
-```shell
-cd docs
-uv run --package datafusion-docs ./build.sh
-scripts/build_versions.sh 55.0.0
-python3 -m http.server --directory build/html 8000
-```
-
-Then open http://localhost:8000/ and http://localhost:8000/versions/55.0.0/
-and check the version picker in the navigation bar. Without arguments,
-`scripts/build_versions.sh` builds every release in `versions.json`.
 
 ### 10. Publish on Crates.io
 

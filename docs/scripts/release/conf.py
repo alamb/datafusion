@@ -35,8 +35,7 @@ checkout:
 
 sphinx-build -c docs/scripts/release
 
-See docs/scripts/build_versions.sh, which does this for every release listed
-in docs/source/_static/versions.json.
+See docs/scripts/build_versions.sh for building past releases
 """
 
 import os
