@@ -326,9 +326,17 @@ workflow builds the documentation for each release and
 pushes the result to the `asf-site` branch.
 
 To preview a release locally before opening the PR, build the current site
-and then the release with `docs/scripts/build_versions.sh <version>` (the same
-script the workflow uses) and serve `docs/build/html` over HTTP, as the version
-picker does not work when the pages are opened directly as files.
+and then the release with `docs/scripts/build_versions.sh <version>` and serve 
+`docs/build/html` over HTTP:
+
+```shell
+cd docs
+uv run --package datafusion-docs ./build.sh
+scripts/build_versions.sh 55.2.0
+python3 -m http.server --directory build/html 8000
+```
+
+Then open http://localhost:8000/ and check the version picker in the navigation bar.
 
 ### 10. Publish on Crates.io
 
