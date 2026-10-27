@@ -31,14 +31,6 @@ on:
       - docs/scripts/build_versions.sh
       - docs/scripts/release/conf.py
       - docs/source/_static/versions.json
-  # manual trigger
-  # https://docs.github.com/en/actions/managing-workflow-runs/manually-running-a-workflow
-  workflow_dispatch:
-    inputs:
-      versions:
-        description: "Space separated versions to rebuild (default: every release in versions.json)"
-        required: false
-        default: ""
 
 name: Deploy DataFusion versioned docs
 
@@ -70,11 +62,9 @@ jobs:
         env:
           # See docs.yaml
           DATAFUSION_DOCS_BASE_PATH: ${{ vars.DATAFUSION_DOCS_BASE_PATH }}
-          VERSIONS: ${{ inputs.versions }}
         run: |
           set -x
-          # shellcheck disable=SC2086 # VERSIONS is a space separated list
-          docs/scripts/build_versions.sh --output docs/build/versions ${VERSIONS}
+          docs/scripts/build_versions.sh --output docs/build/versions
 
       - name: Copy & push the generated HTML
         run: |

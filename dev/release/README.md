@@ -350,11 +350,6 @@ Then open http://localhost:8000/ and http://localhost:8000/versions/55.0.0/
 and check the version picker in the navigation bar. Without arguments,
 `scripts/build_versions.sh` builds every release in `versions.json`.
 
-The workflow can also be
-[run manually](https://github.com/apache/datafusion/actions/workflows/docs_versions.yaml)
-to rebuild all (or some) of the published versions, for example after changing
-the overlay configuration.
-
 ### 10. Publish on Crates.io
 
 Only approved releases of the tarball should be published to
