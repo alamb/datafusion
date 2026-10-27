@@ -316,9 +316,8 @@ git push apache 55.2.0
 #### Publish the versioned documentation
 
 Open a PR against `main` that adds the release to
-`docs/source/_static/versions.json`. Put the new release directly after the
-`Development (main)` entry and move `"preferred": true` to it, so that it is
-treated as the current stable release.
+`docs/source/_static/versions.json` immediately after the `Development (main)`
+entry mark it with `"preferred": true`.
 
 Once the PR is merged, the
 [Deploy DataFusion versioned docs](../../.github/workflows/docs_versions.yaml)

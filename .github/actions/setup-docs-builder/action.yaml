@@ -16,7 +16,7 @@
 # under the License.
 
 name: Prepare Docs Builder
-description: 'Install the tools needed to build the documentation in docs/: Rust (for cargo-depgraph), uv and the Python dependencies, Graphviz, and cargo-depgraph'
+description: 'Install the tools needed to build the documentation in docs'
 runs:
   using: "composite"
   steps:
