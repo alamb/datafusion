@@ -17,16 +17,10 @@
 # specific language governing permissions and limitations
 # under the License.
 
-# Build the documentation for released DataFusion versions.
+# Build the documentation for each release listed in docs/source/_static/versions.json
 #
-# Each release listed in docs/source/_static/versions.json is checked out from
-# its git tag into a temporary worktree and built with the Sphinx configuration
-# overlay in docs/scripts/release/conf.py, using the Python environment of this
-# checkout (so every version is rendered with the same theme). The result is
-# written to <output>/<version>/.
-#
-# The same script is run by .github/workflows/docs_versions.yaml to publish
-# the versioned documentation to https://datafusion.apache.org/versions/.
+# The release is checked out into a temporary worktree, writing the result
+# to <output>/<version>/.
 
 set -euo pipefail
 
@@ -36,8 +30,7 @@ REPO_DIR="$(cd "${DOCS_DIR}/.." && pwd)"
 OVERLAY_DIR="${SCRIPT_DIR}/release"
 MANIFEST="${DOCS_DIR}/source/_static/versions.json"
 
-# Where release tags are fetched from when they are not present locally.
-# Forks usually do not carry the release tags.
+# Where to fetch release tags from (forks usually do not contain release tags)
 UPSTREAM_URL="${DATAFUSION_UPSTREAM_URL:-https://github.com/apache/datafusion.git}"
 
 OUTPUT_DIR="${DOCS_DIR}/build/html/versions"

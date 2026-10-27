@@ -74,13 +74,11 @@ jobs:
         run: |
           set -x
           cd asf-site/
-          # replace only the versions that were built; keep the current docs
-          # at the site root and any other published versions
-          for build in ../docs/build/versions/*/; do
-            version="$(basename "${build}")"
-            mkdir -p "versions/${version}"
-            rsync -a --delete "${build}" "versions/${version}/"
-          done
+          # versions/ mirrors the releases in versions.json; the current docs
+          # at the site root are published by docs.yaml
+          mkdir -p versions
+          # remove any old versions and replace with newly built ones
+          rsync -a --delete ../docs/build/versions/ versions/
           git status --porcelain
           if [ "$(git status --porcelain)" != "" ]; then
             git config user.name "github-actions[bot]"

@@ -318,12 +318,17 @@ git push apache 55.2.0
 Open a PR against `main` that adds the release to
 `docs/source/_static/versions.json`. Put the new release directly after the
 `Development (main)` entry and move `"preferred": true` to it, so that it is
-treated as the current stable release. 
+treated as the current stable release.
 
-Once the PR is merged, a workflow builds the documentation for past releases and
-pushes the result to the `asf-site` branch and
-`https://datafusion.apache.org/versions/<version>/` .
+Once the PR is merged, the
+[Deploy DataFusion versioned docs](../../.github/workflows/docs_versions.yaml)
+workflow builds the documentation for each release and
+pushes the result to the `asf-site` branch.
 
+To preview a release locally before opening the PR, build the current site
+and then the release with `docs/scripts/build_versions.sh <version>` (the same
+script the workflow uses) and serve `docs/build/html` over HTTP, as the version
+picker does not work when the pages are opened directly as files.
 
 ### 10. Publish on Crates.io
 
